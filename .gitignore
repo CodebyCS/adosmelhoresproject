@@ -1,42 +1,32 @@
-## [ Visual Studio ]
-# Arquivos de Build
+## [ Visual Studio / .NET ]
 bin/
 obj/
-[Aa]pp_Data/
-
-# Arquivos de Cache e Configurações de Usuário
 .vs/
 *.user
 *.userosscache
 *.sln.docstates
+.devcontainer/
 
-## [ NuGet Packages ]
-# Não salvamos as bibliotecas baixadas, o VS as restaura automaticamente
-packages/
-*.nupkg
+## [ Blazor Specific ]
+# Arquivos de log do servidor e cache de compilação do Razor
+.razor.log
+*.vbdproj
 
-## [ Banco de Dados ]
-# Ignoramos arquivos de log e temporários do SQLite
-*.db-shm
-*.db-wal
-*.db-journal
+## [ JSON Database - ESTRATÉGIA DE ENGENHARIA ]
+# Se vocês querem que cada aluno tenha seus próprios dados de teste sem dar conflito:
+# 1. Renomeiem o arquivo oficial para "database.json" e adicionem a linha abaixo.
+# 2. Mantenham um "seed_data.json" (modelo vazio) rastreado no Git para os outros.
+database.json
 
-# ATENÇÃO: Se o banco .db for apenas para testes locais, descomente a linha abaixo:
-# *.db
+# Se decidirem rastrear o JSON (não recomendado por gerar conflitos constantes), 
+# apaguem a linha acima, mas preparem-se para muitos "merge conflicts".
 
-## [ Publicação ]
-# Arquivos gerados em processos de deploy
-*.publish.htm
-*.azurepubxml
-publish/
+## [ Bibliotecas e Dependências ]
+libman.json
+.librarymanager.json
+node_modules/
+/wwwroot/lib/
 
-## [ Sistema Operacional ]
-# macOS
+## [ Sistema ]
 .DS_Store
-.AppleDouble
-.LSOverride
-
-# Windows
 Thumbs.db
-ehthumbs.db
-Desktop.ini
