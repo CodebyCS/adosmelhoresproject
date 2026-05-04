@@ -1,0 +1,42 @@
+## [ Visual Studio ]
+# Arquivos de Build
+bin/
+obj/
+[Aa]pp_Data/
+
+# Arquivos de Cache e Configurações de Usuário
+.vs/
+*.user
+*.userosscache
+*.sln.docstates
+
+## [ NuGet Packages ]
+# Não salvamos as bibliotecas baixadas, o VS as restaura automaticamente
+packages/
+*.nupkg
+
+## [ Banco de Dados ]
+# Ignoramos arquivos de log e temporários do SQLite
+*.db-shm
+*.db-wal
+*.db-journal
+
+# ATENÇÃO: Se o banco .db for apenas para testes locais, descomente a linha abaixo:
+# *.db
+
+## [ Publicação ]
+# Arquivos gerados em processos de deploy
+*.publish.htm
+*.azurepubxml
+publish/
+
+## [ Sistema Operacional ]
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
