@@ -1,11 +1,10 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using adosmelhores.src.Models;
-using adosmelhores.src.Interfaces;
+using adosmelhoresproject.src.Models;
+using adosmelhoresproject.src.Interfaces;
 using Microsoft.AspNetCore.Hosting; 
 
-namespace adosmelhores.src.Services;
-
+namespace adosmelhoresproject.src.Services;
 public class FuncionarioService : IFuncionarioService
 {
     private readonly string _filePath;
@@ -55,7 +54,7 @@ public class FuncionarioService : IFuncionarioService
         var funcionario = funcionarios.FirstOrDefault(f => f.Id == id);
         if (funcionario != null)
         {
-            funcionario.DataRegistroCriminal = novaData;
+            funcionario.DataRegistoCriminal = novaData;
             Salvar(funcionarios);
         }
     }
@@ -78,7 +77,7 @@ public class FuncionarioService : IFuncionarioService
 
     public List<Funcionario> GetRegistoCriminalExpirado(DateTime dataAtual)
     {
-        return GetAll().Where(f => f.DataRegistroCriminal < dataAtual).ToList();
+        return GetAll().Where(f => f.DataRegistoCriminal < dataAtual).ToList();
     }
 
     public decimal CalcularPagamentoFormador(int id, DateTime inicio, DateTime fim)
