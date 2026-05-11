@@ -11,6 +11,7 @@ public class DateService
     private readonly string _filePath;
     private DateTime _currentDate;
     // Carrega a data simulada do arquivo JSON
+    public event Action? OnDateChanged;
     public DateService(IWebHostEnvironment env)
     {
         _filePath = Path.Combine(env.ContentRootPath, "Data", "AppState.json");
