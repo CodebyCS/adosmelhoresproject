@@ -1,4 +1,10 @@
+[JsonDerivedType(typeof(Diretor), "Diretor")]
+[JsonDerivedType(typeof(Coordenador), "Coordenador")]
+[JsonDerivedType(typeof(Formador), "Formador")]
+[JsonDerivedType(typeof(Secretaria), "Secretaria")]
+
 namespace adosmelhoresproject.src.Models
+
 {
     public abstract class Funcionario
     {
