@@ -1,4 +1,5 @@
 ﻿using adosmelhoresproject.src.Models;
+
 namespace adosmelhoresproject.src.Interfaces
 {
     public interface IFuncionarioService
