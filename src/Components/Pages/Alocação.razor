@@ -1,0 +1,213 @@
+﻿@page "/alocacao"
+@inject NavigationManager Navigation
+
+<div class="container-fluid py-4">
+    <div class="row g-4">
+        @* COLUNA ESQUERDA: LISTA DE ALOCAÇÕES E ESTATÍSTICAS *@
+        <div class="col-lg-8">
+            <div class="custom-card p-4">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h5 class="fw-bold mb-0">Diretório de Alocações</h5>
+                    <div class="d-flex gap-2">
+                        <input type="text" class="form-control form-control-sm" placeholder="Pesquisar..." style="width: 200px;" @bind="termoPesquisa" @bind:event="oninput">
+                        <select class="form-select form-select-sm" style="width: 150px;" @bind="filtroRecurso">
+                            <option value="Todos">Todos os Recursos</option>
+                            <option value="Sala">Salas</option>
+                            <option value="Viatura">Viaturas</option>
+                            <option value="Equipamento">Equipamentos</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table align-middle">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>FUNCIONÁRIO</th>
+                                <th>RECURSO</th>
+                                <th>DATA/HORA</th>
+                                <th>ESTADO</th>
+                                <th class="text-end">AÇÕES</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (ListaAlocacoes == null || !ListaAlocacoes.Any())
+                            {
+                                <tr><td colspan="6" class="text-center text-muted py-4">Nenhuma alocação registada.</td></tr>
+                            }
+                            else
+                            {
+                                @foreach (var a in ListaAlocacoes)
+                                {
+                                    <tr>
+                                        <td class="text-muted small">@a.Id</td>
+                                        <td class="fw-bold">@a.FuncionarioNome</td>
+                                        <td>@a.RecursoNome</td>
+                                        <td class="small">@a.DataInicio.ToString("dd/MM/yyyy HH:mm") - @a.DataFim.ToString("HH:mm")</td>
+                                        <td>
+                                            <span class="status-badge @(a.Estado == "Ativo" ? "status-valid" : "bg-info-subtle text-info")">
+                                                @a.Estado
+                                            </span>
+                                        </td>
+                                        <td class="text-end">
+                                            <button class="btn btn-sm btn-light border" @onclick="() => EditarAlocacao(a.Id)">Alterar</button>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            @* DASHBOARD INFERIOR DE RECURSOS *@
+            <div class="row g-4 mt-1">
+                <div class="col-md-6">
+                    <div class="custom-card p-3">
+                        <h6 class="fw-bold mb-3 small text-uppercase text-muted">Utilização de Salas (Próx. 7 Dias)</h6>
+                        <div class="progress mb-2" style="height: 10px;">
+                            <div class="progress-bar bg-success" role="progressbar" style="width: @(PercentagemLivre)%"></div>
+                        </div>
+                        <div class="d-flex justify-content-between small text-muted">
+                            <span>Salas Livres: @(PercentagemLivre)%</span>
+                            <span>Ocupadas: @(100 - PercentagemLivre)%</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="custom-card p-3">
+                        <h6 class="fw-bold mb-3 small text-uppercase text-muted">Atividades Recentes</h6>
+                        <div class="small" style="max-height: 60px; overflow-y: auto;">
+                            @foreach (var log in LogsAtividade)
+                            {
+                                <div class="d-flex align-items-center mb-2">
+                                    <i class="bi bi-clock-history me-2 text-primary"></i>
+                                    <span>@log</span>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @* COLUNA DIREITA: FORMULÁRIO DE CRIAÇÃO *@
+        <div class="col-lg-4">
+            <div class="custom-card p-4">
+                <h5 class="fw-bold mb-4">Criar Nova Alocação</h5>
+                
+                <form>
+                    <div class="mb-3">
+                        <label class="form-label text-muted small fw-bold">Funcionário</label>
+                        <select class="form-select" @bind="alocacaoFuncionarioId">
+                            <option value="">Selecionar funcionário...</option>
+                            @foreach (var f in ListaFuncionariosDisponiveis)
+                            {
+                                <option value="@f.Id">@f.Nome (@f.Tipo)</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label text-muted small fw-bold">Tipo de Recurso</label>
+                        <select class="form-select" @bind="tipoRecursoSelecionado">
+                            <option value="Sala">Sala de Formação</option>
+                            <option value="Equipamento">Equipamento Portátil</option>
+                            <option value="Viatura">Viatura</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label text-muted small fw-bold">Recurso Disponível</label>
+                        <select class="form-select" @bind="recursoSelecionadoId">
+                            <option value="">Selecione o recurso...</option>
+                            @* Aqui o back-end filtraria os recursos pelo tipo selecionado acima *@
+                            <option value="R1">Sala 1 (Piso 0)</option>
+                            <option value="R2">Sala 2 (Piso 1)</option>
+                        </select>
+                    </div>
+
+                    <div class="row g-2 mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold">Início</label>
+                            <input type="datetime-local" class="form-control" @bind="dataInicio">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold">Fim</label>
+                            <input type="datetime-local" class="form-control" @bind="dataFim">
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label text-muted small fw-bold">Notas de Reserva</label>
+                        <textarea class="form-control" rows="3" @bind="notasAlocacao" placeholder="Ex: Necessário projetor e 10 cadeiras..."></textarea>
+                    </div>
+
+                    <button type="button" @onclick="CriarAlocacao" class="btn btn-primary w-100 py-2 fw-bold shadow-sm">
+                        Confirmar Alocação
+                    </button>
+                    <button type="button" @onclick="LimparFormulario" class="btn btn-link w-100 text-secondary mt-2 small text-decoration-none">
+                        Cancelar
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    // Variáveis de Filtro
+    private string termoPesquisa = "";
+    private string filtroRecurso = "Todos";
+
+    // Variáveis do Formulário
+    private string alocacaoFuncionarioId = "";
+    private string tipoRecursoSelecionado = "Sala";
+    private string recursoSelecionadoId = "";
+    private DateTime dataInicio = DateTime.Now;
+    private DateTime dataFim = DateTime.Now.AddHours(4);
+    private string notasAlocacao = "";
+
+    // Dados de Estatística
+    [Parameter] public int PercentagemLivre { get; set; } = 75;
+    [Parameter] public List<string> LogsAtividade { get; set; } = new() { "Sala 1 reservada por John Doe há 2h" };
+
+    // Simulação de Dados para Integração
+    [Parameter]
+    public List<AlocacaoDTO> ListaAlocacoes { get; set; } = new()
+    {
+        new AlocacaoDTO { Id = "A001", FuncionarioNome = "John Doe", RecursoNome = "Sala de Formação 1", DataInicio = DateTime.Now.AddDays(1), DataFim = DateTime.Now.AddDays(1).AddHours(4), Estado = "Agendado" },
+        new AlocacaoDTO { Id = "A002", FuncionarioNome = "Bob Marley", RecursoNome = "Sala de Formação 2", DataInicio = DateTime.Now, DataFim = DateTime.Now.AddHours(3), Estado = "Ativo" }
+    };
+
+    [Parameter]
+    public List<FuncionarioSimples> ListaFuncionariosDisponiveis { get; set; } = new()
+    {
+        new FuncionarioSimples { Id = "1", Nome = "John Doe", Tipo = "Diretor" },
+        new FuncionarioSimples { Id = "3", Nome = "Bob Marley", Tipo = "Formador" }
+    };
+
+    // Funções de Ação
+    private void CriarAlocacao() { /* Lógica de Back-end aqui */ }
+    private void LimparFormulario() { /* Limpar campos */ }
+    private void EditarAlocacao(string id) { /* Lógica para editar */ }
+
+    // DTOs Temporários para o Front-end
+    public class AlocacaoDTO
+    {
+        public string Id { get; set; }
+        public string FuncionarioNome { get; set; }
+        public string RecursoNome { get; set; }
+        public DateTime DataInicio { get; set; }
+        public DateTime DataFim { get; set; }
+        public string Estado { get; set; }
+    }
+
+    public class FuncionarioSimples
+    {
+        public string Id { get; set; }
+        public string Nome { get; set; }
+        public string Tipo { get; set; }
+    }
+}

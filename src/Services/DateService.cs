@@ -14,7 +14,7 @@ public class DateService
     public event Action? OnDateChanged;
     public DateService(IWebHostEnvironment env)
     {
-        _filePath = Path.Combine(env.ContentRootPath, "Data", "AppState.json");
+        _filePath = Path.Combine(env.ContentRootPath, "src", "Data", "appstate.json");
 
         LoadDate();
     }
