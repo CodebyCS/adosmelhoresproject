@@ -1,4 +1,5 @@
-﻿namespace adosmelhoresproject.src.Interfaces
+﻿using adosmelhoresproject.src.Models;
+namespace adosmelhoresproject.src.Interfaces
 {
     public interface IFuncionarioService
     {
@@ -8,9 +9,9 @@
 
         void AlterarRegistoCriminal(int id, bool atualizado);
 
-        List<Funcionarios> GetContratosValidos(DateTime dataAtual);
+        List<Funcionario> GetContratosValidos(DateTime dataAtual);
 
-        List<Funcionarios> GetRegistoCriminalExpirado(DateTime dataAtual);
+        List<Funcionario> GetRegistoCriminalExpirado(DateTime dataAtual);
 
         decimal CalcularPagamentoFormador(int id, DateTime inicio, DateTime fim);
     }
