@@ -2,7 +2,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using adosmelhores.src.Models;
 using adosmelhores.src.Interfaces;
-using Microsoft.AspNetCore.Hosting; // Necessário para o IWebHostEnvironment
+using Microsoft.AspNetCore.Hosting; 
 
 namespace adosmelhores.src.Services;
 
@@ -12,10 +12,8 @@ public class FuncionarioService : IFuncionarioService
 
     public FuncionarioService(IWebHostEnvironment env)
     {
-        // CORREÇÃO: Path.Combine é estático
         _filePath = Path.Combine(env.ContentRootPath, "Data", "funcionarios.json");
 
-        // Garante que a pasta Data existe
         var directory = Path.GetDirectoryName(_filePath);
         if (!Directory.Exists(directory)) Directory.CreateDirectory(directory!);
     }
@@ -37,7 +35,6 @@ public class FuncionarioService : IFuncionarioService
         }
     }
 
-    // MÉTODO QUE FALTA: Responsável por escrever no arquivo
     private void Salvar(List<Funcionario> lista)
     {
         var options = new JsonSerializerOptions { WriteIndented = true };
@@ -59,6 +56,17 @@ public class FuncionarioService : IFuncionarioService
         if (funcionario != null)
         {
             funcionario.DataRegistroCriminal = novaData;
+            Salvar(funcionarios);
+        }
+    }
+
+    public void AlterarContrato(int id, DateTime novaData)
+    {
+        var funcionarios = GetAll();
+        var funcionario = funcionarios.FirstOrDefault(f => f.Id == id);
+        if (funcionario != null)
+        {
+            funcionario.DataFimContrato = novaData;
             Salvar(funcionarios);
         }
     }

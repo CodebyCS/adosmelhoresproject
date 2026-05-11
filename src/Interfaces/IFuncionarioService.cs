@@ -8,6 +8,8 @@
 
         void AlterarRegistoCriminal(int id, DateTime novaData);
 
+        void AlterarContrato(int id, DateTime novaData);
+
         List<Funcionarios> GetContratosValidos(DateTime dataAtual);
 
         List<Funcionarios> GetRegistoCriminalExpirado(DateTime dataAtual);
