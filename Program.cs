@@ -12,6 +12,7 @@ namespace adosmelhoresproject
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            builder.Services.AddScoped<JsonService>();
             // Add services to the container.
             builder.Services.AddRazorComponents()
                 .AddInteractiveServerComponents();
