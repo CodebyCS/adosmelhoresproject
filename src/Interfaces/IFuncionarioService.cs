@@ -1,10 +1,10 @@
 ﻿namespace adosmelhoresproject.src.Interfaces
 {
-    public interface IFuncionario
+    public interface IFuncionarioService
     {
         List<Funcionario> GetAll();
 
-        void Adicionar(IFuncionario f);
+        void Adicionar(Funcionario f);
 
         void AlterarRegistoCriminal(int id, bool atualizado);
 
