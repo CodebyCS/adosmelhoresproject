@@ -6,7 +6,7 @@
 
         void Adicionar(Funcionario f);
 
-        void AlterarRegistoCriminal(int id, bool atualizado);
+        void AlterarRegistoCriminal(int id, DateTime novaData);
 
         List<Funcionarios> GetContratosValidos(DateTime dataAtual);
 
