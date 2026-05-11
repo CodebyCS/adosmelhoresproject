@@ -1,0 +1,76 @@
+@using Adosmelhores.Services
+@using Adosmelhores.Models
+@inject DateService DateService
+@inject JsonService JsonService
+@inject IFuncionarioService FuncionarioService
+@implements IDisposable
+
+@if (_mensagensAlarme.Any())
+{
+    <div class="alert alert-danger">
+        <h4>🚨 Alarmes do Sistema (@DateService.GetCurrentDate().ToString("dd/MM/yyyy"))</h4>
+        <ul>
+            @foreach (var msg in _mensagensAlarme)
+            {
+                <li>@msg</li>
+            }
+        </ul>
+    </div>
+}
+
+@code {
+    private List<string> _mensagensAlarme = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        DateService.OnDateChanged += AtualizarAlarmes;
+        VerficiarRegras();
+    }
+
+    private void AtualizarAlarmes()
+    {
+        VerficiarRegras();
+        //blazor redesenha o pedaco da tela que tem o componente
+        InvokeAsync(StateHasChanged);
+    }
+
+    private void VerficiarRegras()
+    {
+        _mensagensAlarme.Clear();
+        var dataAtual = DateService.GetCurrentDate();
+
+        var funcionarios = FuncionarioService.GetAll();
+
+        //Logica de alarme
+
+        foreach (var funcionario in funcionarios)
+        {
+            if(funcionario.DataFimContrato <= dataAtual)
+            {
+                _mensagensAlarme.Add($"Contrato do funcionário {funcionario.Nome} expirou!");
+            }
+            else if(funcionario.DataFimContrato <= dataAtual.AddDays(30))
+            {
+                _mensagensAlarme.Add($"Contrato do funcionário {funcionario.Nome} expira em breve ({funcionario.DataFimContrato:dd/MM/yyyy})");
+            }
+            if(funcionario.DataRegistoCriminal <= dataAtual)
+            {
+                _mensagensAlarme.Add($"Registo criminal do funcionário {funcionario.Nome} expirou!");
+            }
+            else if(funcionario.DataRegistoCriminal <= dataAtual.AddDays(30))
+            {
+                _mensagensAlarme.Add($"Registo criminal do funcionário {funcionario.Nome} expira em breve ({funcionario.DataRegistoCriminal:dd/MM/yyyy})");
+            }
+        }
+
+        //Provisio para teste do botao avancar
+        _mensagensAlarme.Add($"Teste de alarme - data atual: {dataAtual:dd/MM/yyyy}");
+    }
+
+    public void Dispose()
+    {
+        // Sempre que o componente for destruído, cancele a assinatura do evento
+        DateService.OnDateChanged -= AtualizarAlarmes;
+    }
+        
+}
