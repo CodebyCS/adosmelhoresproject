@@ -39,6 +39,23 @@ namespace adosmelhoresproject.src.Services
                 Console.WriteLine($"Erro ao Guardar JSON: {ex.Message}");
             }
         }
-        //Teste git
+
+        public async Task<List<T>> Carregar<T>()
+        {
+            try
+            {
+                if (!File.Exists(_filePath))
+                {
+                    return new List<T>();
+                }
+                string jsonString = await File.ReadAllTextAsync(_filePath);
+                return JsonSerializer.Deserialize<List<T>>(jsonString, _options) ?? new List<T>();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Erro ao Carregar JSON: {ex.Message}");
+                return new List<T>();
+            }
+        }
     }
 }
