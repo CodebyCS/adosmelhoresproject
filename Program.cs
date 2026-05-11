@@ -1,4 +1,5 @@
-using adosmelhoresproject.Components;
+﻿using adosmelhoresproject.src.Components;
+using adosmelhoresproject.src.Services;
 
 namespace adosmelhoresproject
 {
@@ -8,6 +9,7 @@ namespace adosmelhoresproject
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            builder.Services.AddScoped<JsonService>();
             // Add services to the container.
             builder.Services.AddRazorComponents()
                 .AddInteractiveServerComponents();
