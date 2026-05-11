@@ -11,7 +11,7 @@ namespace adosmelhoresproject.src.Services
         public JsonService(IWebHostEnvironment webHostEnvironment)
         {
             string dataFolder = Path.Combine(webHostEnvironment.WebRootPath, "Data");
-            if (!Directory.Exists(dataFolder)) 
+            if (!Directory.Exists(dataFolder))
             {
                 Directory.CreateDirectory(dataFolder);
             }
@@ -20,12 +20,25 @@ namespace adosmelhoresproject.src.Services
 
             _options = new JsonSerializerOptions
             {
-                WriteIndented = true;
-                PropertyNameCaseInsensitive = true;
-                ReferenceHandler = ReferenceHandler.IgnoreCycles;
-            }
+                WriteIndented = true,
+                PropertyNameCaseInsensitive = true,
+                ReferenceHandler = ReferenceHandler.IgnoreCycles
+            };
         }
 
+        public async Task Guardar<T>(List<T> lista)
+        {
+            try
+            {
+                string jsonString = JsonSerializer.Serialize(lista, _options);
+                await File.WriteAllTextAsync(_filePath, jsonString);
 
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Erro ao Guardar JSON: {ex.Message}");
+            }
+        }
+        //Teste git
     }
 }
