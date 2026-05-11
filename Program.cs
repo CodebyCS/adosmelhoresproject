@@ -1,4 +1,8 @@
-using adosmelhoresproject.Components;
+using adosmelhoresproject.src.Components;
+using adosmelhoresproject.src.Models;
+using adosmelhoresproject.src.Components;
+using adosmelhoresproject.src.Interfaces;
+using adosmelhoresproject.src.Services;
 
 namespace adosmelhoresproject
 {
@@ -11,6 +15,9 @@ namespace adosmelhoresproject
             // Add services to the container.
             builder.Services.AddRazorComponents()
                 .AddInteractiveServerComponents();
+
+            builder.Services.AddSingleton<DateService>();
+            builder.Services.AddScoped<IFuncionarioService, FuncionarioService>();
 
             var app = builder.Build();
 
