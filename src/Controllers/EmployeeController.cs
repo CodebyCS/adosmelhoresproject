@@ -6,13 +6,13 @@ using adosmelhoresproject.src.Services;
 
 namespace adosmelhoresproject.src.Controllers
 {
-    public class FuncionarioController : Controller
+    public class EmployeeController : Controller
     {
-        private readonly IFuncionarioService _service;
+        private readonly IEmployeeService _service;
         private readonly DateService _dateService;
 
         // Injeta o service via construtor — não usa dados fake
-        public FuncionarioController(IFuncionarioService service, DateService dateService)
+        public EmployeeController(IEmployeeService service, DateService dateService)
         {
             _service = service;
             _dateService = dateService;
@@ -36,7 +36,7 @@ namespace adosmelhoresproject.src.Controllers
         // POST: /Funcionario/Criar
         // Recebe os dados do formulário e guarda
         [HttpPost]
-        public IActionResult Criar(Funcionario funcionario)
+        public IActionResult Criar(Employee funcionario)
         {
             if (ModelState.IsValid)
             {

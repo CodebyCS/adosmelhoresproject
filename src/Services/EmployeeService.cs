@@ -5,11 +5,11 @@ using adosmelhoresproject.src.Interfaces;
 using Microsoft.AspNetCore.Hosting; 
 
 namespace adosmelhoresproject.src.Services;
-public class FuncionarioService : IFuncionarioService
+public class EmployeeService : IEmployeeService
 {
     private readonly string _filePath;
 
-    public FuncionarioService(IWebHostEnvironment env)
+    public EmployeeService(IWebHostEnvironment env)
     {
         _filePath = Path.Combine(env.ContentRootPath, "Data", "funcionarios.json");
 
@@ -17,31 +17,31 @@ public class FuncionarioService : IFuncionarioService
         if (!Directory.Exists(directory)) Directory.CreateDirectory(directory!);
     }
 
-    public List<Funcionario> GetAll()
+    public List<Employee> GetAll()
     {
-        if (!File.Exists(_filePath)) return new List<Funcionario>();
+        if (!File.Exists(_filePath)) return new List<Employee>();
 
         try
         {
             string jsonString = File.ReadAllText(_filePath);
             var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
-            return JsonSerializer.Deserialize<List<Funcionario>>(jsonString, options) ?? new List<Funcionario>();
+            return JsonSerializer.Deserialize<List<Employee>>(jsonString, options) ?? new List<Employee>();
         }
         catch (Exception ex)
         {
             Console.WriteLine($"Erro ao ler funcionários: {ex.Message}");
-            return new List<Funcionario>();
+            return new List<Employee>();
         }
     }
 
-    private void Salvar(List<Funcionario> lista)
+    private void Salvar(List<Employee> lista)
     {
         var options = new JsonSerializerOptions { WriteIndented = true };
         string jsonString = JsonSerializer.Serialize(lista, options);
         File.WriteAllText(_filePath, jsonString);
     }
 
-    public void Adicionar(Funcionario f)
+    public void Adicionar(Employee f)
     {
         var funcionarios = GetAll();
         funcionarios.Add(f);
@@ -70,12 +70,12 @@ public class FuncionarioService : IFuncionarioService
         }
     }
 
-    public List<Funcionario> GetContratosValidos(DateTime dataAtual)
+    public List<Employee> GetContratosValidos(DateTime dataAtual)
     {
         return GetAll().Where(f => f.DataFimContrato >= dataAtual).ToList();
     }
 
-    public List<Funcionario> GetRegistoCriminalExpirado(DateTime dataAtual)
+    public List<Employee> GetRegistoCriminalExpirado(DateTime dataAtual)
     {
         return GetAll().Where(f => f.DataRegistoCriminal < dataAtual).ToList();
     }
