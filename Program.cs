@@ -18,7 +18,7 @@ namespace adosmelhoresproject
                 .AddInteractiveServerComponents();
 
             builder.Services.AddSingleton<DateService>();
-            builder.Services.AddScoped<IFuncionarioService, FuncionarioService>();
+            builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 
             var app = builder.Build();
 

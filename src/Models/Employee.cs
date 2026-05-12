@@ -7,7 +7,7 @@ namespace adosmelhoresproject.src.Models
     [JsonDerivedType(typeof(Coordenador), "Coordenador")]
     [JsonDerivedType(typeof(Formador), "Formador")]
     [JsonDerivedType(typeof(Secretaria), "Secretaria")]
-    public abstract class Funcionario
+    public abstract class Employee
     {
         public int Id { get; set; }
         public string Nome { get; set; }

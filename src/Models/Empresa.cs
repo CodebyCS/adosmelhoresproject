@@ -2,7 +2,7 @@ using adosmelhoresproject.src.Models;
 
 public class Empresa
 {
-    public List<Funcionario> Funcionarios { get; set; }= new List<Funcionario>();
+    public List<Employee> Funcionarios { get; set; }= new List<Employee>();
 
     public decimal CalcularDespesaMensal()
     {

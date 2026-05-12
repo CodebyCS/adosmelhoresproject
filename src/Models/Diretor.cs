@@ -1,6 +1,6 @@
 namespace adosmelhoresproject.src.Models
 {
-    public class Diretor : Funcionario
+    public class Diretor : Employee
     {
         public bool IsencaoHorario { get; set; }
         public int BonusMensal { get; set; }

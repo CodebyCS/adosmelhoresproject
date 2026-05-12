@@ -4,12 +4,12 @@ using adosmelhoresproject.src.Services;
 
 namespace adosmelhoresproject.src.Controllers
 {
-    public class SimuladorController : Controller
+    public class SimulatorController : Controller
     {
         private readonly DateService _dateService;
-        private readonly IFuncionarioService _service;
+        private readonly IEmployeeService _service;
 
-        public SimuladorController(DateService dateService, IFuncionarioService service)
+        public SimulatorController(DateService dateService, IEmployeeService service)
         {
             _dateService = dateService;
             _service = service;

@@ -2,19 +2,19 @@
 
 namespace adosmelhoresproject.src.Interfaces
 {
-    public interface IFuncionarioService
+    public interface IEmployeeService
     {
-        List<Funcionario> GetAll();
+        List<Employee> GetAll();
 
-        void Adicionar(Funcionario f);
+        void Adicionar(Employee f);
 
         void AlterarRegistoCriminal(int id, DateTime novaData);
 
         void AlterarContrato(int id, DateTime novaData);
 
-        List<Funcionario> GetContratosValidos(DateTime dataAtual);
+        List<Employee> GetContratosValidos(DateTime dataAtual);
 
-        List<Funcionario> GetRegistoCriminalExpirado(DateTime dataAtual);
+        List<Employee> GetRegistoCriminalExpirado(DateTime dataAtual);
 
         decimal CalcularPagamentoFormador(int id, DateTime inicio, DateTime fim);
     }
