@@ -118,9 +118,9 @@ namespace adosmelhoresproject.src.Controllers
             // Uma linha por funcionário
             foreach (var f in funcionarios)
             {
-                csv.AppendLine($"{f.Id},{f.Nome},{f.Morada},{f.Contacto}," +
-                               $"{f.DataFimContrato:yyyy-MM-dd},{f.DataRegistoCriminal:yyyy-MM-dd}," +
-                               $"{f.GetType().Name},{f.Salario},{f.Ativo}");
+                csv.AppendLine($"{f.Id},{f.Name},{f.Adress},{f.Contact}," +
+                               $"{f.ContractEndDate:yyyy-MM-dd},{f.CriminalRecordDate:yyyy-MM-dd}," +
+                               $"{f.GetType().Name},{f.Salary},{f.Active}");
             }
 
             // Devolve o ficheiro para download

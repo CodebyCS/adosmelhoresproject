@@ -9,7 +9,7 @@ public class Empresa
         decimal despesaTotal = 0;
         foreach (var funcionario in Funcionarios)
         {
-            despesaTotal += funcionario.Salario;
+            despesaTotal += funcionario.Salary;
         }
 
         return despesaTotal;

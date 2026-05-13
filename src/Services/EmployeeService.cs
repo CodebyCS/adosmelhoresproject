@@ -54,7 +54,7 @@ public class EmployeeService : IEmployeeService
         var funcionario = funcionarios.FirstOrDefault(f => f.Id == id);
         if (funcionario != null)
         {
-            funcionario.DataRegistoCriminal = novaData;
+            funcionario.CriminalRecordDate = novaData;
             Salvar(funcionarios);
         }
     }
@@ -65,19 +65,19 @@ public class EmployeeService : IEmployeeService
         var funcionario = funcionarios.FirstOrDefault(f => f.Id == id);
         if (funcionario != null)
         {
-            funcionario.DataFimContrato = novaData;
+            funcionario.ContractEndDate = novaData;
             Salvar(funcionarios);
         }
     }
 
     public List<Employee> GetContratosValidos(DateTime dataAtual)
     {
-        return GetAll().Where(f => f.DataFimContrato >= dataAtual).ToList();
+        return GetAll().Where(f => f.ContractEndDate >= dataAtual).ToList();
     }
 
     public List<Employee> GetRegistoCriminalExpirado(DateTime dataAtual)
     {
-        return GetAll().Where(f => f.DataRegistoCriminal < dataAtual).ToList();
+        return GetAll().Where(f => f.CriminalRecordDate < dataAtual).ToList();
     }
 
     public decimal CalcularPagamentoFormador(int id, DateTime inicio, DateTime fim)
