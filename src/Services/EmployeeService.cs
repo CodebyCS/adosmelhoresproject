@@ -48,50 +48,50 @@ public class EmployeeService : IEmployeeService
         Salvar(funcionarios);
     }
 
-    public void AlterarRegistoCriminal(int id, DateTime novaData)
+    public void ChangeCriminalRecord(int id, DateTime newDate)
     {
-        var funcionarios = GetAll();
-        var funcionario = funcionarios.FirstOrDefault(f => f.Id == id);
-        if (funcionario != null)
+        var employees = GetAll();
+        var employee = employees.FirstOrDefault(f => f.Id == id);
+        if (employee != null)
         {
-            funcionario.CriminalRecordDate = novaData;
-            Salvar(funcionarios);
+            employee.CriminalRecordDate = newDate;
+            Salvar(employees);
         }
     }
 
-    public void AlterarContrato(int id, DateTime novaData)
+    public void AlterarContrato(int id, DateTime newDate)
     {
-        var funcionarios = GetAll();
-        var funcionario = funcionarios.FirstOrDefault(f => f.Id == id);
-        if (funcionario != null)
+        var employees = GetAll();
+        var employee = employees.FirstOrDefault(f => f.Id == id);
+        if (employee != null)
         {
-            funcionario.ContractEndDate = novaData;
-            Salvar(funcionarios);
+            employee.ContractEndDate = newDate;
+            Salvar(employees);
         }
     }
 
-    public List<Employee> GetContratosValidos(DateTime dataAtual)
+    public List<Employee> GetValidContracts(DateTime currentDate)
     {
-        return GetAll().Where(f => f.ContractEndDate >= dataAtual).ToList();
+        return GetAll().Where(f => f.ContractEndDate >= currentDate).ToList();
     }
 
-    public List<Employee> GetRegistoCriminalExpirado(DateTime dataAtual)
+    public List<Employee> GetCriminalRecordExpired(DateTime currentDate)
     {
-        return GetAll().Where(f => f.CriminalRecordDate < dataAtual).ToList();
+        return GetAll().Where(f => f.CriminalRecordDate < currentDate).ToList();
     }
 
-    public decimal CalcularPagamentoFormador(int id, DateTime inicio, DateTime fim)
+    public decimal CalculateTrainerPayment(int id, DateTime inicio, DateTime fim)
     {
-        var funcionario = GetAll().FirstOrDefault(f => f.Id == id);
+        var employee = GetAll().FirstOrDefault(f => f.Id == id);
 
-        if (funcionario is Trainer formador)
+        if (employee is Trainer trainer)
         {
             // 6 horas por dia * valor hora
-            int diasTrabalhados = (fim.Date - inicio.Date).Days + 1; // +1 para incluir o dia inicial
-            if (diasTrabalhados < 0) return 0;
+            int daysWorked = (fim.Date - inicio.Date).Days + 1; // +1 para incluir o dia inicial
+            if (daysWorked < 0) return 0;
 
-            const int horasPorDia = 6;
-            return (decimal)(diasTrabalhados * horasPorDia * formador.HourlyRate);
+            const int hoursPerDay = 6;
+            return (decimal)(daysWorked * hoursPerDay * trainer.HourlyRate);
         }
         return 0;
     }
