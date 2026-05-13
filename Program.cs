@@ -3,8 +3,10 @@ using adosmelhoresproject.src.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// MVC
 builder.Services.AddControllersWithViews();
 
+// Project Services
 builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 builder.Services.AddScoped<ITransacaoService, TransacaoService>();
 
@@ -26,6 +28,7 @@ app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthorization();
 
+//Rota padrão MVC
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
