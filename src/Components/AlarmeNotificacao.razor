@@ -45,21 +45,21 @@
 
         foreach (var funcionario in funcionarios)
         {
-            if(funcionario.DataFimContrato <= dataAtual)
+            if(funcionario.ContractEndDate <= dataAtual)
             {
-                _mensagensAlarme.Add($"Contrato do funcionário {funcionario.Nome} expirou!");
+                _mensagensAlarme.Add($"Contrato do funcionário {funcionario.Name} expirou!");
             }
-            else if(funcionario.DataFimContrato <= dataAtual.AddDays(30))
+            else if(funcionario.ContractEndDate <= dataAtual.AddDays(30))
             {
-                _mensagensAlarme.Add($"Contrato do funcionário {funcionario.Nome} expira em breve ({funcionario.DataFimContrato:dd/MM/yyyy})");
+                _mensagensAlarme.Add($"Contrato do funcionário {funcionario.Name} expira em breve ({funcionario.ContractEndDate:dd/MM/yyyy})");
             }
-            if(funcionario.DataRegistoCriminal <= dataAtual)
+            if(funcionario.CriminalRecordDate <= dataAtual)
             {
-                _mensagensAlarme.Add($"Registo criminal do funcionário {funcionario.Nome} expirou!");
+                _mensagensAlarme.Add($"Registo criminal do funcionário {funcionario.Name} expirou!");
             }
-            else if(funcionario.DataRegistoCriminal <= dataAtual.AddDays(30))
+            else if(funcionario.CriminalRecordDate <= dataAtual.AddDays(30))
             {
-                _mensagensAlarme.Add($"Registo criminal do funcionário {funcionario.Nome} expira em breve ({funcionario.DataRegistoCriminal:dd/MM/yyyy})");
+                _mensagensAlarme.Add($"Registo criminal do funcionário {funcionario.Name} expira em breve ({funcionario.CriminalRecordDate:dd/MM/yyyy})");
             }
         }
 
