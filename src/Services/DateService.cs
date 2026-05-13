@@ -84,7 +84,7 @@ public class DateService
         foreach (var func in employees) 
         {
             
-            decimal valorAPagar = func.CalcularSalario(primeiroDiaMesAnterior, ultimoDiaMesAnterior);
+            decimal valorAPagar = func.CalculatePayment(ultimoDiaMesAnterior.Date, dataReferencia);
 
             if (valorAPagar > 0)
             {
