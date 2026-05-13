@@ -1,0 +1,48 @@
+﻿@model adosmelhoresproject.src.Models.Employee
+
+<div class="container mt-4">
+    <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">Cadastrar Novo Funcionário</h4>
+        </div>
+        <div class="card-body">
+            <form asp-action="Criar" method="post">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Name" class="form-label">Nome Completo</label>
+                        <input asp-for="Name" class="form-control" required />
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Contact" class="form-label">Contacto</label>
+                        <input asp-for="Contact" class="form-control" />
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Adress" class="form-label">Morada</label>
+                    <input asp-for="Adress" class="form-control" />
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label asp-for="ContractEndDate" class="form-label">Fim do Contrato</label>
+                        <input asp-for="ContractEndDate" type="date" class="form-control" />
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label asp-for="CriminalRecordDate" class="form-label">Validade Registo Criminal</label>
+                        <input asp-for="CriminalRecordDate" type="date" class="form-control" />
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label asp-for="Salary" class="form-label">Salário Base</label>
+                        <input asp-for="Salary" type="number" step="0.01" class="form-control" />
+                    </div>
+                </div>
+
+                <div class="mt-4 d-flex justify-content-between">
+                    <a asp-action="Index" class="btn btn-outline-secondary">Voltar</a>
+                    <button type="submit" class="btn btn-success px-5">Guardar Funcionário</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

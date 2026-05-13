@@ -11,30 +11,25 @@ namespace adosmelhoresproject.src.Controllers
         private readonly IEmployeeService _service;
         private readonly DateService _dateService;
 
-        // Injeta o service via construtor — não usa dados fake
         public EmployeeController(IEmployeeService service, DateService dateService)
         {
             _service = service;
             _dateService = dateService;
         }
 
-        // GET: /Funcionario
-        // Lista todos os funcionários
+        // GET: /Employee
         public IActionResult Index()
         {
             var funcionarios = _service.GetAll();
-            return View(funcionarios);
+            return View(funcionarios); // Procura por Index.cshtml
         }
 
-        // GET: /Funcionario/Criar
-        // Mostra o formulário para inserir novo funcionário
+        // GET: /Employee/Criar
         public IActionResult Criar()
         {
-            return View();
+            return View("Create"); // Mapeia para Create.cshtml
         }
 
-        // POST: /Funcionario/Criar
-        // Recebe os dados do formulário e guarda
         [HttpPost]
         public IActionResult Criar(Employee funcionario)
         {
@@ -43,38 +38,37 @@ namespace adosmelhoresproject.src.Controllers
                 _service.Adicionar(funcionario);
                 return RedirectToAction("Index");
             }
-            return View(funcionario);
+            return View("Create", funcionario);
         }
 
-        // GET: /Funcionario/ContratosValidos
-        // Mostra funcionários com contrato válido para a data simulada atual
+        // GET: /Employee/ContratosValidos
         public IActionResult ContratosValidos()
         {
             var dataAtual = _dateService.GetCurrentDate();
             var funcionarios = _service.GetValidContracts(dataAtual);
-            return View(funcionarios);
+            // Sugestão: Criar ficheiro ValidContracts.cshtml
+            return View("ValidContracts", funcionarios);
         }
 
-        // GET: /Funcionario/RegistoCriminalExpirado
-        // Mostra funcionários com registo criminal expirado
+        // GET: /Employee/RegistoCriminalExpirado
         public IActionResult RegistoCriminalExpirado()
         {
             var dataAtual = _dateService.GetCurrentDate();
             var funcionarios = _service.GetCriminalRecordExpired(dataAtual);
-            return View(funcionarios);
+            // Sugestão: Criar ficheiro ExpiredCriminalRecord.cshtml
+            return View("ExpiredCriminalRecord", funcionarios);
         }
 
-        // GET: /Funcionario/AlterarRegistoCriminal/5
-        // Mostra formulário para alterar registo criminal
+        // GET: /Employee/AlterarRegistoCriminal/{id}
         public IActionResult AlterarRegistoCriminal(int id)
         {
             var funcionario = _service.GetAll().FirstOrDefault(f => f.Id == id);
             if (funcionario == null) return NotFound();
-            return View(funcionario);
+
+            // Mapeia para ChangeCriminalRegister.cshtml
+            return View("ChangeCriminalRegister", funcionario);
         }
 
-        // POST: /Funcionario/AlterarRegistoCriminal/5
-        // Guarda a nova data do registo criminal
         [HttpPost]
         public IActionResult AlterarRegistoCriminal(int id, DateTime novaData)
         {
@@ -82,40 +76,40 @@ namespace adosmelhoresproject.src.Controllers
             return RedirectToAction("Index");
         }
 
-        // GET: /Funcionario/CalcularPagamento/5
-        // Mostra formulário para calcular pagamento de um formador
+        // GET: /Employee/CalcularPagamento/{id}
         public IActionResult CalcularPagamento(int id)
         {
             var funcionario = _service.GetAll().FirstOrDefault(f => f.Id == id);
+
+            // Verificação de segurança para garantir que é um Formador (Trainer)
             if (funcionario == null || funcionario is not Trainer)
-                return BadRequest("Funcionário não encontrado ou não é Formador.");
-            return View(funcionario);
+                return BadRequest("Funcionário não encontrado ou não é um Formador.");
+
+            // Mapeia para CalculatePayment.cshtml
+            return View("CalculatePayment", funcionario);
         }
 
-        // POST: /Funcionario/CalcularPagamento/5
-        // Calcula o valor a pagar ao formador com base nas datas
         [HttpPost]
         public IActionResult CalcularPagamento(int id, DateTime inicio, DateTime fim)
         {
             var total = _service.CalculateTrainerPayment(id, inicio, fim);
+
             ViewBag.Total = total;
             ViewBag.Inicio = inicio;
             ViewBag.Fim = fim;
+
             var funcionario = _service.GetAll().FirstOrDefault(f => f.Id == id);
-            return View(funcionario);
+            return View("CalculatePayment", funcionario);
         }
 
-        // GET: /Funcionario/ExportarCSV
-        // Exporta todos os funcionários para um ficheiro CSV
+        // GET: /Employee/ExportarCSV
         public IActionResult ExportarCSV()
         {
             var funcionarios = _service.GetAll();
             var csv = new StringBuilder();
 
-            // Cabeçalho do CSV
             csv.AppendLine("ID,Nome,Morada,Contacto,DataFimContrato,DataRegistoCriminal,Tipo,Salario,Ativo");
 
-            // Uma linha por funcionário
             foreach (var f in funcionarios)
             {
                 csv.AppendLine($"{f.Id},{f.Name},{f.Adress},{f.Contact}," +
@@ -123,7 +117,6 @@ namespace adosmelhoresproject.src.Controllers
                                $"{f.GetType().Name},{f.Salary},{f.Active}");
             }
 
-            // Devolve o ficheiro para download
             var bytes = Encoding.UTF8.GetBytes(csv.ToString());
             return File(bytes, "text/csv", "funcionarios.csv");
         }

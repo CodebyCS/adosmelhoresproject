@@ -1,0 +1,25 @@
+﻿@model adosmelhoresproject.src.Models.Employee
+
+<div class="container mt-4">
+    <div class="card border-warning" style="max-width: 500px; margin: auto;">
+        <div class="card-header bg-warning">
+            <h5 class="mb-0">Renovação de Registo Criminal</h5>
+        </div>
+        <div class="card-body">
+            <p>Funcionário: <strong>@Model.Name</strong></p>
+            <p>Data Atual: @Model.CriminalRecordDate.ToShortDateString()</p>
+
+            <form asp-action="AlterarRegistoCriminal" method="post">
+                <input type="hidden" name="id" value="@Model.Id" />
+                <div class="mb-3">
+                    <label class="form-label">Nova Data de Validade</label>
+                    <input type="date" name="novaData" class="form-control" required />
+                </div>
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-warning">Atualizar Registo</button>
+                    <a asp-action="Index" class="btn btn-light">Cancelar</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

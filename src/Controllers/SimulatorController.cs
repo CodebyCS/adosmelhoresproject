@@ -8,39 +8,35 @@ namespace adosmelhoresproject.src.Controllers
     {
         private readonly DateService _dateService;
         private readonly IEmployeeService _service;
+        private readonly ITransacaoService _transacaoService;
 
-        public SimulatorController(DateService dateService, IEmployeeService service)
+        public SimulatorController(DateService dateService, IEmployeeService service, ITransacaoService transacaoService)
         {
             _dateService = dateService;
             _service = service;
+            _transacaoService = transacaoService;
         }
 
-        // GET: /Simulador
-        // Mostra a data atual simulada
         public IActionResult Index()
         {
             ViewBag.DataAtual = _dateService.GetCurrentDate();
             return View();
         }
 
-        // POST: /Simulador/AvancarDia
-        // Avança um dia e verifica alertas de contratos/registos expirados
         [HttpPost]
         public IActionResult AvancarDia()
         {
-            _dateService.AvancarDia();
+            _dateService.AvancarDia(_service, _transacaoService);
 
             var dataAtual = _dateService.GetCurrentDate();
             var funcionarios = _service.GetAll();
 
-            // Verifica funcionários cujo contrato termina hoje
             var contratosExpirados = funcionarios
                 .Where(f => f.ContractEndDate.Date == dataAtual.Date)
                 .ToList();
 
-            // Verifica funcionários cujo registo criminal expira hoje
             var registosExpirados = funcionarios
-                .Where(f => f.CriminalRecordDate.Date == dataAtual.Date)
+                .Where(f => f.ContractEndDate.Date == dataAtual.Date)
                 .ToList();
 
             ViewBag.DataAtual = dataAtual;

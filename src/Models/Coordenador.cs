@@ -5,5 +5,7 @@ namespace adosmelhoresproject.src.Models
         public int FormadorId { get; set; }
 
         public List<Trainer> FormadoresAssociados { get; set; } = new List<Trainer>();
+
+        public override decimal CalculatePayment(DateTime startDate, DateTime endDate) { return 0; }
     }
 }

@@ -12,6 +12,9 @@ builder.Services.AddScoped<ITransacaoService, TransacaoService>();
 builder.Services.AddSingleton<DateService>();
 
 var app = builder.Build();
+app.UseStaticFiles();
+
+app.UseRouting();
 
 if (!app.Environment.IsDevelopment())
 {

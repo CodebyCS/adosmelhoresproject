@@ -4,7 +4,7 @@ public class Company
 {
     public List<Employee> Funcionarios { get; set; }= new List<Employee>();
 
-    public List<Transacao> Transacoes { get; set}
+    public List<Transacao> Transacoes { get; set; }
 
     public decimal CalcularDespesaMensal()
     {

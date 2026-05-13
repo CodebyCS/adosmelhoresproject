@@ -1,0 +1,41 @@
+﻿@model adosmelhoresproject.src.Models.Employee
+
+<div class="container mt-4">
+    <div class="card border-success shadow">
+        <div class="card-header bg-success text-white">
+            <h4 class="mb-0">Cálculo de Honorários - Formador</h4>
+        </div>
+        <div class="card-body">
+            <h5>Formador: <strong>@Model.Name</strong></h5>
+            <hr />
+
+            <form asp-action="CalcularPagamento" method="post" class="row g-3 align-items-end">
+                <input type="hidden" name="id" value="@Model.Id" />
+                <div class="col-md-4">
+                    <label class="form-label">Data Início</label>
+                    <input type="date" name="inicio" class="form-control" required />
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Data Fim</label>
+                    <input type="date" name="fim" class="form-control" required />
+                </div>
+                <div class="col-md-4">
+                    <button type="submit" class="btn btn-primary w-100">Calcular Total</button>
+                </div>
+            </form>
+
+            @if (ViewBag.Total != null)
+            {
+                <div class="alert alert-info mt-4">
+                    <h4 class="alert-heading">Resultado do Cálculo</h4>
+                    <p>Período: @ViewBag.Inicio.ToShortDateString() a @ViewBag.Fim.ToShortDateString()</p>
+                    <hr>
+                    <p class="mb-0 fs-3">Total a Pagar: <strong>@ViewBag.Total.ToString("C2")</strong></p>
+                </div>
+            }
+        </div>
+        <div class="card-footer">
+            <a asp-action="Index" class="btn btn-link text-decoration-none text-secondary">Voltar à lista</a>
+        </div>
+    </div>
+</div>
