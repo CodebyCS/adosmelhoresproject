@@ -6,7 +6,7 @@ namespace adosmelhoresproject.src.Models
         public int MonthlyBonus { get; set; }
         public bool CompanyCar { get; set; }
 
-        public override void CalculateTrainerPayment(DateTime startDate, DateTime endDate)
+        public override void CalculatePayment(DateTime startDate, DateTime endDate)
         {
             decimal baseValue = 3000;
 
