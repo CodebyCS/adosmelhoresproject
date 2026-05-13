@@ -1,20 +1,16 @@
 ﻿@page "/funcionarios"
-@inject IEmployeeService EmployeeService
-@inject DateService DateService
-
 
 <div class="container-fluid py-4">
     <div class="row g-4">
-        
+
         @* COLUNA ESQUERDA: LISTA E RELATÓRIOS *@
         <div class="col-lg-8">
             <div class="custom-card mb-4">
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <h5 class="fw-bold m-0 text-dark">Diretório de Funcionários</h5>
                     <div class="d-flex gap-2">
-                        @* Filtro de Pesquisa *@
                         <input type="text" class="form-control form-control-sm" placeholder="Pesquisar..." style="width: 200px;" @bind="termoPesquisa" @bind:event="oninput">
-                        
+
                         <select class="form-select form-select-sm" style="width: 150px;" @bind="filtroFuncao">
                             <option value="Todos">Todos</option>
                             <option value="Diretor">Diretor</option>
@@ -43,27 +39,30 @@
                             }
                             else
                             {
-                                @foreach (var f in ListaFuncionarios)
+                                @foreach (var f in ListaFuncionarios.Where(x => filtroFuncao == "Todos" || x.Tipo == filtroFuncao))
                                 {
                                     <tr>
                                         <td class="text-muted">@f.Id</td>
                                         <td class="fw-bold">@f.Nome</td>
                                         <td><span class="badge bg-light text-dark border">@f.Tipo</span></td>
                                         <td>
-                                            @* Lógica de cores para o Registo Criminal (Ponto 2.b/d) *@
-                                            <span class="status-badge @(f.RegistoCriminalValido ? "status-valid" : "status-expired")">
+                                            <span class="status-badge @(f.RegistoCriminalValido ? "bg-success-subtle text-success" : "bg-danger-subtle text-danger") px-2 py-1 rounded small">
                                                 @(f.RegistoCriminalValido ? "Válido" : "Expirado")
                                             </span>
                                         </td>
                                         <td class="text-end">
-                                            @* Botão específico para Formadores (Ponto 2.e) *@
+                                            @* BOTÃO EDITAR *@
+                                            <button class="btn btn-sm btn-outline-secondary me-1" title="Editar Detalhes" @onclick="() => AbrirModalEdicao(f)">
+                                                <i class="bi bi-pencil-square"></i>
+                                            </button>
+
                                             @if (f.Tipo == "Formador")
                                             {
-                                                <button class="btn btn-sm btn-outline-primary me-1" title="Calcular Pagamento">
+                                                <button class="btn btn-sm btn-outline-primary me-1" title="Calcular Pagamento" @onclick="() => AbrirModalPagamento(f)">
                                                     <i class="bi bi-calculator"></i>
                                                 </button>
                                             }
-                                            <button class="btn btn-sm btn-light border" title="Alterar Registo Criminal">
+                                            <button class="btn btn-sm btn-light border" title="Alterar Registo Criminal" @onclick="() => AbrirModalRC(f)">
                                                 <i class="bi bi-shield-check"></i>
                                             </button>
                                         </td>
@@ -85,11 +84,9 @@
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <div class="custom-card">
+                    <div class="custom-card text-center">
                         <h6 class="fw-bold mb-3">Despesa Mensal (Est.)</h6>
-                        @* Ponto 4 do enunciado *@
                         <h3 class="text-success fw-bold">€ @DespesaTotal.ToString("N2")</h3>
-                        @* Ponto 2.f do enunciado *@
                         <button class="btn btn-primary btn-sm w-100 mt-2">
                             <i class="bi bi-download me-2"></i>Exportar para CSV
                         </button>
@@ -98,11 +95,11 @@
             </div>
         </div>
 
-        @* COLUNA DIREITA: FORMULÁRIO (Ponto 2.a) *@
+        @* COLUNA DIREITA: FORMULÁRIO *@
         <div class="col-lg-4">
             <div class="custom-card">
                 <h5 class="fw-bold mb-4">Adicionar Novo Funcionário</h5>
-                
+
                 <div class="mb-3">
                     <label class="form-label text-muted small">Nome Completo</label>
                     <input type="text" class="form-control" @bind="novoNome" placeholder="Ex: Jane Smith">
@@ -119,9 +116,9 @@
                 </div>
 
                 @* ÁREA DINÂMICA BASEADA NA HERANÇA *@
-                <div class="form-section-blue mb-4">
+                <div class="form-section-blue mb-4 p-3 rounded bg-light border">
                     <p class="small fw-bold text-primary text-uppercase mb-2">Campos de @tipoSelecionado</p>
-    
+
                     @if (tipoSelecionado == "Diretor")
                     {
                         <div class="form-check mb-2">
@@ -145,7 +142,7 @@
                         </div>
                         <div class="mb-2">
                             <label class="form-label small">Valor/Hora (€)</label>
-                            <input type="number" class="form-control form-control-sm" placeholder="25">
+                            <input type="number" class="form-control form-control-sm" @bind="valorHoraSimulado">
                         </div>
                         <div class="mb-1">
                             <label class="form-label small">Disponibilidade</label>
@@ -165,24 +162,25 @@
                         <label class="form-label small">Reporta ao Diretor:</label>
                         <select class="form-select form-select-sm">
                             <option>Selecione um Diretor...</option>
-                            @* Aqui os teus colegas vão carregar a lista de diretores ativos *@
+                            @foreach (var d in ListaFuncionarios.Where(x => x.Tipo == "Diretor"))
+                            {
+                                <option value="@d.Nome">@d.Nome</option>
+                            }
                         </select>
                     }
                     else if (tipoSelecionado == "Coordenador")
                     {
                         <label class="form-label small">Associar Formadores:</label>
                         <div class="p-2 bg-white border rounded" style="max-height: 100px; overflow-y: auto;">
-                            @* Simulação de lista de formadores para o coordenador gerir *@
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="f1">
-                                <label class="form-check-label extra-small" for="f1" style="font-size: 0.75rem;">Bob Marley</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="f2">
-                                <label class="form-check-label extra-small" for="f2" style="font-size: 0.75rem;">Alice Cooper</label>
-                            </div>
+                            @foreach (var formador in ListaFuncionarios.Where(x => x.Tipo == "Formador"))
+                            {
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="f_@formador.Id">
+                                    <label class="form-check-label" for="f_@formador.Id" style="font-size: 0.75rem;">@formador.Nome</label>
+                                </div>
+                            }
                         </div>
-                        <p class="extra-small text-muted mt-1" style="font-size: 0.7rem;">Selecione os formadores que este coordenador irá gerir.</p>
+                        <p class="extra-small text-muted mt-1" style="font-size: 0.7rem;">Selecione os formadores geridos.</p>
                     }
                 </div>
 
@@ -195,35 +193,188 @@
     </div>
 </div>
 
+@* --- MODAIS --- *@
+
+@* MODAL DE EDIÇÃO *@
+@if (mostrarModalEdicao)
+{
+    <div class="modal fade show d-block" style="background: rgba(0,0,0,0.5);">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content shadow border-0">
+                <div class="modal-header bg-dark text-white">
+                    <h5 class="modal-title">Editar @funcionarioSelecionado?.Tipo: @funcionarioSelecionado?.Nome</h5>
+                    <button type="button" class="btn-close btn-close-white" @onclick="FecharModais"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <div class="row g-3">
+                        <div class="col-md-6"><label class="small fw-bold">Nome</label><input type="text" class="form-control" @bind="funcionarioSelecionado.Nome"></div>
+                        <div class="col-md-6"><label class="small fw-bold">Função</label><input type="text" class="form-control bg-light" value="@funcionarioSelecionado.Tipo" readonly></div>
+
+                        <hr />
+
+                        @if (funcionarioSelecionado.Tipo == "Diretor")
+                        {
+                            <div class="col-md-4"><div class="form-check form-switch mt-2"><input class="form-check-input" type="checkbox" @bind="funcionarioSelecionado.IsencaoHorario"><label class="form-check-label small fw-bold">Isenção Horário</label></div></div>
+                            <div class="col-md-4"><div class="form-check form-switch mt-2"><input class="form-check-input" type="checkbox" @bind="funcionarioSelecionado.TemCarroEmpresa"><label class="form-check-label small fw-bold">Carro Empresa</label></div></div>
+                            <div class="col-md-4"><label class="small fw-bold">Bónus Mensal (€)</label><input type="number" class="form-control" @bind="funcionarioSelecionado.Bonus"></div>
+                        }
+                        else if (funcionarioSelecionado.Tipo == "Formador")
+                        {
+                            <div class="col-md-4"><label class="small fw-bold">Área Lecionada</label><input type="text" class="form-control" @bind="funcionarioSelecionado.AreaLecionacao"></div>
+                            <div class="col-md-4"><label class="small fw-bold">Valor/Hora (€)</label><input type="number" class="form-control" @bind="funcionarioSelecionado.ValorHora"></div>
+                            <div class="col-md-4">
+                                <label class="small fw-bold">Disponibilidade</label>
+                                <select class="form-select" @bind="funcionarioSelecionado.Disponibilidade">
+                                    <option value="Laboral">Laboral</option>
+                                    <option value="Pós-Laboral">Pós-Laboral</option>
+                                    <option value="Ambas">Ambas</option>
+                                </select>
+                            </div>
+                        }
+                        else if (funcionarioSelecionado.Tipo == "Secretaria")
+                        {
+                            <div class="col-md-6"><label class="small fw-bold">Área de Atuação</label><input type="text" class="form-control" @bind="funcionarioSelecionado.AreaAtuacao"></div>
+                            <div class="col-md-6">
+                                <label class="small fw-bold">Reporta ao Diretor</label>
+                                <select class="form-select" @bind="funcionarioSelecionado.DiretorResponsavel">
+                                    @foreach (var d in ListaFuncionarios.Where(x => x.Tipo == "Diretor"))
+                                    {
+                                        <option value="@d.Nome">@d.Nome</option>
+                                    }
+                                </select>
+                            </div>
+                        }
+                        else if (funcionarioSelecionado.Tipo == "Coordenador")
+                        {
+                            <div class="col-md-12">
+                                <label class="small fw-bold">Formadores Associados</label>
+                                <div class="p-3 bg-light border rounded" style="max-height: 150px; overflow-y: auto;">
+                                    @foreach (var formador in ListaFuncionarios.Where(x => x.Tipo == "Formador"))
+                                    {
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="edit_f_@formador.Id">
+                                            <label class="form-check-label small" for="edit_f_@formador.Id">@formador.Nome</label>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+                <div class="modal-footer"><button class="btn btn-primary px-4" @onclick="FecharModais">Guardar</button></div>
+            </div>
+        </div>
+    </div>
+}
+
+@if (mostrarModalRC)
+{
+    <div class="modal fade show d-block" style="background: rgba(0,0,0,0.5);">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content shadow">
+                <div class="modal-header">
+                    <h5 class="modal-title">Registo Criminal: @funcionarioSelecionado?.Nome</h5>
+                    <button type="button" class="btn-close" @onclick="FecharModais"></button>
+                </div>
+                <div class="modal-body text-center py-4">
+                    <div class="mb-3">Estado Atual: <strong>@(funcionarioSelecionado?.RegistoCriminalValido == true ? "Válido" : "Expirado")</strong></div>
+                    <div class="d-flex justify-content-center gap-2">
+                        <button class="btn btn-success" @onclick="() => { funcionarioSelecionado.RegistoCriminalValido = true; FecharModais(); }">Definir como Válido</button>
+                        <button class="btn btn-danger" @onclick="() => { funcionarioSelecionado.RegistoCriminalValido = false; FecharModais(); }">Definir como Expirado</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@if (mostrarModalPagamento)
+{
+    <div class="modal fade show d-block" style="background: rgba(0,0,0,0.5);">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content shadow border-primary">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title">Calcular Pagamento (6h/dia)</h5>
+                    <button type="button" class="btn-close btn-close-white" @onclick="FecharModais"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row mb-3">
+                        <div class="col"><label class="small">Início</label><input type="date" class="form-control" @bind="dataInicio"></div>
+                        <div class="col"><label class="small">Fim</label><input type="date" class="form-control" @bind="dataFim"></div>
+                    </div>
+                    <div class="bg-light p-3 rounded text-center">
+                        <h2 class="text-primary fw-bold mb-0">€ @valorCalculado.ToString("N2")</h2>
+                        <small class="text-muted">Valor Hora: €@(funcionarioSelecionado?.ValorHora > 0 ? funcionarioSelecionado.ValorHora : valorHoraSimulado)</small>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary w-100" @onclick="CalcularPagamento">Calcular</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
 @code {
+    private string tipoSelecionado = "Diretor";
+    private string termoPesquisa = "";
+    private string filtroFuncao = "Todos";
+    private string novoNome = "";
 
-    private List<Employee> EmployeeList = new();
-    private string searchTerm = "";
-    private string filterFunction = "All";
-    private string selectedType = "Diretor";
-    private string newName = "";
+    private bool mostrarModalRC = false;
+    private bool mostrarModalPagamento = false;
+    private bool mostrarModalEdicao = false;
 
-    private int 
+    private FuncionarioDTO funcionarioSelecionado;
+    private DateTime dataInicio = DateTime.Now;
+    private DateTime dataFim = DateTime.Now.AddDays(1);
+    private double valorCalculado = 0;
+    private double valorHoraSimulado = 25.0;
 
-    // MÁTRICAS (LIGAR AO BACK-END)
     [Parameter] public int ContratosExpirados { get; set; } = 3;
     [Parameter] public int RegistosExpirados { get; set; } = 2;
     [Parameter] public double DespesaTotal { get; set; } = 12450.00;
 
-    // LISTA DE FUNCIONÁRIOS (Será preenchida pela classe Empresa)
     [Parameter]
     public List<FuncionarioDTO> ListaFuncionarios { get; set; } = new()
     {
-        new FuncionarioDTO { Id = "001", Nome = "John Doe", Tipo = "Diretor", RegistoCriminalValido = true },
-        new FuncionarioDTO { Id = "003", Nome = "Bob Marley", Tipo = "Formador", RegistoCriminalValido = false }
+        new FuncionarioDTO { Id = "001", Nome = "John Doe", Tipo = "Diretor", RegistoCriminalValido = true, IsencaoHorario = true },
+        new FuncionarioDTO { Id = "002", Nome = "Maria Silva", Tipo = "Secretaria", RegistoCriminalValido = true, AreaAtuacao = "Financeiro", DiretorResponsavel = "John Doe" },
+        new FuncionarioDTO { Id = "003", Nome = "Bob Marley", Tipo = "Formador", RegistoCriminalValido = false, ValorHora = 30, AreaLecionacao = "C#", Disponibilidade = "Ambas" },
+        new FuncionarioDTO { Id = "004", Nome = "Carlos Sousa", Tipo = "Coordenador", RegistoCriminalValido = true }
     };
 
-    // Classe temporária apenas para o Front-end não dar erro
+    private void AbrirModalRC(FuncionarioDTO f) { funcionarioSelecionado = f; mostrarModalRC = true; }
+    private void AbrirModalPagamento(FuncionarioDTO f) { funcionarioSelecionado = f; valorCalculado = 0; mostrarModalPagamento = true; }
+    private void AbrirModalEdicao(FuncionarioDTO f) { funcionarioSelecionado = f; mostrarModalEdicao = true; }
+    private void FecharModais() { mostrarModalRC = mostrarModalPagamento = mostrarModalEdicao = false; }
+
+    private void CalcularPagamento()
+    {
+        int dias = (dataFim - dataInicio).Days + 1;
+        double vHora = (funcionarioSelecionado?.ValorHora > 0) ? funcionarioSelecionado.ValorHora : valorHoraSimulado;
+        valorCalculado = (dias > 0 ? dias : 0) * 6 * vHora;
+    }
+
     public class FuncionarioDTO
     {
         public string Id { get; set; }
         public string Nome { get; set; }
         public string Tipo { get; set; }
         public bool RegistoCriminalValido { get; set; }
+
+        // Específicos Diretor
+        public bool IsencaoHorario { get; set; }
+        public bool TemCarroEmpresa { get; set; }
+        public double Bonus { get; set; }
+
+        // Específicos Formador
+        public string AreaLecionacao { get; set; }
+        public double ValorHora { get; set; }
+        public string Disponibilidade { get; set; } = "Laboral";
+
+        // Específicos Secretaria
+        public string AreaAtuacao { get; set; }
+        public string DiretorResponsavel { get; set; }
     }
 }
