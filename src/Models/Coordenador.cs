@@ -4,6 +4,6 @@ namespace adosmelhoresproject.src.Models
     {
         public int FormadorId { get; set; }
 
-        public List<Formador> FormadoresAssociados { get; set; } = new List<Formador>();
+        public List<Trainer> FormadoresAssociados { get; set; } = new List<Trainer>();
     }
 }

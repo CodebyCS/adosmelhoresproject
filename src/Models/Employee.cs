@@ -3,21 +3,21 @@ using System.Text.Json.Serialization;
 namespace adosmelhoresproject.src.Models
 
 {
-    [JsonDerivedType(typeof(Diretor), "Diretor")]
+    [JsonDerivedType(typeof(Director), "Diretor")]
     [JsonDerivedType(typeof(Coordenador), "Coordenador")]
-    [JsonDerivedType(typeof(Formador), "Formador")]
+    [JsonDerivedType(typeof(Trainer), "Formador")]
     [JsonDerivedType(typeof(Secretaria), "Secretaria")]
     public abstract class Employee
     {
         public int Id { get; set; }
-        public string Nome { get; set; }
-        public string Morada { get; set; }
-        public string Contacto { get; set; }
-        public DateTime DataRegistoCriminal { get; set; }
-        public DateTime DataFimContrato { get; set; }
-        public DateTime DataInicioContrato { get; set; }
-        public decimal Salario { get; set; }
-        public bool Ativo { get; set; }
+        public string Name { get; set; }
+        public string Adress { get; set; }
+        public string Contact { get; set; }
+        public DateTime CriminalRecordDate { get; set; }
+        public DateTime ContractEndDate { get; set; }
+        public DateTime ContractStartDate { get; set; }
+        public decimal Salary { get; set; }
+        public bool Active { get; set; }
     }
 
 }

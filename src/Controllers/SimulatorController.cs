@@ -35,12 +35,12 @@ namespace adosmelhoresproject.src.Controllers
 
             // Verifica funcionários cujo contrato termina hoje
             var contratosExpirados = funcionarios
-                .Where(f => f.DataFimContrato.Date == dataAtual.Date)
+                .Where(f => f.ContractEndDate.Date == dataAtual.Date)
                 .ToList();
 
             // Verifica funcionários cujo registo criminal expira hoje
             var registosExpirados = funcionarios
-                .Where(f => f.DataRegistoCriminal.Date == dataAtual.Date)
+                .Where(f => f.CriminalRecordDate.Date == dataAtual.Date)
                 .ToList();
 
             ViewBag.DataAtual = dataAtual;

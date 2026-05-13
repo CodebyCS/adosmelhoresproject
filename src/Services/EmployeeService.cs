@@ -54,7 +54,7 @@ public class EmployeeService : IEmployeeService
         var funcionario = funcionarios.FirstOrDefault(f => f.Id == id);
         if (funcionario != null)
         {
-            funcionario.DataRegistoCriminal = novaData;
+            funcionario.CriminalRecordDate = novaData;
             Salvar(funcionarios);
         }
     }
@@ -65,33 +65,33 @@ public class EmployeeService : IEmployeeService
         var funcionario = funcionarios.FirstOrDefault(f => f.Id == id);
         if (funcionario != null)
         {
-            funcionario.DataFimContrato = novaData;
+            funcionario.ContractEndDate = novaData;
             Salvar(funcionarios);
         }
     }
 
     public List<Employee> GetContratosValidos(DateTime dataAtual)
     {
-        return GetAll().Where(f => f.DataFimContrato >= dataAtual).ToList();
+        return GetAll().Where(f => f.ContractEndDate >= dataAtual).ToList();
     }
 
     public List<Employee> GetRegistoCriminalExpirado(DateTime dataAtual)
     {
-        return GetAll().Where(f => f.DataRegistoCriminal < dataAtual).ToList();
+        return GetAll().Where(f => f.CriminalRecordDate < dataAtual).ToList();
     }
 
     public decimal CalcularPagamentoFormador(int id, DateTime inicio, DateTime fim)
     {
         var funcionario = GetAll().FirstOrDefault(f => f.Id == id);
 
-        if (funcionario is Formador formador)
+        if (funcionario is Trainer formador)
         {
             // 6 horas por dia * valor hora
             int diasTrabalhados = (fim.Date - inicio.Date).Days + 1; // +1 para incluir o dia inicial
             if (diasTrabalhados < 0) return 0;
 
             const int horasPorDia = 6;
-            return (decimal)(diasTrabalhados * horasPorDia * formador.ValorHora);
+            return (decimal)(diasTrabalhados * horasPorDia * formador.HourlyRate);
         }
         return 0;
     }

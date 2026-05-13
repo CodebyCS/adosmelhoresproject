@@ -1,6 +1,6 @@
 using adosmelhoresproject.src.Models;
 
-public class Empresa
+public class Company
 {
     public List<Employee> Funcionarios { get; set; }= new List<Employee>();
 
@@ -9,7 +9,7 @@ public class Empresa
         decimal despesaTotal = 0;
         foreach (var funcionario in Funcionarios)
         {
-            despesaTotal += funcionario.Salario;
+            despesaTotal += funcionario.Salary;
         }
 
         return despesaTotal;
