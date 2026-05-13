@@ -20,6 +20,6 @@ namespace adosmelhoresproject.src.Models
         public decimal Salary { get; set; }
         public bool Active { get; set; }
         
-        public abstract void CalculateTrainerPayment(DateTime startDate, DateTime endDate);
+        public abstract decimal CalculatePayment(DateTime startDate, DateTime endDate);
     }
 }

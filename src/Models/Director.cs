@@ -3,10 +3,10 @@ namespace adosmelhoresproject.src.Models
     public class Director : Employee
     {
         public bool HoursExemption { get; set; }
-        public int MonthlyBonus { get; set; }
+        public int MonthlyBonus { get; set; } = 500;
         public bool CompanyCar { get; set; }
 
-        public override void CalculatePayment(DateTime startDate, DateTime endDate)
+        public override decimal CalculatePayment(DateTime startDate, DateTime endDate)
         {
             decimal baseValue = 3000;
 
@@ -18,6 +18,8 @@ namespace adosmelhoresproject.src.Models
             {            
                 this.Salary = baseValue + MonthlyBonus;
             }
+
+            return this.Salary;
         }
     }
 }
