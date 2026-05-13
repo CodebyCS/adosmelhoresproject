@@ -6,13 +6,13 @@ namespace adosmelhoresproject.src.Models
         public string Availability { get; set; }
         public decimal HourlyRate { get; set; }
 
-        public decimal CalculateTrainerPayment(DateTime startDate, DateTime endDate)
+        public override decimal CalculatePayment(DateTime startDate, DateTime endDate)
         {
             int Days = (endDate - startDate).Days + 1;
 
-            decimal totalAmount = Days * 6 * HourlyRate;
-            
-            return totalAmount;
+            this.Salary = Days * 6 * HourlyRate;
+
+            return this.Salary;
         }
     }
 }
