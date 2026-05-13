@@ -2,6 +2,7 @@
 using System.Text.Json;
 using Microsoft.AspNetCore.Hosting;
 using adosmelhoresproject.src.Models;
+using adosmelhoresproject.src.Interfaces;
 
 
 namespace adosmelhoresproject.src.Services;
@@ -15,6 +16,8 @@ public class DateService
     public DateService(IWebHostEnvironment env)
     {
         _filePath = Path.Combine(env.ContentRootPath, "src", "Data", "appstate.json");
+        var directory = Path.GetDirectoryName(_filePath);
+        if (!Directory.Exists(directory)) Directory.CreateDirectory(directory!);
 
         LoadDate();
     }
@@ -55,13 +58,46 @@ public class DateService
         return _currentDate;
     }
 
-    public void AvancarDia()
+    public void AvancarDia(IEmployeeService employeeService, ITransacaoService transacaoService)
     {
+        DateTime dataAnterior = _currentDate;
         _currentDate = _currentDate.AddDays(1);
-        SaveDate();
 
+        //se mudou o mes, pagamos
+        if(_currentDate.Month != dataAnterior.Month)
+        {
+            ProcessarFolhaDePagamento(dataAnterior, employeeService, transacaoService);
+        }
+
+        SaveDate();
         OnDateChanged?.Invoke();
     }
     
+    private void ProcessarFolhaDePagamento(DateTime dataReferencia, IEmployeeService employeeService, ITransacaoService transacaoService)
+    {
+        var employees = employeeService.GetAll().Where(f => f.Ativo).ToList();
+
+        var primeiroDiaMesAnterior = new DateTime(dataReferencia.Year, dataReferencia.Month, 1);
+        var ultimoDiaMesAnterior = dataReferencia.Date;
+
+        foreach (var func in employees)
+        {
+            
+            decimal valorAPagar = func.CalcularSalario(primeiroDiaMesAnterior, ultimoDiaMesAnterior);
+
+            if (valorAPagar > 0)
+            {
+                var pagamento = new Transacao
+                {
+                    Data = _currentDate, // Registado no primeiro dia do novo mês
+                    Valor = valorAPagar,
+                    Tipo = TipoTransacao.Despesa,
+                    Descricao = $"Salário Mensal: {func.Nome} ({func.GetType().Name})"
+                };
+
+                transacaoService.Adicionar(pagamento);
+            }
+        }
+    }
 }
 
