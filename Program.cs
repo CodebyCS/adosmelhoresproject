@@ -19,6 +19,7 @@ namespace adosmelhoresproject
 
             builder.Services.AddSingleton<DateService>();
             builder.Services.AddScoped<IEmployeeService, EmployeeService>();
+            builder.Services.AddScoped<ITransacaoService, TransacaoService>();
 
             var app = builder.Build();
 

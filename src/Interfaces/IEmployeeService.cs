@@ -8,15 +8,15 @@ namespace adosmelhoresproject.src.Interfaces
 
         void Adicionar(Employee f);
 
-        void AlterarRegistoCriminal(int id, DateTime novaData);
+        void ChangeCriminalRecord(int id, DateTime novaData);
 
         void AlterarContrato(int id, DateTime novaData);
 
-        List<Employee> GetContratosValidos(DateTime dataAtual);
+        List<Employee> GetValidContracts(DateTime dataAtual);
 
-        List<Employee> GetRegistoCriminalExpirado(DateTime dataAtual);
+        List<Employee> GetCriminalRecordExpired(DateTime dataAtual);
 
-        decimal CalcularPagamentoFormador(int id, DateTime inicio, DateTime fim);
+        decimal CalculateTrainerPayment(int id, DateTime inicio, DateTime fim);
     }
 }
 

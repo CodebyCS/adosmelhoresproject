@@ -1,5 +1,6 @@
 ﻿namespace adosmelhoresproject.src.Models;
 
+//Receita = 0 e Despesas = 1
 public enum TipoTransacao { Receita, Despesa }
 
 public class Transacao

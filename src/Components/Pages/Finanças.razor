@@ -4,7 +4,7 @@
     <div class="row g-4">
         @* COLUNA ESQUERDA: TRANSAÇÕES E GRÁFICO *@
         <div class="col-lg-8">
-            <div class="custom-card p-4">
+            <div class="custom-card p-4 shadow-sm">
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <h5 class="fw-bold mb-0">Registro de Transações</h5>
                     <div class="d-flex gap-2">
@@ -18,22 +18,22 @@
                 </div>
 
                 <div class="table-responsive">
-                    <table class="table align-middle">
+                    <table class="table align-middle table-hover">
                         <thead>
                             <tr>
-                                <th>ID</th>
+                                <th style="width: 80px;">ID</th>
                                 <th>TIPO</th>
                                 <th>REF/FUNCIONÁRIO</th>
                                 <th>DATA</th>
                                 <th>VALOR</th>
                                 <th>ESTADO</th>
-                                <th class="text-end">AÇÕES</th>
+                                @* Coluna de Ações removida daqui *@
                             </tr>
                         </thead>
                         <tbody>
                             @if (ListaTransacoes == null || !ListaTransacoes.Any())
                             {
-                                <tr><td colspan="7" class="text-center text-muted py-4">Sem transações registadas.</td></tr>
+                                <tr><td colspan="6" class="text-center text-muted py-4">Sem transações registadas.</td></tr>
                             }
                             else
                             {
@@ -52,9 +52,7 @@
                                                 @t.Estado
                                             </span>
                                         </td>
-                                        <td class="text-end">
-                                            <button class="btn btn-sm btn-light border" @onclick="() => EditarTransacao(t.Id)">Alterar</button>
-                                        </td>
+                                        @* Célula do botão Alterar removida daqui *@
                                     </tr>
                                 }
                             }
@@ -64,7 +62,7 @@
             </div>
 
             @* GRÁFICO DE FLUXO DE CAIXA *@
-            <div class="custom-card p-4 mt-4">
+            <div class="custom-card p-4 mt-4 shadow-sm">
                 <h6 class="fw-bold mb-4 small text-uppercase text-muted">Fluxo de Caixa (Receitas vs Despesas)</h6>
                 <div class="d-flex align-items-end justify-content-between px-2" style="height: 200px; border-bottom: 2px solid #e2e8f0;">
                     @for (int i = 0; i < FluxoMensal.Count; i++)
@@ -91,7 +89,7 @@
 
         @* COLUNA DIREITA: VISÃO GERAL E EXPORTAÇÃO *@
         <div class="col-lg-4">
-            <div class="custom-card p-4">
+            <div class="custom-card p-4 shadow-sm">
                 <h5 class="fw-bold mb-4">Visão Geral Financeira</h5>
                 <div class="d-flex justify-content-between mb-3 pb-3 border-bottom">
                     <span class="text-muted small">Saldo Atual</span>
@@ -111,7 +109,7 @@
                 </div>
             </div>
 
-            <div class="custom-card p-4 mt-4">
+            <div class="custom-card p-4 mt-4 shadow-sm">
                 <h6 class="fw-bold mb-3 small text-uppercase text-muted">Ferramentas e Alertas</h6>
                 <button @onclick="ExportarPDF" class="btn btn-outline-primary w-100 py-2 mb-2 d-flex align-items-center justify-content-center">
                     <i class="bi bi-file-earmark-pdf me-2 fs-5"></i> Exportar Auditoria (PDF)
@@ -147,9 +145,8 @@
         new FluxoMesDTO { Nome="Abr", Receita=3800, Despesa=1900 }
     };
 
-    private void ExportarPDF() { /* Lógica Back-end */ }
-    private void ExportarExcel() { /* Lógica Back-end */ }
-    private void EditarTransacao(string id) { /* Lógica Back-end */ }
+    private void ExportarPDF() { }
+    private void ExportarExcel() { }
 
     public class TransacaoDTO
     {
@@ -166,7 +163,7 @@
         public string Nome { get; set; }
         public double Receita { get; set; }
         public double Despesa { get; set; }
-        public int ReceitaPerc => 70; // Exemplo de cálculo simplificado para o gráfico
+        public int ReceitaPerc => 70;
         public int DespesaPerc => 45;
     }
 }

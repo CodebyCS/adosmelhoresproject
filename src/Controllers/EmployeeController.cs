@@ -51,7 +51,7 @@ namespace adosmelhoresproject.src.Controllers
         public IActionResult ContratosValidos()
         {
             var dataAtual = _dateService.GetCurrentDate();
-            var funcionarios = _service.GetContratosValidos(dataAtual);
+            var funcionarios = _service.GetValidContracts(dataAtual);
             return View(funcionarios);
         }
 
@@ -60,7 +60,7 @@ namespace adosmelhoresproject.src.Controllers
         public IActionResult RegistoCriminalExpirado()
         {
             var dataAtual = _dateService.GetCurrentDate();
-            var funcionarios = _service.GetRegistoCriminalExpirado(dataAtual);
+            var funcionarios = _service.GetCriminalRecordExpired(dataAtual);
             return View(funcionarios);
         }
 
@@ -78,7 +78,7 @@ namespace adosmelhoresproject.src.Controllers
         [HttpPost]
         public IActionResult AlterarRegistoCriminal(int id, DateTime novaData)
         {
-            _service.AlterarRegistoCriminal(id, novaData);
+            _service.ChangeCriminalRecord(id, novaData);
             return RedirectToAction("Index");
         }
 
@@ -97,7 +97,7 @@ namespace adosmelhoresproject.src.Controllers
         [HttpPost]
         public IActionResult CalcularPagamento(int id, DateTime inicio, DateTime fim)
         {
-            var total = _service.CalcularPagamentoFormador(id, inicio, fim);
+            var total = _service.CalculateTrainerPayment(id, inicio, fim);
             ViewBag.Total = total;
             ViewBag.Inicio = inicio;
             ViewBag.Fim = fim;
