@@ -1,6 +1,6 @@
 using adosmelhoresproject.src.Models;
 
-public class Empresa
+public class Company
 {
     public List<Employee> Funcionarios { get; set; }= new List<Employee>();
 

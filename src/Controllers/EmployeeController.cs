@@ -87,7 +87,7 @@ namespace adosmelhoresproject.src.Controllers
         public IActionResult CalcularPagamento(int id)
         {
             var funcionario = _service.GetAll().FirstOrDefault(f => f.Id == id);
-            if (funcionario == null || funcionario is not Formador)
+            if (funcionario == null || funcionario is not Trainer)
                 return BadRequest("Funcionário não encontrado ou não é Formador.");
             return View(funcionario);
         }

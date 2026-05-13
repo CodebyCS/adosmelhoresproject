@@ -84,14 +84,14 @@ public class EmployeeService : IEmployeeService
     {
         var funcionario = GetAll().FirstOrDefault(f => f.Id == id);
 
-        if (funcionario is Formador formador)
+        if (funcionario is Trainer formador)
         {
             // 6 horas por dia * valor hora
             int diasTrabalhados = (fim.Date - inicio.Date).Days + 1; // +1 para incluir o dia inicial
             if (diasTrabalhados < 0) return 0;
 
             const int horasPorDia = 6;
-            return (decimal)(diasTrabalhados * horasPorDia * formador.ValorHora);
+            return (decimal)(diasTrabalhados * horasPorDia * formador.HourlyRate);
         }
         return 0;
     }
