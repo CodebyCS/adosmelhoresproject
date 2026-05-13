@@ -3,6 +3,7 @@ using System.Text.Json;
 using Microsoft.AspNetCore.Hosting;
 using adosmelhoresproject.src.Models;
 using adosmelhoresproject.src.Interfaces;
+using adosmelhoresproject.src.Services;
 
 
 namespace adosmelhoresproject.src.Services;
@@ -75,12 +76,12 @@ public class DateService
     
     private void ProcessarFolhaDePagamento(DateTime dataReferencia, IEmployeeService employeeService, ITransacaoService transacaoService)
     {
-        var employees = employeeService.GetAll().Where(f => f.Ativo).ToList();
+        var employees = employeeService.GetAll().Where(f => f.Active).ToList();
 
         var primeiroDiaMesAnterior = new DateTime(dataReferencia.Year, dataReferencia.Month, 1);
         var ultimoDiaMesAnterior = dataReferencia.Date;
 
-        foreach (var func in employees)
+        foreach (var func in employees) 
         {
             
             decimal valorAPagar = func.CalcularSalario(primeiroDiaMesAnterior, ultimoDiaMesAnterior);
@@ -89,10 +90,11 @@ public class DateService
             {
                 var pagamento = new Transacao
                 {
-                    Data = _currentDate, // Registado no primeiro dia do novo mês
+                    Data = _currentDate,
                     Valor = valorAPagar,
                     Tipo = TipoTransacao.Despesa,
-                    Descricao = $"Salário Mensal: {func.Nome} ({func.GetType().Name})"
+                    // 2. Usamos 'func.Name' e 'func.GetType()' em vez de 'employees'
+                    Descricao = $"Salário Mensal: {func.Name} ({func.GetType().Name})"
                 };
 
                 transacaoService.Adicionar(pagamento);
