@@ -7,6 +7,7 @@ namespace adosmelhoresproject.src.Models
     [JsonDerivedType(typeof(Coordenador), "Coordenador")]
     [JsonDerivedType(typeof(Formador), "Formador")]
     [JsonDerivedType(typeof(Secretaria), "Secretaria")]
+
     public abstract class Employee
     {
         public int Id { get; set; }
@@ -18,6 +19,9 @@ namespace adosmelhoresproject.src.Models
         public DateTime DataInicioContrato { get; set; }
         public decimal Salario { get; set; }
         public bool Ativo { get; set; }
+
+        public abstract void CalcularSalario(DateTime dataInicio, DateTime dataFim);
+
     }
 
 }
