@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System.Text;
-using adosmelhoresproject.src.Interfaces;
+﻿using adosmelhoresproject.src.Interfaces;
 using adosmelhoresproject.src.Models;
 using adosmelhoresproject.src.Services;
+using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Linq;
+using System.Text;
 
 namespace adosmelhoresproject.src.Controllers
 {
@@ -11,70 +13,156 @@ namespace adosmelhoresproject.src.Controllers
         private readonly IEmployeeService _service;
         private readonly DateService _dateService;
 
-        // Injeta o service via construtor — não usa dados fake
         public EmployeeController(IEmployeeService service, DateService dateService)
         {
             _service = service;
             _dateService = dateService;
         }
 
-        // GET: /Funcionario
-        // Lista todos os funcionários
+        // GET: /Employee
         public IActionResult Index()
         {
-            var funcionarios = _service.GetAll();
-            return View(funcionarios);
-        }
+            var employees = _service.GetAll();
+            var today = _dateService.GetCurrentDate();
 
-        // GET: /Funcionario/Criar
-        // Mostra o formulário para inserir novo funcionário
-        public IActionResult Criar()
-        {
-            return View();
-        }
+            ViewBag.CurrentDate = today;
 
-        // POST: /Funcionario/Criar
-        // Recebe os dados do formulário e guarda
-        [HttpPost]
-        public IActionResult Criar(Employee funcionario)
-        {
-            if (ModelState.IsValid)
+            // Dados reais calculados a partir do JSON
+            ViewBag.ExpiredContracts = employees.Count(e => e.ContractEndDate < today);
+            ViewBag.ExpiredCriminalRecords = employees.Count(e => e.CriminalRecordDate.AddYears(1) < today);
+
+            decimal totalSalarial = 0;
+            foreach (var e in employees.Where(emp => emp.Active))
             {
-                _service.Adicionar(funcionario);
-                return RedirectToAction("Index");
+                totalSalarial += e.Salary;
+                if (e is Director diretor)
+                {
+                    totalSalarial += diretor.MonthlyBonus;
+                }
             }
-            return View(funcionario);
+            ViewBag.TotalMonthlyExpense = totalSalarial;
+
+            return View(employees);
         }
 
-        // GET: /Funcionario/ContratosValidos
-        // Mostra funcionários com contrato válido para a data simulada atual
-        public IActionResult ContratosValidos()
+        // POST: /Employee/Criar
+        [HttpPost]
+        public IActionResult Criar(string name, string type, decimal salary, bool HoursExemption, int MonthlyBonus, string TeachingArea, decimal HourlyRate, string Area, string DirectorName)
         {
-            var dataAtual = _dateService.GetCurrentDate();
-            var funcionarios = _service.GetValidContracts(dataAtual);
-            return View(funcionarios);
+            Employee newEmployee;
+
+            // Tratamento flexível de strings maiúsculas/minúsculas ou EN/PT
+            switch (type?.ToLower())
+            {
+                case "director":
+                case "diretor":
+                    newEmployee = new Director
+                    {
+                        Name = name,
+                        Salary = salary,
+                        HoursExemption = HoursExemption,
+                        MonthlyBonus = MonthlyBonus,
+                        ContractEndDate = _dateService.GetCurrentDate().AddYears(1),
+                        CriminalRecordDate = _dateService.GetCurrentDate(),
+                        Active = true
+                    };
+                    break;
+
+                case "trainer":
+                case "formador":
+                    newEmployee = new Trainer
+                    {
+                        Name = name,
+                        Salary = salary,
+                        HourlyRate = HourlyRate,
+                        TeachingArea = TeachingArea,
+                        ContractEndDate = _dateService.GetCurrentDate().AddMonths(6),
+                        CriminalRecordDate = _dateService.GetCurrentDate(),
+                        Active = true
+                    };
+                    break;
+
+                case "coordinator":
+                case "coordenador":
+                    newEmployee = new Coordenador
+                    {
+                        Name = name,
+                        Salary = salary,
+                        ContractEndDate = _dateService.GetCurrentDate().AddYears(1),
+                        CriminalRecordDate = _dateService.GetCurrentDate(),
+                        Active = true
+                    };
+                    break;
+
+                case "secretaria":
+                default:
+                    newEmployee = new Secretaria
+                    {
+                        Name = name,
+                        Salary = salary,
+                        Area = Area,
+                        DirectorName = DirectorName,
+                        ContractEndDate = _dateService.GetCurrentDate().AddYears(2),
+                        CriminalRecordDate = _dateService.GetCurrentDate(),
+                        Active = true
+                    };
+                    break;
+            }
+
+            // O Service agora calcula e atribui o ID antes de guardar no JSON
+            _service.Adicionar(newEmployee);
+            return RedirectToAction("Index");
         }
 
-        // GET: /Funcionario/RegistoCriminalExpirado
-        // Mostra funcionários com registo criminal expirado
-        public IActionResult RegistoCriminalExpirado()
+        // POST: /Employee/Editar
+        [HttpPost]
+        public IActionResult Editar(int id, string name, string type, bool HoursExemption, int MonthlyBonus, string TeachingArea, decimal HourlyRate, string Area, string DirectorName, DateTime? CriminalRecordDate)
         {
-            var dataAtual = _dateService.GetCurrentDate();
-            var funcionarios = _service.GetCriminalRecordExpired(dataAtual);
-            return View(funcionarios);
+            var funcionarios = _service.GetAll();
+            var funcionarioExistente = funcionarios.FirstOrDefault(f => f.Id == id);
+
+            if (funcionarioExistente == null) return NotFound();
+
+            // Atualiza os dados universais
+            funcionarioExistente.Name = name;
+
+            if (CriminalRecordDate.HasValue)
+            {
+                funcionarioExistente.CriminalRecordDate = CriminalRecordDate.Value;
+            }
+
+            // Normaliza a string do tipo para evitar erros com maiúsculas/traduções
+            string tipoNormalizado = type?.ToLower();
+
+            // Atualiza propriedades via herança polimórfica
+            if (funcionarioExistente is Director d && (tipoNormalizado == "director" || tipoNormalizado == "diretor"))
+            {
+                d.HoursExemption = HoursExemption;
+                d.MonthlyBonus = MonthlyBonus;
+            }
+            else if (funcionarioExistente is Trainer t && (tipoNormalizado == "trainer" || tipoNormalizado == "formador"))
+            {
+                t.TeachingArea = TeachingArea;
+                t.HourlyRate = HourlyRate;
+            }
+            else if (funcionarioExistente is Secretaria s && tipoNormalizado == "secretaria")
+            {
+                s.Area = Area;
+                s.DirectorName = DirectorName;
+            }
+
+            // SOLUÇÃO DO ERRO DO MODAL: Grava as modificações de volta no ficheiro JSON!
+            // Nota: Se a tua interface IEmployeeService ainda não declarar o método "Atualizar",
+            // podes fazer o cast direto para o serviço, ou adicioná-lo à tua Interface.
+            if (_service is EmployeeService serviceJson)
+            {
+                serviceJson.Atualizar(funcionarioExistente);
+            }
+
+            return RedirectToAction("Index");
         }
 
-        // GET: /Funcionario/AlterarRegistoCriminal/5
-        // Mostra formulário para alterar registo criminal
-        public IActionResult AlterarRegistoCriminal(int id)
-        {
-            var funcionario = _service.GetAll().FirstOrDefault(f => f.Id == id);
-            if (funcionario == null) return NotFound();
-            return View(funcionario);
-        }
-
-        // POST: /Funcionario/AlterarRegistoCriminal/5
-        // Guarda a nova data do registo criminal
+        // POST: /Employee/AlterarRegistoCriminal
         [HttpPost]
         public IActionResult AlterarRegistoCriminal(int id, DateTime novaData)
         {
@@ -82,48 +170,19 @@ namespace adosmelhoresproject.src.Controllers
             return RedirectToAction("Index");
         }
 
-        // GET: /Funcionario/CalcularPagamento/5
-        // Mostra formulário para calcular pagamento de um formador
-        public IActionResult CalcularPagamento(int id)
-        {
-            var funcionario = _service.GetAll().FirstOrDefault(f => f.Id == id);
-            if (funcionario == null || funcionario is not Trainer)
-                return BadRequest("Funcionário não encontrado ou não é Formador.");
-            return View(funcionario);
-        }
-
-        // POST: /Funcionario/CalcularPagamento/5
-        // Calcula o valor a pagar ao formador com base nas datas
-        [HttpPost]
-        public IActionResult CalcularPagamento(int id, DateTime inicio, DateTime fim)
-        {
-            var total = _service.CalculateTrainerPayment(id, inicio, fim);
-            ViewBag.Total = total;
-            ViewBag.Inicio = inicio;
-            ViewBag.Fim = fim;
-            var funcionario = _service.GetAll().FirstOrDefault(f => f.Id == id);
-            return View(funcionario);
-        }
-
-        // GET: /Funcionario/ExportarCSV
-        // Exporta todos os funcionários para um ficheiro CSV
+        // GET: /Employee/ExportarCSV
         public IActionResult ExportarCSV()
         {
             var funcionarios = _service.GetAll();
             var csv = new StringBuilder();
 
-            // Cabeçalho do CSV
-            csv.AppendLine("ID,Nome,Morada,Contacto,DataFimContrato,DataRegistoCriminal,Tipo,Salario,Ativo");
+            csv.AppendLine("ID,Nome,Tipo,Salario,Ativo,FimContrato");
 
-            // Uma linha por funcionário
             foreach (var f in funcionarios)
             {
-                csv.AppendLine($"{f.Id},{f.Name},{f.Adress},{f.Contact}," +
-                               $"{f.ContractEndDate:yyyy-MM-dd},{f.CriminalRecordDate:yyyy-MM-dd}," +
-                               $"{f.GetType().Name},{f.Salary},{f.Active}");
+                csv.AppendLine($"{f.Id},{f.Name},{f.GetType().Name},{f.Salary},{f.Active},{f.ContractEndDate:yyyy-MM-dd}");
             }
 
-            // Devolve o ficheiro para download
             var bytes = Encoding.UTF8.GetBytes(csv.ToString());
             return File(bytes, "text/csv", "funcionarios.csv");
         }

@@ -8,14 +8,16 @@ namespace adosmelhoresproject.src.Models
 
         public override decimal CalculatePayment(DateTime startDate, DateTime endDate)
         {
-            decimal baseValue = 3000;
+            decimal baseValue = 3000m; // Adicionado 'm' para ser decimal
 
             if (CompanyCar)
             {
-                this.Salary = baseValue + MonthlyBonus + 500;
+                // MonthlyBonus é int, mas ao somar com decimais (3000m e 500m), 
+                // o C# converte o int automaticamente para decimal.
+                this.Salary = baseValue + MonthlyBonus + 500m;
             }
             else
-            {            
+            {
                 this.Salary = baseValue + MonthlyBonus;
             }
 
