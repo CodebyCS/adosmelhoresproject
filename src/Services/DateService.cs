@@ -67,7 +67,7 @@ public class DateService
         return _currentDate;
     }
 
-    public void ForwardDay(IEmployeeService employeeService, ITransacaoService transacaoService)
+    public void ForwardDay(IEmployeeService employeeService, ITransactionService transacaoService)
     {
         DateTime dataAnterior = _currentDate;
         _currentDate = _currentDate.AddDays(1);
@@ -82,7 +82,7 @@ public class DateService
         OnDateChanged?.Invoke();
     }
     
-    private void ProcessPayroll(DateTime dataReferencia, IEmployeeService employeeService, ITransacaoService transacaoService)
+    private void ProcessPayroll(DateTime dataReferencia, IEmployeeService employeeService, ITransactionService transacaoService)
     {
         var employees = employeeService.GetAll().Where(f => f.Active).ToList();
 

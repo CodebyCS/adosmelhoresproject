@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Hosting;
 
 namespace adosmelhoresproject.src.Services
 {
-    public class TransactionService : ITransacaoService
+    public class TransactionService : ITransactionService
     {
         private readonly string _filePath;
         public TransactionService(IWebHostEnvironment env)

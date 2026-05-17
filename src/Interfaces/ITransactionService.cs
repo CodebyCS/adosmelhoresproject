@@ -1,7 +1,7 @@
 ﻿using adosmelhoresproject.src.Models;
 namespace adosmelhoresproject.src.Interfaces
 {
-    public interface ITransacaoService
+    public interface ITransactionService
     {
         List<Transaction> GetAll();
         void Add(Transaction t);

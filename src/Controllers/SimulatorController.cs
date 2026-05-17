@@ -8,10 +8,10 @@ namespace adosmelhoresproject.src.Controllers
     {
         private readonly DateService _dateService;
         private readonly IEmployeeService _service;
-        private readonly ITransacaoService _transacaoService; // Adicionado
+        private readonly ITransactionService _transacaoService; // Adicionado
 
         // No construtor, pedimos os 3 serviços
-        public SimulatorController(DateService dateService, IEmployeeService service, ITransacaoService transacaoService)
+        public SimulatorController(DateService dateService, IEmployeeService service, ITransactionService transacaoService)
         {
             _dateService = dateService;
             _service = service;
