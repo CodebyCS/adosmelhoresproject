@@ -9,5 +9,16 @@
     "Notas": null,
     "EmployeeId": 0,
     "EmployeeName": null
+  },
+  {
+    "Id": "ba7de43c",
+    "DataInicio": "2026-10-01T17:08:00",
+    "DataFim": "2026-12-31T17:08:00",
+    "NomeFormacao": "Tatata",
+    "HorasPorDia": 6,
+    "ValorReceita": 0,
+    "Notas": null,
+    "EmployeeId": 0,
+    "EmployeeName": null
   }
 ]

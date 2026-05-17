@@ -1,65 +1,43 @@
-using adosmelhoresproject.Models;
+using Microsoft.AspNetCore.Mvc;
 using adosmelhoresproject.src.Interfaces;
 using adosmelhoresproject.src.Services;
-using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
+using System.Linq;
 
 namespace adosmelhoresproject.src.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-        private readonly IEmployeeService _service;
+        private readonly IEmployeeService _employeeService;
+        private readonly IAllocationService _allocationService; // Interface do Carlos
         private readonly DateService _dateService;
 
-        public HomeController(ILogger<HomeController> logger, IEmployeeService service, DateService dateService)
+        public HomeController(IEmployeeService employeeService, IAllocationService allocationService, DateService dateService)
         {
-            _logger = logger;
-            _service = service;
+            _employeeService = employeeService;
+            _allocationService = allocationService;
             _dateService = dateService;
         }
 
         public IActionResult Index()
         {
-            //data boas vindas
-            var data = _dateService.GetCurrentDate();
-            ViewBag.DataSistema = data;
+            var today = _dateService.GetCurrentDate();
+            ViewBag.DataSistema = today;
 
-            // alarme
-            var funcionariosAtivos = _service.GetAll().Where(f => f.Active).ToList();
 
-            // Conta contratos que já venceram ou vencem na data atual
-            int qtdContratosExpirados = funcionariosAtivos.Count(f => f.ContractEndDate.Date <= data.Date);
+            var allEmployees = _employeeService.GetAll();
 
-            // Conta registos criminais que já venceram ou vencem na data atual
-            int qtdRegistosExpirados = funcionariosAtivos.Count(f => f.CriminalRecordDate.Date <= data.Date);
+            ViewBag.ContratosExpirar = allEmployees.Count(e => e.ContractEndDate.Date < today.Date);
+            ViewBag.RegistosExpirar = allEmployees.Count(e => e.CriminalRecordDate.Date < today.Date);
 
-            ViewBag.ContratosExpirar = qtdContratosExpirados;
-            ViewBag.RegistosExpirar = qtdRegistosExpirados;
+            var todasAlocacoes = _allocationService.GetAll();
 
-            // Deixando zerado já que as Inscrições Semanais vão ser removidas na Fase 1
-            ViewBag.InscricoesPendentes = 0;
-            ViewBag.NomeUtilizador = "Administrador";
+            var cursosAtivos = todasAlocacoes
+                .Where(a => a.DataInicio.Date <= today.Date && a.DataFim.Date >= today.Date)
+                .OrderBy(a => a.DataInicio)
+                .Take(4) 
+                .ToList();
 
-            // 4. Criar a lista para o Model
-            var listaAtividades = new List<ActivityViewModel>
-            {
-                new ActivityViewModel { Titulo = "Formação C#", Local = "Sala 1", Hora = "14:00", CorClasse = "border-primary" },
-                new ActivityViewModel { Titulo = "Reunião Geral", Local = "Auditório", Hora = "16:30", CorClasse = "border-success" }
-            };
-
-            return View(listaAtividades);
-        }
-
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return View(cursosAtivos); 
         }
     }
 }
