@@ -1,5 +1,5 @@
 ﻿@using adosmelhoresproject.src.Controllers
-@model IEnumerable<TransacaoDTO>
+@model IEnumerable<TransactionDTO>
 
 <div class="container-fluid py-4">
     <div class="row g-4">
@@ -41,15 +41,15 @@
                                 {
                                     <tr>
                                         <td class="text-muted small">@t.Id</td>
-                                        <td class="fw-bold">@t.Descricao</td>
-                                        <td>@t.Referencia</td>
-                                        <td class="small">@t.Data.ToShortDateString()</td>
-                                        <td class="@(t.Valor < 0 ? "text-danger" : "text-success") fw-bold">
-                                            @(t.Valor < 0 ? "-" : "+")€@Math.Abs(t.Valor).ToString("N2")
+                                        <td class="fw-bold">@t.Description</td>
+                                        <td>@t.Reference</td>
+                                        <td class="small">@t.Date.ToShortDateString()</td>
+                                        <td class="@(t.Value < 0 ? "text-danger" : "text-success") fw-bold">
+                                            @(t.Value < 0 ? "-" : "+")€@Math.Abs(t.Value).ToString("N2")
                                         </td>
                                         <td>
-                                            <span class="status-badge @(t.Estado == "Pago" || t.Estado == "Recebido" ? "bg-success-subtle text-success" : "bg-info-subtle text-info") px-2 py-1 rounded small">
-                                                @t.Estado
+                                            <span class="status-badge @(t.Status == "Pago" || t.Status == "Recebido" ? "bg-success-subtle text-success" : "bg-info-subtle text-info") px-2 py-1 rounded small">
+                                                @t.Status
                                             </span>
                                         </td>
                                     </tr>

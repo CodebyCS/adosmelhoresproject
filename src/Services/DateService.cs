@@ -98,12 +98,12 @@ public class DateService
             {
                 var pagamento = new Transaction
                 {
-                    Data = _currentDate,
+                    Date = _currentDate,
                     Valor = valorAPagar,
-                    Tipo = TipoTransacao.Despesa, 
-                    Descricao = $"Salário: {func.Name}",
-                    Referencia = func.Name,
-                    Estado = "Pago"
+                    Type = TransactionType.Despesa, 
+                    Description = $"Salário: {func.Name}",
+                    Reference = func.Name,
+                    Status = "Pago"
                 };
 
                 transacaoService.Add(pagamento);
