@@ -33,17 +33,25 @@ public class DateService
         }
         try
         {
-            // Leitura do arquivo JSON para obter a data simulada
             var jsonData = File.ReadAllText(_filePath);
-            // Desserialização do JSON para obter a data simulada
-            var appState = JsonSerializer.Deserialize<AppState>(jsonData);
-            _currentDate = appState?.CurrentDate ?? DateTime.Now;
+            var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+            var appState = JsonSerializer.Deserialize<AppState>(jsonData, options);
+
+            // Se o arquivo existir mas a data for inválida (ano 0001), resetamos para HOJE
+            if (appState == null || appState.CurrentDate.Year < 2000)
+            {
+                _currentDate = DateTime.Now;
+                SaveDate();
+            }
+            else
+            {
+                _currentDate = appState.CurrentDate;
+            }
         }
-        catch(Exception) 
-        { 
+        catch
+        {
             _currentDate = DateTime.Now;
         }
-
     }
 
     private void SaveDate()
@@ -92,9 +100,10 @@ public class DateService
                 {
                     Data = _currentDate,
                     Valor = valorAPagar,
-                    Tipo = TipoTransacao.Despesa,
-                    // 2. Usamos 'func.Name' e 'func.GetType()' em vez de 'employees'
-                    Descricao = $"Salário Mensal: {func.Name} ({func.GetType().Name})"
+                    Tipo = TipoTransacao.Despesa, // Usa o Enum que definiste
+                    Descricao = $"Salário: {func.Name}",
+                    Referencia = func.Name,
+                    Estado = "Pago"
                 };
 
                 transacaoService.Adicionar(pagamento);

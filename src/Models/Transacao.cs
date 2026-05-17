@@ -1,13 +1,17 @@
-﻿namespace adosmelhoresproject.src.Models;
-
-//Receita = 0 e Despesas = 1
-public enum TipoTransacao { Receita, Despesa }
-
-public class Transacao
+﻿namespace adosmelhoresproject.src.Models
 {
-    public Guid Id { get; set; } = Guid.NewGuid();
-    public DateTime Data { get; set; }
-    public decimal Valor { get; set; }
-    public TipoTransacao Tipo { get; set; }
-    public string Descricao { get; set; } = string.Empty;
+    public enum TipoTransacao { Receita, Despesa }
+
+    public class Transacao
+    {
+        public Guid Id { get; set; } = Guid.NewGuid();
+        public DateTime Data { get; set; }
+        public decimal Valor { get; set; }
+        public TipoTransacao Tipo { get; set; }
+        public string Descricao { get; set; } = string.Empty;
+
+        // Adiciona estas para compatibilidade com a interface que criámos
+        public string Referencia { get; set; } = "N/A";
+        public string Estado { get; set; } = "Concluído";
+    }
 }

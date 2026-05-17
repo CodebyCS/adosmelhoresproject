@@ -19,10 +19,28 @@ namespace adosmelhoresproject.src.Controllers
             _dateService = dateService;
         }
 
-        // Pagina Principal - dashboard com resumo geral
         public IActionResult Index()
         {
-            return View();
+            // 1. Preencher a Data (para o topo e para as boas-vindas)
+            var data = _dateService.GetCurrentDate();
+            ViewBag.DataSistema = data;
+
+            // 2. Preencher os números do gráfico
+            ViewBag.InscritosPorSemana = new int[] { 8, 5, 11, 4 };
+
+            // 3. Preencher Alertas (Simulado por agora)
+            ViewBag.ContratosExpirar = 2;
+            ViewBag.InscricoesPendentes = 4;
+            ViewBag.NomeUtilizador = "Administrador";
+
+            // 4. Criar a lista para o Model
+            var listaAtividades = new List<AtividadeViewModel>
+    {
+            new AtividadeViewModel { Titulo = "Formação C#", Local = "Sala 1", Hora = "14:00", CorClasse = "border-primary" },
+            new AtividadeViewModel { Titulo = "Reunião Geral", Local = "Auditório", Hora = "16:30", CorClasse = "border-success" }
+    };
+
+            return View(listaAtividades);
         }
 
         public IActionResult Privacy()

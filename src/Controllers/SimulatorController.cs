@@ -8,47 +8,43 @@ namespace adosmelhoresproject.src.Controllers
     {
         private readonly DateService _dateService;
         private readonly IEmployeeService _service;
+        private readonly ITransacaoService _transacaoService; // Adicionado
 
-        public SimulatorController(DateService dateService, IEmployeeService service)
+        // No construtor, pedimos os 3 serviços
+        public SimulatorController(DateService dateService, IEmployeeService service, ITransacaoService transacaoService)
         {
             _dateService = dateService;
             _service = service;
+            _transacaoService = transacaoService;
         }
 
-        // GET: /Simulador
-        // Mostra a data atual simulada
-        public IActionResult Index()
-        {
-            ViewBag.DataAtual = _dateService.GetCurrentDate();
-            return View();
-        }
-
-        // POST: /Simulador/AvancarDia
-        // Avança um dia e verifica alertas de contratos/registos expirados
         [HttpPost]
         public IActionResult AvancarDia()
         {
-            _dateService.AvancarDia();
+            // 1. Executa a lógica de avançar o dia e processar pagamentos
+            _dateService.AvancarDia(_service, _transacaoService);
 
             var dataAtual = _dateService.GetCurrentDate();
             var funcionarios = _service.GetAll();
 
-            // Verifica funcionários cujo contrato termina hoje
+            // 2. Calcula os alertas
             var contratosExpirados = funcionarios
                 .Where(f => f.ContractEndDate.Date == dataAtual.Date)
-                .ToList();
+                .Select(f => f.Name).ToList();
 
-            // Verifica funcionários cujo registo criminal expira hoje
             var registosExpirados = funcionarios
                 .Where(f => f.CriminalRecordDate.Date == dataAtual.Date)
-                .ToList();
+                .Select(f => f.Name).ToList();
 
-            ViewBag.DataAtual = dataAtual;
-            ViewBag.ContratosExpirados = contratosExpirados;
-            ViewBag.RegistosExpirados = registosExpirados;
-            ViewBag.TemAlertas = contratosExpirados.Any() || registosExpirados.Any();
-
-            return View("Index");
+            // 3. Devolve um objeto JSON com os resultados
+            return Json(new
+            {
+                sucesso = true,
+                novaData = dataAtual.ToString("dd/MM/yyyy"),
+                temAlertas = contratosExpirados.Any() || registosExpirados.Any(),
+                contratos = contratosExpirados,
+                registos = registosExpirados
+            });
         }
     }
 }

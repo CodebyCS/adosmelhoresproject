@@ -7,6 +7,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 // Project Services
+// No ficheiro Program.cs
+builder.Services.AddSingleton<DateService>();
 builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 builder.Services.AddScoped<ITransacaoService, TransacaoService>();
 
