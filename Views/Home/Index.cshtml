@@ -1,39 +1,15 @@
 ﻿@model List<adosmelhoresproject.Models.ActivityViewModel>
 @{
     ViewData["Title"] = "Dashboard";
-    var inscritos = ViewBag.InscritosPorSemana as int[] ?? new int[] { 0, 0, 0, 0 };
 }
 
 <div class="container-fluid py-4">
     <div class="row g-4 mb-4">
-        @* BOAS-VINDAS *@
-        <div class="col-lg-7">
-            <div class="custom-card p-4 h-100">
+        @* BOAS-VINDAS (Expandido para col-lg-12 após a limpeza do gráfico) *@
+        <div class="col-lg-12">
+            <div class="custom-card p-4 h-100 shadow-sm">
                 <h2 class="fw-bold text-dark">Bem-vindo, @ViewBag.NomeUtilizador!</h2>
                 <p class="text-secondary mb-0">Hoje é dia <strong>@(((DateTime)ViewBag.DataSistema).ToLongDateString())</strong></p>
-            </div>
-        </div>
-
-        @* GRÁFICO DINÂMICO *@
-        <div class="col-lg-5">
-            <div class="custom-card p-4">
-                <h6 class="fw-bold mb-4">Inscrições Semanais</h6>
-                <div class="chart-container">
-                    <div class="chart-y-axis">
-                        <span>0</span><span>4</span><span>8</span><span>12</span>
-                    </div>
-                    @for (int i = 0; i < inscritos.Length; i++)
-                    {
-                        var altura = (inscritos[i] * 100 / 12);
-                        <div class="bar @(i == 2 ? "bar-primary shadow-sm" : "bar-light")"
-                             style="height: @(altura)%; width: 18%;"
-                             title="Inscrições: @inscritos[i]">
-                        </div>
-                    }
-                </div>
-                <div class="d-flex justify-content-between mt-2 ps-5 pe-2 text-muted fw-bold small">
-                    <span>Sem 1</span><span>Sem 2</span><span>Sem 3</span><span>Sem 4</span>
-                </div>
             </div>
         </div>
     </div>
@@ -41,18 +17,28 @@
     <div class="row g-4">
         @* ALERTAS *@
         <div class="col-lg-4">
-            <div class="custom-card p-4 h-100">
+            <div class="custom-card p-4 h-100 shadow-sm">
                 <h6 class="fw-bold mb-3">Alertas e Notificações</h6>
+                
                 @if (ViewBag.ContratosExpirar > 0)
                 {
                     <div class="alert alert-danger d-flex align-items-center py-2 border-0 shadow-sm mb-2" style="font-size: 0.85rem; background-color: #fee2e2; color: #991b1b;">
-                        <i class="bi bi-exclamation-triangle-fill me-2"></i> @ViewBag.ContratosExpirar Contratos a expirar
+                        <i class="bi bi-exclamation-triangle-fill me-2"></i> @ViewBag.ContratosExpirar Contrato(s) expirado(s)
                     </div>
                 }
-                @if (ViewBag.InscricoesPendentes > 0)
+                
+                @if (ViewBag.RegistosExpirar > 0)
                 {
-                    <div class="alert alert-warning d-flex align-items-center py-2 border-0 shadow-sm" style="font-size: 0.85rem; background-color: #fef3c7; color: #92400e;">
-                        <i class="bi bi-info-circle-fill me-2"></i> @ViewBag.InscricoesPendentes Inscrições pendentes
+                    <div class="alert alert-warning d-flex align-items-center py-2 border-0 shadow-sm mb-2" style="font-size: 0.85rem; background-color: #fef3c7; color: #92400e;">
+                        <i class="bi bi-shield-exclamation me-2"></i> @ViewBag.RegistosExpirar Registo(s) Criminal(is) expirado(s)
+                    </div>
+                }
+
+                @* Mensagem de sucesso caso não existam pendências *@
+                @if (ViewBag.ContratosExpirar == 0 && ViewBag.RegistosExpirar == 0)
+                {
+                    <div class="alert alert-success d-flex align-items-center py-2 border-0 shadow-sm mb-2" style="font-size: 0.85rem; background-color: #d1fae5; color: #065f46;">
+                        <i class="bi bi-check-circle-fill me-2"></i> Sem pendências no momento
                     </div>
                 }
             </div>
@@ -60,16 +46,14 @@
 
         @* AÇÕES RÁPIDAS *@
         <div class="col-lg-4">
-            <div class="custom-card p-4 h-100">
+            <div class="custom-card p-4 h-100 shadow-sm">
                 <h6 class="fw-bold mb-3">Ações Rápidas</h6>
                 <div class="d-flex gap-2">
-                    @* Se o teu controller se chama EmployeeController, o asp-controller é "Employee" *@
                     <a asp-controller="Employee" asp-action="Index" class="btn btn-primary flex-fill py-3 d-flex flex-column align-items-center border-0 shadow-sm text-decoration-none">
                         <i class="bi bi-person-plus fs-2 mb-1 text-white"></i>
                         <span class="small fw-bold text-white">Add Funcionário</span>
                     </a>
 
-                    @* Se o teu controller se chama AllocationController, o asp-controller é "Allocation" *@
                     <a asp-controller="Allocation" asp-action="Index" class="btn btn-outline-primary flex-fill py-3 d-flex flex-column align-items-center shadow-sm text-decoration-none">
                         <i class="bi bi-calendar-event fs-2 mb-1"></i>
                         <span class="small fw-bold">Agendar</span>
@@ -80,7 +64,7 @@
 
         @* ATIVIDADES *@
         <div class="col-lg-4">
-            <div class="custom-card p-4 h-100">
+            <div class="custom-card p-4 h-100 shadow-sm">
                 <h6 class="fw-bold mb-3">Próximas Atividades</h6>
                 @foreach (var atividade in Model)
                 {

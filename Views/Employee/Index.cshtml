@@ -17,7 +17,21 @@
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <h5 class="fw-bold m-0 text-dark">Diretório de Funcionários</h5>
                     <div class="d-flex gap-2">
-                        <input type="text" id="pesquisaNome" class="form-control form-control-sm" placeholder="Pesquisar..." style="width: 200px;">
+                        @* BOTÕES DE FILTRO REQUISITOS 2.c e 2.d *@
+                        <a asp-controller="Employee" asp-action="Index"
+                               class="btn btn-sm @(string.IsNullOrEmpty(ViewBag.FiltroAtual) ? "btn-primary shadow-sm" : "btn-outline-primary")">
+                            Todos
+                        </a>
+                        <a asp-controller="Employee" asp-action="Index" asp-route-filtro="contratos_validos"
+                               class="btn btn-sm @(ViewBag.FiltroAtual == "contratos_validos" ? "btn-primary shadow-sm" : "btn-outline-primary")">
+                            Contratos Válidos
+                        </a>
+                        <a asp-controller="Employee" asp-action="Index" asp-route-filtro="registos_expirados"
+                               class="btn btn-sm @(ViewBag.FiltroAtual == "registos_expirados" ? "btn-primary shadow-sm" : "btn-outline-primary")">
+                            RC Expirados
+                        </a>
+
+                        <input type="text" id="pesquisaNome" class="form-control form-control-sm ms-2" placeholder="Pesquisar..." style="width: 200px;">
                     </div>
                 </div>
 
@@ -40,13 +54,14 @@
                                     <td class="fw-bold">@f.Name</td>
                                     <td><span class="badge bg-light text-dark border">@f.GetType().Name</span></td>
                                     <td>
-                                        @if (f.CriminalRecordDate.AddYears(1) > (DateTime)ViewBag.CurrentDate)
+                                        @* CORREÇÃO DE BUG: Comparação direta de datas para manter coerência com o Service e o Simulador *@
+                                        @if (f.CriminalRecordDate.Date >= ((DateTime)ViewBag.CurrentDate).Date)
                                         {
-                                            <span class="badge bg-success-subtle text-success">Válido</span>
+                                            <span class="badge bg-success-subtle text-success border border-success-subtle">Válido</span>
                                         }
                                         else
                                         {
-                                            <span class="badge bg-danger-subtle text-danger">Expirado</span>
+                                            <span class="badge bg-danger-subtle text-danger border border-danger-subtle">Expirado</span>
                                         }
                                     </td>
                                     <td class="text-end">

@@ -18,21 +18,35 @@ namespace adosmelhoresproject.src.Controllers
             _service = service;
             _dateService = dateService;
         }
-
         // GET: /Employee
-        public IActionResult Index()
+        public IActionResult Index(string filtro = null)
         {
-            var employees = _service.GetAll();
             var today = _dateService.GetCurrentDate();
+            List<Employee> employees;
+
+            if (filtro == "contratos_validos")
+            {
+                employees = _service.GetValidContracts(today);
+            }
+            else if (filtro == "registos_expirados")
+            {
+                employees = _service.GetCriminalRecordExpired(today);
+            }
+            else
+            {
+                employees = _service.GetAll();
+            }
 
             ViewBag.CurrentDate = today;
+            ViewBag.FiltroAtual = filtro; 
 
-            // Dados reais calculados a partir do JSON
-            ViewBag.ExpiredContracts = employees.Count(e => e.ContractEndDate < today);
-            ViewBag.ExpiredCriminalRecords = employees.Count(e => e.CriminalRecordDate.AddYears(1) < today);
+
+            var allEmployees = _service.GetAll();
+            ViewBag.ExpiredContracts = allEmployees.Count(e => e.ContractEndDate.Date < today.Date);
+            ViewBag.ExpiredCriminalRecords = allEmployees.Count(e => e.CriminalRecordDate.Date < today.Date);
 
             decimal totalSalarial = 0;
-            foreach (var e in employees.Where(emp => emp.Active))
+            foreach (var e in allEmployees.Where(emp => emp.Active))
             {
                 totalSalarial += e.Salary;
                 if (e is Director diretor)
@@ -42,7 +56,7 @@ namespace adosmelhoresproject.src.Controllers
             }
             ViewBag.TotalMonthlyExpense = totalSalarial;
 
-            return View(employees);
+            return View(employees); 
         }
 
         // POST: /Employee/Criar
