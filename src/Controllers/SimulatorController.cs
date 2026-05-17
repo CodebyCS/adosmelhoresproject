@@ -2,6 +2,7 @@
 using adosmelhoresproject.src.Interfaces;
 using adosmelhoresproject.src.Services;
 using adosmelhoresproject.src.Models;
+using System.Linq;
 
 namespace adosmelhoresproject.src.Controllers
 {
@@ -10,12 +11,14 @@ namespace adosmelhoresproject.src.Controllers
         private readonly DateService _dateService;
         private readonly IEmployeeService _service;
         private readonly ITransactionService _transacaoService;
+        private readonly IAllocationService _allocationService; 
 
-        public SimulatorController(DateService dateService, IEmployeeService service, ITransactionService transacaoService)
+        public SimulatorController(DateService dateService, IEmployeeService service, ITransactionService transacaoService, IAllocationService allocationService)
         {
             _dateService = dateService;
             _service = service;
             _transacaoService = transacaoService;
+            _allocationService = allocationService;
         }
 
         [HttpPost]
@@ -34,9 +37,9 @@ namespace adosmelhoresproject.src.Controllers
             var contratosExpirados = new List<string>();
             var registosExpirados = new List<string>();
 
+
             foreach (var func in funcionariosAtivos)
             {
-
                 if (func.CriminalRecordDate.Date == dataAtual.Date)
                 {
                     registosExpirados.Add(func.Name);
@@ -47,13 +50,64 @@ namespace adosmelhoresproject.src.Controllers
                     if (func.ContractEndDate.Date == dataAtual.Date)
                     {
                         contratosExpirados.Add(func.Name);
+                        var inicioMes = new DateTime(dataAtual.Year, dataAtual.Month, 1);
+                        decimal valorProporcional = func.CalculatePayment(inicioMes, dataAtual);
+
+                        if (valorProporcional > 0)
+                        {
+                            _transacaoService.Add(new Transaction
+                            {
+                                Date = dataAtual,
+                                Valor = valorProporcional,
+                                Type = TransactionType.Expense, 
+                                Description = $"Acerto Fim de Contrato: {func.Name}",
+                                Reference = func.Name,
+                                Status = "Pago"
+                            });
+                        }
                     }
 
-                    func.Active = false;
+                    func.Active = false; 
+                    if (_service is EmployeeService serviceJson) serviceJson.Update(func);
+                }
+            }
 
-                    if (_service is EmployeeService serviceJson)
+            var alocacoes = _allocationService.GetAll();
+            foreach (var alocacao in alocacoes)
+            {
+                if (alocacao.DataFim.Date == dataAtual.Date)
+                {
+                    
+                    if (alocacao.ValorReceita > 0)
                     {
-                        serviceJson.Update(func);
+                        _transacaoService.Add(new Transaction
+                        {
+                            Date = dataAtual,
+                            Valor = alocacao.ValorReceita,
+                            Type = TransactionType.Income, 
+                            Description = $"Faturação Formação: {alocacao.NomeFormacao}",
+                            Reference = $"Alocação #{alocacao.Id}",
+                            Status = "Recebido"
+                        });
+                    }
+
+                    var formador = _service.GetAll().OfType<Trainer>().FirstOrDefault(t => t.Id == alocacao.EmployeeId);
+                    if (formador != null)
+                    {
+                        decimal salarioFormadorCurso = formador.CalculatePayment(alocacao.DataInicio, alocacao.DataFim);
+
+                        if (salarioFormadorCurso > 0)
+                        {
+                            _transacaoService.Add(new Transaction
+                            {
+                                Date = dataAtual,
+                                Valor = salarioFormadorCurso,
+                                Type = TransactionType.Expense,
+                                Description = $"Pagamento Formador (Curso: {alocacao.NomeFormacao})",
+                                Reference = formador.Name,
+                                Status = "Pago"
+                            });
+                        }
                     }
                 }
             }
@@ -68,20 +122,21 @@ namespace adosmelhoresproject.src.Controllers
             });
         }
 
-        // Método privado trazido do DateService para o local correto
         private void ProcessPayroll(DateTime ultimoDiaMesAnterior, List<Employee> funcionarios)
         {
             var primeiroDiaMesAnterior = new DateTime(ultimoDiaMesAnterior.Year, ultimoDiaMesAnterior.Month, 1);
 
             foreach (var func in funcionarios)
             {
+                if (func is Trainer) continue;
+
                 decimal valorAPagar = func.CalculatePayment(primeiroDiaMesAnterior, ultimoDiaMesAnterior);
 
                 if (valorAPagar > 0)
                 {
                     var pagamento = new Transaction
                     {
-                        Date = ultimoDiaMesAnterior.AddDays(1), // Paga no 1º dia do novo mês
+                        Date = ultimoDiaMesAnterior.AddDays(1), 
                         Valor = valorAPagar,
                         Type = TransactionType.Expense,
                         Description = $"Salário: {func.Name}",
