@@ -3,7 +3,8 @@ namespace adosmelhoresproject.src.Models
     public class Trainer : Employee
     {
         public string TeachingArea { get; set; }
-        public string Availability { get; set; }
+        public enum AvailabilityEnum { Laboral, PosLaboral, Ambas }
+        public AvailabilityEnum AvailabilityTrainer { get; set; }
         public decimal HourlyRate { get; set; }
 
         public override decimal CalculatePayment(DateTime startDate, DateTime endDate)
