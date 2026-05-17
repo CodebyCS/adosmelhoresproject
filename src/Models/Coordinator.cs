@@ -2,9 +2,9 @@ namespace adosmelhoresproject.src.Models
 {
     public class Coordinator : Employee
     {
-        public int FormadorId { get; set; }
+        public int TrainerId { get; set; }
 
-        public List<Trainer> FormadoresAssociados { get; set; } = new List<Trainer>();
+        public List<Trainer> AffiliatedTrainers { get; set; } = new List<Trainer>();
 
         public override decimal CalculatePayment(DateTime startDate, DateTime endDate)
         {
