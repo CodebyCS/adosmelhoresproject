@@ -12,6 +12,8 @@ namespace adosmelhoresproject.src.Interfaces
 
         void ChangeContract(int id, DateTime novaData);
 
+        void Update(Employee f);
+
         List<Employee> GetValidContracts(DateTime dataAtual);
 
         List<Employee> GetCriminalRecordExpired(DateTime dataAtual);

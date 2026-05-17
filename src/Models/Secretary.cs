@@ -1,5 +1,7 @@
 using adosmelhoresproject.src.Models;
 
+namespace adosmelhoresproject.src.Models;
+
 public class Secretary : Employee
 {
     public string DirectorName { get; set; }

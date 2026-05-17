@@ -10,18 +10,8 @@ namespace adosmelhoresproject.src.Models
         {
             decimal baseValue = 3000m; // Adicionado 'm' para ser decimal
 
-            if (CompanyCar)
-            {
-                // MonthlyBonus é int, mas ao somar com decimais (3000m e 500m), 
-                // o C# converte o int automaticamente para decimal.
-                this.Salary = baseValue + MonthlyBonus + 500m;
-            }
-            else
-            {
-                this.Salary = baseValue + MonthlyBonus;
-            }
-
-            return this.Salary;
+            decimal bonus = CompanyCar ? MonthlyBonus + 500m : MonthlyBonus; // Bônus adicional se tiver carro da empresa
+            return baseValue + bonus;
         }
     }
 }
