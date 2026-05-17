@@ -9,7 +9,8 @@ public class Secretary : Employee
 
     public override decimal CalculatePayment(DateTime startDate, DateTime endDate)
     {
-        // Exemplo: Retorna o salário base proporcional ou fixo
-        return Salary;
+        int daysWorked = (endDate - startDate).Days + 1;
+        decimal dailyRate = Salary / 30;
+        return dailyRate * daysWorked;
     }
 }
