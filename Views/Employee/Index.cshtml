@@ -1,0 +1,539 @@
+﻿@model IEnumerable<adosmelhoresproject.src.Models.Employee>
+@using adosmelhoresproject.src.Models
+@{
+    ViewData["Title"] = "Gestão de Funcionários";
+    
+    // Listas auxiliares filtradas para alimentar os selects dinâmicos
+    var listaFormadores = Model.OfType<Trainer>().ToList();
+    var listaDiretores = Model.OfType<Director>().ToList();
+}
+
+<div class="container-fluid py-4">
+    <div class="row g-4">
+
+        @* COLUNA ESQUERDA: LISTA *@
+        <div class="col-lg-8">
+            <div class="custom-card mb-4 p-4 bg-white shadow-sm rounded border">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h5 class="fw-bold m-0 text-dark">Diretório de Funcionários</h5>
+                    <div class="d-flex gap-2">
+                        @* BOTÕES DE FILTRO REQUISITOS 2.c e 2.d *@
+                        <a asp-controller="Employee" asp-action="Index"
+                               class="btn btn-sm @(string.IsNullOrEmpty(ViewBag.FiltroAtual) ? "btn-primary shadow-sm" : "btn-outline-primary")">
+                            Todos
+                        </a>
+                        <a asp-controller="Employee" asp-action="Index" asp-route-filtro="contratos_validos"
+                               class="btn btn-sm @(ViewBag.FiltroAtual == "contratos_validos" ? "btn-primary shadow-sm" : "btn-outline-primary")">
+                            Contratos Válidos
+                        </a>
+                        <a asp-controller="Employee" asp-action="Index" asp-route-filtro="registos_expirados"
+                               class="btn btn-sm @(ViewBag.FiltroAtual == "registos_expirados" ? "btn-primary shadow-sm" : "btn-outline-primary")">
+                            RC Expirados
+                        </a>
+
+                        <input type="text" id="pesquisaNome" class="form-control form-control-sm ms-2" placeholder="Pesquisar..." style="width: 200px;">
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table align-middle">
+                        <thead>
+                            <tr class="text-muted small">
+                                <th>ID</th>
+                                <th>NOME</th>
+                                <th>FUNÇÃO</th>
+                                <th>ESTADO RC</th>
+                                <th>ESTADO CONTRATO</th>
+                                <th class="text-end">AÇÕES</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var f in Model)
+                            {
+                                <tr>
+                                    <td class="text-muted small">#@f.Id</td>
+                                    <td class="fw-bold">@f.Name</td>
+                                    <td><span class="badge bg-light text-dark border">@f.GetType().Name</span></td>
+                                    
+                                    @* BADGE: REGISTO CRIMINAL *@
+                                    <td>
+                                        @if (f.CriminalRecordDate.Date >= ((DateTime)ViewBag.CurrentDate).Date)
+                                        {
+                                            <span class="badge bg-success-subtle text-success border border-success-subtle">Válido</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-danger-subtle text-danger border border-danger-subtle">Expirado</span>
+                                        }
+                                    </td>
+
+                                    @* BADGE: ESTADO DO CONTRATO *@
+                                    <td>
+                                        @if (f.ContractEndDate.Date >= ((DateTime)ViewBag.CurrentDate).Date)
+                                        {
+                                            <span class="badge bg-success-subtle text-success border border-success-subtle">Ativo</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-danger-subtle text-danger border border-danger-subtle">Expirado</span>
+                                        }
+                                    </td>
+
+                                    <td class="text-end">
+                                        <div class="btn-group shadow-sm">
+                                            @* BOTÃO EDITAR COM DATA-ATTRIBUTES (INCLUINDO SALÁRIO) *@
+                                            <button type="button" class="btn btn-sm btn-outline-secondary" title="Editar Detalhes"
+                                                    data-id="@f.Id"
+                                                    data-nome="@f.Name"
+                                                    data-salary="@f.Salary"
+                                                    data-contrato="@f.ContractEndDate.ToString("yyyy-MM-dd")"
+                                                    data-tipo="@f.GetType().Name"
+                                                    data-hours="@(f is Director ? ((Director)f).HoursExemption.ToString().ToLower() : "")"
+                                                    data-bonus="@(f is Director ? ((Director)f).MonthlyBonus : 0)"
+                                                    data-car="@(f is Director ? ((Director)f).CompanyCar.ToString().ToLower() : "false")"
+                                                    data-rate="@(f is Trainer ? ((Trainer)f).HourlyRate : 0)"
+                                                    data-teaching="@(f is Trainer ? ((Trainer)f).TeachingArea : "")"
+                                                    data-area="@(f is Secretary ? ((Secretary)f).Area : "")"
+                                                    data-director="@(f is Secretary ? ((Secretary)f).DirectorName : "")"
+                                                    onclick="abrirModalEdicao(this)">
+                                                <i class="bi bi-pencil-square"></i>
+                                            </button>
+
+                                            @if (f is Trainer t)
+                                            {
+                                                <button type="button" class="btn btn-sm btn-outline-primary" title="Calcular Pagamento"
+                                                        onclick="abrirModalPagamento('@f.Id', '@f.Name', '@t.HourlyRate')">
+                                                    <i class="bi bi-calculator"></i>
+                                                </button>
+                                            }
+
+                                            <button type="button" class="btn btn-sm btn-light border" onclick="abrirModalRC('@f.Id', '@f.Name')" title="Atualizar Registo Criminal">
+                                                <i class="bi bi-shield-check"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            @* CARDS DE RESUMO *@
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="p-3 bg-white shadow-sm rounded border-start border-4 border-warning h-100">
+                        <h6 class="fw-bold mb-3 text-primary small">ALERTAS</h6>
+                        <p class="mb-1 small">Contratos Expirados: <span class="badge bg-danger">@ViewBag.ExpiredContracts</span></p>
+                        <p class="mb-0 small">Registo Criminal Expirado: <span class="badge bg-warning text-dark">@ViewBag.ExpiredCriminalRecords</span></p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="p-3 bg-white shadow-sm rounded border-start border-4 border-success d-flex flex-column justify-content-between h-100">
+                        <div>
+                            <h6 class="fw-bold mb-2 small text-muted">FOLHA SALARIAL MENSAL</h6>
+                            <h3 class="text-success fw-bold mb-3">€ @ViewBag.TotalMonthlyExpense.ToString("N2")</h3>
+                        </div>
+                        <div>
+                            <a asp-controller="Employee" asp-action="ExportarCSV" class="btn btn-sm btn-outline-success w-100 fw-bold">
+                                <i class="bi bi-download me-1"></i> Exportar Dados para CSV
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @* COLUNA DIREITA: FORMULÁRIO DE CRIAÇÃO *@
+        <div class="col-lg-4">
+            <div class="p-4 bg-white shadow-sm rounded border-top border-primary border-4">
+                <h5 class="fw-bold mb-4">Novo Funcionário</h5>
+                <form asp-controller="Employee" asp-action="Criar" method="post">
+                    <div class="mb-3">
+                        <label class="form-label text-muted small fw-bold">Nome Completo</label>
+                        <input type="text" name="name" class="form-control" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label text-muted small fw-bold">Função</label>
+                        <select id="tipoSelect" name="type" class="form-select" onchange="atualizarCamposDinamicos()">
+                            <option value="Secretaria">Secretaria</option>
+                            <option value="Director">Diretor</option>
+                            <option value="Trainer">Formador</option>
+                            <option value="Coordinator">Coordenador</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label text-muted small fw-bold">Salário Base (€)</label>
+                        <input type="number" name="salary" class="form-control" value="1000" step="0.01">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label text-muted small fw-bold">Fim de Contrato</label>
+                        <input type="date" name="ContractEndDate" class="form-control" required value="@(((DateTime)ViewBag.CurrentDate).AddYears(1).ToString("yyyy-MM-dd"))">
+                    </div>
+
+                    <div id="camposEspecificos" class="p-3 mb-4 rounded bg-light border border-dashed">
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100 fw-bold shadow">
+                        <i class="bi bi-save me-2"></i>Guardar
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@* --- TEMPLATES ESCONDIDOS EM HTML --- *@
+<div id="templateSecretaria" style="display:none;">
+    <div class="mb-2">
+        <label class="small text-muted fw-bold">Setor / Área</label>
+        <input type="text" name="Area" class="form-control form-control-sm" placeholder="Ex: Financeiro">
+    </div>
+    <div class="mb-2">
+        <label class="small text-muted fw-bold">Diretor Associado</label>
+        <select name="DirectorName" class="form-select form-select-sm">
+            <option value="">-- Sem Diretor --</option>
+            @foreach (var d in listaDiretores)
+            {
+                <option value="@d.Name">@d.Name</option>
+            }
+        </select>
+    </div>
+</div>
+
+<div id="templateCoordenador" style="display:none;">
+    <div class="mb-2">
+        <label class="small text-muted fw-bold">Associar Formadores</label>
+        <div class="p-2 bg-white border rounded shadow-sm" style="max-height: 150px; overflow-y: auto;">
+            @if (listaFormadores.Any())
+            {
+                foreach (var f in listaFormadores)
+                {
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="SelectedTrainerIds" value="@f.Id" id="f_@f.Id">
+                        <label class="form-check-label small" for="f_@f.Id">@f.Name</label>
+                    </div>
+                }
+            }
+            else
+            {
+                <p class="text-muted small m-0">Nenhum formador disponível.</p>
+            }
+        </div>
+    </div>
+</div>
+
+<div id="templateSecretariaEdicao" style="display:none;">
+    <select id="editSelectDirectorHelper" class="form-select">
+        <option value="">-- Sem Diretor --</option>
+        @foreach (var d in listaDiretores)
+        {
+            <option value="@d.Name">@d.Name</option>
+        }
+    </select>
+</div>
+
+<div id="templateCoordenadorEdicao" style="display:none;">
+    <div class="mb-2">
+        <label class="small text-muted fw-bold">Formadores Associados</label>
+        <div class="p-2 bg-white border rounded shadow-sm" style="max-height: 150px; overflow-y: auto;">
+            @foreach (var f in listaFormadores)
+            {
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="SelectedTrainerIds" value="@f.Id" id="edit_f_@f.Id">
+                    <label class="form-check-label small" for="edit_f_@f.Id">@f.Name</label>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+
+@* --- MODAIS --- *@
+
+@* 1. REGISTO CRIMINAL *@
+<div class="modal fade" id="modalRC" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow">
+            <form asp-controller="Employee" asp-action="AlterarRegistoCriminal" method="post">
+                <input type="hidden" name="id" id="modalRCId" />
+                <div class="modal-header bg-light">
+                    <h6 class="modal-title fw-bold">Atualizar Registo Criminal</h6>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body py-4">
+                    <p class="small text-muted">Funcionário: <strong id="modalRCNome" class="text-dark"></strong></p>
+                    <label class="form-label small fw-bold text-muted">Nova Data de Emissão/Validade</label>
+                    <input type="date" name="novaData" class="form-control" required value="@(((DateTime)ViewBag.CurrentDate).ToString("yyyy-MM-dd"))" />
+                </div>
+                <div class="modal-footer bg-light">
+                    <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                    <button type="submit" class="btn btn-sm btn-primary">Gravar Alteração</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@* 2. MODAL DE EDIÇÃO GLOBAL (CAMPO DE SALÁRIO ADICIONADO) *@
+<div class="modal fade" id="modalEdicao" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content border-0 shadow">
+            <form asp-controller="Employee" asp-action="Editar" method="post">
+                <input type="hidden" name="Id" id="editModalId" />
+                <div class="modal-header bg-dark text-white">
+                    <h5 class="modal-title fw-bold" id="editModalTitulo">Editar Detalhes</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <label class="small fw-bold text-muted">Nome</label>
+                            <input type="text" class="form-control" id="editModalNome" name="Name" required>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="small fw-bold text-muted">Salário Base (€)</label>
+                            <input type="number" class="form-control" id="editModalSalario" name="Salary" step="0.01" required>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="small fw-bold text-muted">Fim de Contrato</label>
+                            <input type="date" class="form-control" id="editModalContrato" name="ContractEndDate" required>
+                        </div>
+                        <div class="col-md-12">
+                            <label class="small fw-bold text-muted">Função (Bloqueado)</label>
+                            <input type="text" class="form-control bg-light" id="editModalTipo" name="Type" readonly>
+                        </div>
+                    </div>
+                    
+                    <hr class="my-4" />
+                    
+                    <div id="camposEspecificosEdicao" class="p-3 rounded bg-light border">
+                    </div>
+                </div>
+                <div class="modal-footer bg-light">
+                    <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-sm btn-primary px-4">Guardar Alterações</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@* 3. MODAL DE CÁLCULO DE PAGAMENTO *@
+<div class="modal fade" id="modalPagamento" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow border-top border-primary border-4">
+            <div class="modal-header bg-light">
+                <h6 class="modal-title fw-bold text-primary">Calcular Pagamento (6h/dia)</h6>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p class="small text-muted mb-3">Formador: <strong id="calcModalNome" class="text-dark"></strong></p>
+                <input type="hidden" id="calcModalValorHora" />
+                
+                <div class="row mb-3">
+                    <div class="col">
+                        <label class="small fw-bold text-muted">Início</label>
+                        <input type="date" class="form-control form-control-sm" id="calcDataInicio" value="@(((DateTime)ViewBag.CurrentDate).ToString("yyyy-MM-dd"))">
+                    </div>
+                    <div class="col">
+                        <label class="small fw-bold text-muted">Fim</label>
+                        <input type="date" class="form-control form-control-sm" id="calcDataFim" value="@(((DateTime)ViewBag.CurrentDate).AddDays(1).ToString("yyyy-MM-dd"))">
+                    </div>
+                </div>
+                <div class="bg-light p-3 rounded text-center border">
+                    <h2 class="text-primary fw-bold mb-0" id="calcModalResultado">€ 0,00</h2>
+                    <small class="text-muted">Valor Base: €<span id="calcModalLblValorHora">0</span>/h</small>
+                </div>
+            </div>
+            <div class="modal-footer bg-light">
+                <button type="button" class="btn btn-sm btn-primary w-100 fw-bold" onclick="executarCalculoPagamento()">Calcular Montante</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // --- GESTÃO DE FORMULÁRIO LATERAL DE CRIAÇÃO ---
+        function atualizarCamposDinamicos() {
+            const tipo = document.getElementById("tipoSelect").value;
+            const container = document.getElementById("camposEspecificos");
+            let html = `<p class="extra-small fw-bold text-primary text-uppercase mb-2" style="font-size: 0.7rem;">Extras para ${tipo}</p>`;
+
+            if (tipo === "Director") {
+                html += `
+                    <div class="form-check form-switch mb-2">
+                        <input class="form-check-input" type="checkbox" name="HoursExemption" value="true" id="exemption">
+                        <label class="form-check-label small" for="exemption">Isenção Horário</label>
+                    </div>
+                    <div class="form-check form-switch mb-2">
+                        <input class="form-check-input" type="checkbox" name="CompanyCar" value="true" id="companyCar">
+                        <label class="form-check-label small" for="companyCar">Carro da Empresa</label>
+                    </div>
+                    <div class="mb-2">
+                        <label class="small text-muted">Bónus Mensal (€)</label>
+                        <input type="number" name="MonthlyBonus" class="form-control form-control-sm" value="0">
+                    </div>`;
+            } else if (tipo === "Trainer") {
+                html += `
+                    <div class="mb-2">
+                        <label class="small text-muted">Área de Lecionação</label>
+                        <input type="text" name="TeachingArea" class="form-control form-control-sm" placeholder="Ex: C#">
+                    </div>
+                    <div class="mb-2">
+                        <label class="small text-muted">Valor/Hora (€)</label>
+                        <input type="number" name="HourlyRate" class="form-control form-control-sm" value="25" step="0.01">
+                    </div>
+                    <div class="mb-2">
+                        <label class="small text-muted">Disponibilidade</label>
+                        <select name="Availability" class="form-select form-select-sm">
+                            <option value="Laboral">Laboral</option>
+                            <option value="Pós-Laboral">Pós-Laboral</option>
+                            <option value="Ambas" selected>Ambas</option>
+                        </select>
+                    </div>`;
+            } else if (tipo === "Coordinator") {
+                html += document.getElementById("templateCoordenador").innerHTML;
+            } else if (tipo === "Secretaria") {
+                html += document.getElementById("templateSecretaria").innerHTML;
+            }
+            container.innerHTML = html;
+        }
+
+        // --- MODAL 1: REGISTO CRIMINAL ---
+        function abrirModalRC(id, nome) {
+            document.getElementById("modalRCNome").innerText = nome;
+            document.getElementById("modalRCId").value = id;
+            var modal = new bootstrap.Modal(document.getElementById('modalRC'));
+            modal.show();
+        }
+
+        // --- MODAL 2: GESTÃO DO MODAL DE EDIÇÃO DINÂMICA (CORRIGIDO COM SALÁRIO) ---
+        function abrirModalEdicao(btnElement) {
+            const id = btnElement.getAttribute('data-id');
+            const nome = btnElement.getAttribute('data-nome');
+            const contratoDate = btnElement.getAttribute('data-contrato');
+            const tipo = btnElement.getAttribute('data-tipo');
+            const hoursExemption = btnElement.getAttribute('data-hours');
+            const monthlyBonus = btnElement.getAttribute('data-bonus');
+            const companyCar = btnElement.getAttribute('data-car');
+            const teachingArea = btnElement.getAttribute('data-teaching');
+            const area = btnElement.getAttribute('data-area');
+            const directorName = btnElement.getAttribute('data-director');
+            
+            // Tratamento de casas decimais para inputs HTML5
+            const salario = (btnElement.getAttribute('data-salary') || "0").replace(',', '.');
+            const hourlyRate = (btnElement.getAttribute('data-rate') || "0").replace(',', '.');
+
+            document.getElementById("editModalId").value = id;
+            document.getElementById("editModalNome").value = nome;
+            document.getElementById("editModalSalario").value = salario; // Popula o novo input de salário
+            document.getElementById("editModalContrato").value = contratoDate;
+            document.getElementById("editModalTipo").value = tipo;
+            document.getElementById("editModalTitulo").innerText = `Editar ${tipo}: ${nome}`;
+
+            const containerEdicao = document.getElementById("camposEspecificosEdicao");
+            let htmlExtra = "";
+
+            if (tipo === "Director") {
+                const checkedHours = hoursExemption === "true" ? "checked" : "";
+                const checkedCar = companyCar === "true" ? "checked" : "";
+                htmlExtra = `
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-check form-switch mt-2">
+                                <input class="form-check-input" type="checkbox" name="HoursExemption" value="true" id="editExemption" ${checkedHours}>
+                                <label class="form-check-label small fw-bold" for="editExemption">Isenção Horário</label>
+                            </div>
+                            <div class="form-check form-switch mt-2">
+                                <input class="form-check-input" type="checkbox" name="CompanyCar" value="true" id="editCompanyCar" ${checkedCar}>
+                                <label class="form-check-label small fw-bold" for="editCompanyCar">Carro da Empresa</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="small fw-bold text-muted">Bónus Mensal (€)</label>
+                            <input type="number" name="MonthlyBonus" class="form-control" value="${monthlyBonus}">
+                        </div>
+                    </div>`;
+            } else if (tipo === "Trainer") {
+                htmlExtra = `
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="small fw-bold text-muted">Área Lecionada</label>
+                            <input type="text" name="TeachingArea" class="form-control" value="${teachingArea}">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="small fw-bold text-muted">Valor/Hora (€)</label>
+                            <input type="number" name="HourlyRate" class="form-control" value="${hourlyRate}" step="0.01">
+                        </div>
+                    </div>`;
+            } else if (tipo === "Secretary" || tipo === "Secretaria") {
+                const selectHelperHtml = document.getElementById("templateSecretariaEdicao").innerHTML;
+                htmlExtra = `
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="small fw-bold text-muted">Área de Atuação</label>
+                            <input type="text" name="Area" class="form-control" value="${area}">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="small fw-bold text-muted">Diretor Associado</label>
+                            ${selectHelperHtml.replace('id="editSelectDirectorHelper"', 'name="DirectorName" id="editDirectorSelect"')}
+                        </div>
+                    </div>`;
+            } else if (tipo === "Coordinator") {
+                htmlExtra = document.getElementById("templateCoordenadorEdicao").innerHTML;
+            }
+
+            containerEdicao.innerHTML = htmlExtra;
+
+            if ((tipo === "Secretary" || tipo === "Secretaria") && directorName) {
+                const selectElement = document.getElementById("editDirectorSelect");
+                if (selectElement) selectElement.value = directorName;
+            }
+
+            var modal = new bootstrap.Modal(document.getElementById('modalEdicao'));
+            modal.show();
+        }
+
+        // --- MODAL 3: CÁLCULO DE PAGAMENTO VIA JAVASCRIPT ---
+        function abrirModalPagamento(id, nome, valorHora) {
+            document.getElementById("calcModalNome").innerText = nome;
+            document.getElementById("calcModalValorHora").value = valorHora;
+            document.getElementById("calcModalLblValorHora").innerText = valorHora;
+            document.getElementById("calcModalResultado").innerText = "€ 0,00";
+
+            var modal = new bootstrap.Modal(document.getElementById('modalPagamento'));
+            modal.show();
+        }
+
+        function verificarDiferencaDias() {
+            const dataInicioStr = document.getElementById("calcDataInicio").value;
+            const dataFimStr = document.getElementById("calcDataFim").value;
+            const valorHora = parseFloat(document.getElementById("calcModalValorHora").value) || 0;
+
+            if (!dataInicioStr || !dataFimStr) return;
+
+            const inicio = new Date(dataInicioStr);
+            const fim = new Date(dataFimStr);
+            
+            const diferencaTempo = fim.getTime() - inicio.getTime();
+            const dias = Math.floor(diferencaTempo / (1000 * 3600 * 24)) + 1;
+            
+            const diasValidos = dias > 0 ? dias : 0;
+            const resultado = diasValidos * 6 * valorHora;
+
+            document.getElementById("calcModalResultado").innerText =
+                "€ " + resultado.toLocaleString('pt-PT', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
+
+        function ejecutarCalculoPagamento() {
+            verificarDiferencaDias();
+        }
+
+        window.onload = atualizarCamposDinamicos;
+    </script>
+}

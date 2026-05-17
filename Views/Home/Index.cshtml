@@ -1,0 +1,89 @@
+﻿@model IEnumerable<adosmelhoresproject.src.Models.Allocation>
+@* ATENÇÃO: Confirme se o namespace e o nome da classe 'Allocation' do Carlos estão corretos aqui em cima *@
+
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<div class="container-fluid py-4">
+    <div class="row g-4 mb-4">
+        @* BOAS-VINDAS *@
+        <div class="col-lg-12">
+            <div class="custom-card p-4 h-100 shadow-sm">
+                <h2 class="fw-bold text-dark">Bem-vindo, Administrador!</h2>
+                <p class="text-secondary mb-0">Hoje é dia <strong>@(((DateTime)ViewBag.DataSistema).ToLongDateString())</strong></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        @* ALERTAS (Sincronizados com a Gestão de Funcionários) *@
+        <div class="col-lg-4">
+            <div class="custom-card p-4 h-100 shadow-sm">
+                <h6 class="fw-bold mb-3">Alertas e Notificações</h6>
+                
+                @if (ViewBag.ContratosExpirar > 0)
+                {
+                    <div class="alert alert-danger d-flex align-items-center py-2 border-0 shadow-sm mb-2" style="font-size: 0.85rem; background-color: #fee2e2; color: #991b1b;">
+                        <i class="bi bi-exclamation-triangle-fill me-2"></i> @ViewBag.ContratosExpirar Contrato(s) expirado(s)
+                    </div>
+                }
+                
+                @if (ViewBag.RegistosExpirar > 0)
+                {
+                    <div class="alert alert-warning d-flex align-items-center py-2 border-0 shadow-sm mb-2" style="font-size: 0.85rem; background-color: #fef3c7; color: #92400e;">
+                        <i class="bi bi-shield-exclamation me-2"></i> @ViewBag.RegistosExpirar Registo(s) Criminal(is) expirado(s)
+                    </div>
+                }
+
+                @* Mensagem verde caso não existam alertas *@
+                @if (ViewBag.ContratosExpirar == 0 && ViewBag.RegistosExpirar == 0)
+                {
+                    <div class="alert alert-success d-flex align-items-center py-2 border-0 shadow-sm mb-2" style="font-size: 0.85rem; background-color: #d1fae5; color: #065f46;">
+                        <i class="bi bi-check-circle-fill me-2"></i> Sem pendências no momento
+                    </div>
+                }
+            </div>
+        </div>
+
+        @* AÇÕES RÁPIDAS *@
+        <div class="col-lg-4">
+            <div class="custom-card p-4 h-100 shadow-sm">
+                <h6 class="fw-bold mb-3">Ações Rápidas</h6>
+                <div class="d-flex gap-2">
+                    <a asp-controller="Employee" asp-action="Index" class="btn btn-primary flex-fill py-3 d-flex flex-column align-items-center border-0 shadow-sm text-decoration-none">
+                        <i class="bi bi-person-plus fs-2 mb-1 text-white"></i>
+                        <span class="small fw-bold text-white">Add Funcionário</span>
+                    </a>
+
+                    <a asp-controller="Allocation" asp-action="Index" class="btn btn-outline-primary flex-fill py-3 d-flex flex-column align-items-center shadow-sm text-decoration-none">
+                        <i class="bi bi-calendar-event fs-2 mb-1"></i>
+                        <span class="small fw-bold">Agendar</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        @* CURSOS ATIVOS *@
+        <div class="col-lg-4">
+            <div class="custom-card p-4 h-100 shadow-sm">
+                <h6 class="fw-bold mb-3">Cursos Ativos</h6>
+                @if (Model != null && Model.Any())
+                {
+                    foreach (var curso in Model)
+                    {
+                        @* ATENÇÃO: Se o Carlos chamou o nome do curso de 'CourseName' ou outra coisa, mude '@curso.Name' aqui em baixo *@
+                        <div class="border-start border-4 border-primary ps-3 mb-3">
+                            <div class="small fw-bold text-dark">@curso.NomeFormacao</div>
+                            <p class="small text-muted mb-0">@curso.DataInicio.ToString("dd/MM") a @curso.DataFim.ToString("dd/MM")</p>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <p class="small text-muted fst-italic">Nenhum curso a decorrer nesta data.</p>
+                }
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,87 @@
+﻿@using adosmelhoresproject.src.Controllers
+@model IEnumerable<TransactionDTO>
+
+<div class="container-fluid py-4">
+    <div class="row g-4">
+        @* COLUNA ESQUERDA: TRANSAÇÕES E GRÁFICO *@
+        <div class="col-lg-8">
+            <div class="custom-card p-4 shadow-sm">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h5 class="fw-bold mb-0">Registro de Transações</h5>
+                    <form method="get" class="d-flex gap-2">
+                        <input type="text" name="pesquisa" class="form-control form-control-sm" placeholder="Pesquisar..." style="width: 200px;">
+                        <select name="filtroTipo" class="form-select form-select-sm" style="width: 150px;" onchange="this.form.submit()">
+                            <option value="Todos">Todos os Tipos</option>
+                            <option value="Receita">Receitas</option>
+                            <option value="Despesa">Despesas</option>
+                        </select>
+                    </form>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table align-middle table-hover">
+                        <thead>
+                            <tr>
+                                <th style="width: 80px;">ID</th>
+                                <th>TIPO</th>
+                                <th>REF/FUNCIONÁRIO</th>
+                                <th>DATA</th>
+                                <th>VALOR</th>
+                                <th>ESTADO</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model == null || !Model.Any())
+                            {
+                                <tr><td colspan="6" class="text-center text-muted py-4">Sem transações registadas.</td></tr>
+                            }
+                            else
+                            {
+                                @foreach (var t in Model)
+                                {
+                                    <tr>
+                                        <td class="text-muted small">@t.Id</td>
+                                        <td class="fw-bold">@t.Description</td>
+                                        <td>@t.Reference</td>
+                                        <td class="small">@t.Date.ToShortDateString()</td>
+                                        <td class="@(t.Value < 0 ? "text-danger" : "text-success") fw-bold">
+                                            @(t.Value < 0 ? "-" : "+")€@Math.Abs(t.Value).ToString("N2")
+                                        </td>
+                                        <td>
+                                            <span class="status-badge @(t.Status == "Pago" || t.Status == "Recebido" ? "bg-success-subtle text-success" : "bg-info-subtle text-info") px-2 py-1 rounded small">
+                                                @t.Status
+                                            </span>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        @* COLUNA DIREITA: VISÃO GERAL E EXPORTAÇÃO *@
+        <div class="col-lg-4">
+            <div class="custom-card p-4 shadow-sm">
+                <h5 class="fw-bold mb-4">Visão Geral Financeira</h5>
+                <div class="d-flex justify-content-between mb-3 pb-3 border-bottom">
+                    <span class="text-muted small">Saldo Atual</span>
+                    <h3 class="fw-bold text-dark mb-0">€@ViewBag.SaldoAtual.ToString("N2")</h3>
+                </div>
+                <div class="d-flex justify-content-between mb-3 pb-3 border-bottom">
+                    <span class="text-muted small">Receitas Este Mês</span>
+                    <h4 class="fw-bold text-success mb-0">€@ViewBag.ReceitasMes.ToString("N2")</h4>
+                </div>
+                <div class="d-flex justify-content-between mb-3 pb-3 border-bottom">
+                    <span class="text-muted small">Despesas Este Mês</span>
+                    <h4 class="fw-bold text-danger mb-0">€@ViewBag.DespesasMes.ToString("N2")</h4>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <span class="text-muted small">Rentabilidade</span>
+                    <h4 class="fw-bold text-primary mb-0">@ViewBag.Rentabilidade.ToString("F1")%</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
