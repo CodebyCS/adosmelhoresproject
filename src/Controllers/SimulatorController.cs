@@ -3,6 +3,8 @@ using adosmelhoresproject.src.Interfaces;
 using adosmelhoresproject.src.Services;
 using adosmelhoresproject.src.Models;
 using System.Linq;
+using System.Collections.Generic;
+using System;
 
 namespace adosmelhoresproject.src.Controllers
 {
@@ -11,7 +13,7 @@ namespace adosmelhoresproject.src.Controllers
         private readonly DateService _dateService;
         private readonly IEmployeeService _service;
         private readonly ITransactionService _transacaoService;
-        private readonly IAllocationService _allocationService; 
+        private readonly IAllocationService _allocationService;
 
         public SimulatorController(DateService dateService, IEmployeeService service, ITransactionService transacaoService, IAllocationService allocationService)
         {
@@ -37,7 +39,6 @@ namespace adosmelhoresproject.src.Controllers
             var contratosExpirados = new List<string>();
             var registosExpirados = new List<string>();
 
-
             foreach (var func in funcionariosAtivos)
             {
                 if (func.CriminalRecordDate.Date == dataAtual.Date)
@@ -50,6 +51,7 @@ namespace adosmelhoresproject.src.Controllers
                     if (func.ContractEndDate.Date == dataAtual.Date)
                     {
                         contratosExpirados.Add(func.Name);
+
                         var inicioMes = new DateTime(dataAtual.Year, dataAtual.Month, 1);
                         decimal valorProporcional = func.CalculatePayment(inicioMes, dataAtual);
 
@@ -59,7 +61,7 @@ namespace adosmelhoresproject.src.Controllers
                             {
                                 Date = dataAtual,
                                 Valor = valorProporcional,
-                                Type = TransactionType.Expense, 
+                                Type = TransactionType.Expense,
                                 Description = $"Acerto Fim de Contrato: {func.Name}",
                                 Reference = func.Name,
                                 Status = "Pago"
@@ -67,7 +69,7 @@ namespace adosmelhoresproject.src.Controllers
                         }
                     }
 
-                    func.Active = false; 
+                    func.Active = false;
                     if (_service is EmployeeService serviceJson) serviceJson.Update(func);
                 }
             }
@@ -77,20 +79,6 @@ namespace adosmelhoresproject.src.Controllers
             {
                 if (alocacao.DataFim.Date == dataAtual.Date)
                 {
-                    
-                    if (alocacao.ValorReceita > 0)
-                    {
-                        _transacaoService.Add(new Transaction
-                        {
-                            Date = dataAtual,
-                            Valor = alocacao.ValorReceita,
-                            Type = TransactionType.Income, 
-                            Description = $"Faturação Formação: {alocacao.NomeFormacao}",
-                            Reference = $"Alocação #{alocacao.Id}",
-                            Status = "Recebido"
-                        });
-                    }
-
                     var formador = _service.GetAll().OfType<Trainer>().FirstOrDefault(t => t.Id == alocacao.EmployeeId);
                     if (formador != null)
                     {
@@ -128,17 +116,15 @@ namespace adosmelhoresproject.src.Controllers
 
             foreach (var func in funcionarios)
             {
-                if (func is Trainer) continue;
-
                 decimal valorAPagar = func.CalculatePayment(primeiroDiaMesAnterior, ultimoDiaMesAnterior);
 
                 if (valorAPagar > 0)
                 {
                     var pagamento = new Transaction
                     {
-                        Date = ultimoDiaMesAnterior.AddDays(1), 
+                        Date = ultimoDiaMesAnterior.AddDays(1),
                         Valor = valorAPagar,
-                        Type = TransactionType.Expense,
+                        Type = TransactionType.Expense, 
                         Description = $"Salário: {func.Name}",
                         Reference = func.Name,
                         Status = "Pago"

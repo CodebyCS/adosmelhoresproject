@@ -358,5 +358,104 @@
     "Description": "Sal\u00E1rio: Cordadedadasdas",
     "Reference": "Cordadedadasdas",
     "Status": "Pago"
+  },
+  {
+    "Id": "7b2af461-7615-4a54-a2dd-a264733617cc",
+    "Date": "2027-03-01T21:46:18.4379382+00:00",
+    "Valor": 933.3333333333333333333333333,
+    "Type": 1,
+    "Description": "Sal\u00E1rio: Emerson Ribeiro",
+    "Reference": "Emerson Ribeiro",
+    "Status": "Pago"
+  },
+  {
+    "Id": "e9e16fe6-cbdb-4e25-8b1b-5c00d0f6bb19",
+    "Date": "2027-03-01T21:46:18.4379382+00:00",
+    "Valor": 933.3333333333333333333333333,
+    "Type": 1,
+    "Description": "Sal\u00E1rio: Cordadedadasdas",
+    "Reference": "Cordadedadasdas",
+    "Status": "Pago"
+  },
+  {
+    "Id": "098360fb-4fa1-481e-8374-0a96b43e28cf",
+    "Date": "2027-04-01T21:46:18.4379382+01:00",
+    "Valor": 1033.3333333333333333333333333,
+    "Type": 1,
+    "Description": "Sal\u00E1rio: Emerson Ribeiro",
+    "Reference": "Emerson Ribeiro",
+    "Status": "Pago"
+  },
+  {
+    "Id": "a23e0f8e-af0a-4d0e-88b4-f7d11dbcd3c4",
+    "Date": "2027-04-01T21:46:18.4379382+01:00",
+    "Valor": 1033.3333333333333333333333333,
+    "Type": 1,
+    "Description": "Sal\u00E1rio: Cordadedadasdas",
+    "Reference": "Cordadedadasdas",
+    "Status": "Pago"
+  },
+  {
+    "Id": "84b9c401-a97d-461b-9d42-fe97afee7cb4",
+    "Date": "2027-04-01T21:46:18.4379382+01:00",
+    "Valor": 70000,
+    "Type": 0,
+    "Description": "Fatura\u00E7\u00E3o Forma\u00E7\u00E3o: Tatata",
+    "Reference": "Aloca\u00E7\u00E3o #11822ac9",
+    "Status": "Recebido"
+  },
+  {
+    "Id": "20461848-dbbc-4592-8992-5adf97e45a3f",
+    "Date": "2027-05-01T21:46:18.4379382+01:00",
+    "Valor": 1000.0000000000000000000000000,
+    "Type": 1,
+    "Description": "Sal\u00E1rio: Emerson Ribeiro",
+    "Reference": "Emerson Ribeiro",
+    "Status": "Pago"
+  },
+  {
+    "Id": "7254715b-8731-4f31-af6e-ac3eb2423817",
+    "Date": "2027-05-01T21:46:18.4379382+01:00",
+    "Valor": 1000.0000000000000000000000000,
+    "Type": 1,
+    "Description": "Sal\u00E1rio: Cordadedadasdas",
+    "Reference": "Cordadedadasdas",
+    "Status": "Pago"
+  },
+  {
+    "Id": "ff4c9afb-802b-44af-8da6-b32378be38b5",
+    "Date": "2027-06-01T21:46:18.4379382+01:00",
+    "Valor": 1033.3333333333333333333333333,
+    "Type": 1,
+    "Description": "Sal\u00E1rio: Emerson Ribeiro",
+    "Reference": "Emerson Ribeiro",
+    "Status": "Pago"
+  },
+  {
+    "Id": "610396e9-28ea-4e11-8f53-a0b8f7d0bb66",
+    "Date": "2027-06-01T21:46:18.4379382+01:00",
+    "Valor": 4650,
+    "Type": 1,
+    "Description": "Sal\u00E1rio: Teste",
+    "Reference": "Teste",
+    "Status": "Pago"
+  },
+  {
+    "Id": "b901e683-5339-4598-9d7d-25ef93dd1131",
+    "Date": "2027-06-01T21:46:18.4379382+01:00",
+    "Valor": 186,
+    "Type": 1,
+    "Description": "Sal\u00E1rio: 12",
+    "Reference": "12",
+    "Status": "Pago"
+  },
+  {
+    "Id": "cbe814db-e1cb-40a9-a811-758a4f03ff56",
+    "Date": "2027-06-01T21:46:18.4379382+01:00",
+    "Valor": 1033.3333333333333333333333333,
+    "Type": 1,
+    "Description": "Sal\u00E1rio: Cordadedadasdas",
+    "Reference": "Cordadedadasdas",
+    "Status": "Pago"
   }
 ]
