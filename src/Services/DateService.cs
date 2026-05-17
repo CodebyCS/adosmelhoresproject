@@ -67,7 +67,7 @@ public class DateService
         return _currentDate;
     }
 
-    public void AvancarDia(IEmployeeService employeeService, ITransacaoService transacaoService)
+    public void ForwardDay(IEmployeeService employeeService, ITransacaoService transacaoService)
     {
         DateTime dataAnterior = _currentDate;
         _currentDate = _currentDate.AddDays(1);
@@ -75,14 +75,14 @@ public class DateService
         //se mudou o mes, pagamos
         if(_currentDate.Month != dataAnterior.Month)
         {
-            ProcessarFolhaDePagamento(dataAnterior, employeeService, transacaoService);
+            ProcessPayroll(dataAnterior, employeeService, transacaoService);
         }
 
         SaveDate();
         OnDateChanged?.Invoke();
     }
     
-    private void ProcessarFolhaDePagamento(DateTime dataReferencia, IEmployeeService employeeService, ITransacaoService transacaoService)
+    private void ProcessPayroll(DateTime dataReferencia, IEmployeeService employeeService, ITransacaoService transacaoService)
     {
         var employees = employeeService.GetAll().Where(f => f.Active).ToList();
 
@@ -96,17 +96,17 @@ public class DateService
 
             if (valorAPagar > 0)
             {
-                var pagamento = new Transacao
+                var pagamento = new Transaction
                 {
                     Data = _currentDate,
                     Valor = valorAPagar,
-                    Tipo = TipoTransacao.Despesa, // Usa o Enum que definiste
+                    Tipo = TipoTransacao.Despesa, 
                     Descricao = $"Salário: {func.Name}",
                     Referencia = func.Name,
                     Estado = "Pago"
                 };
 
-                transacaoService.Adicionar(pagamento);
+                transacaoService.Add(pagamento);
             }
         }
     }

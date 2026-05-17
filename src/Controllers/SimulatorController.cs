@@ -22,7 +22,7 @@ namespace adosmelhoresproject.src.Controllers
         public IActionResult AvancarDia()
         {
             // 1. Executa a lógica de avançar o dia e processar pagamentos
-            _dateService.AvancarDia(_service, _transacaoService);
+            _dateService.ForwardDay(_service, _transacaoService);
 
             var dataAtual = _dateService.GetCurrentDate();
             var funcionarios = _service.GetAll();

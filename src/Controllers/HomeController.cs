@@ -34,10 +34,10 @@ namespace adosmelhoresproject.src.Controllers
             ViewBag.NomeUtilizador = "Administrador";
 
             // 4. Criar a lista para o Model
-            var listaAtividades = new List<AtividadeViewModel>
+            var listaAtividades = new List<ActivityViewModel>
     {
-            new AtividadeViewModel { Titulo = "Formação C#", Local = "Sala 1", Hora = "14:00", CorClasse = "border-primary" },
-            new AtividadeViewModel { Titulo = "Reunião Geral", Local = "Auditório", Hora = "16:30", CorClasse = "border-success" }
+            new ActivityViewModel { Titulo = "Formação C#", Local = "Sala 1", Hora = "14:00", CorClasse = "border-primary" },
+            new ActivityViewModel { Titulo = "Reunião Geral", Local = "Auditório", Hora = "16:30", CorClasse = "border-success" }
     };
 
             return View(listaAtividades);

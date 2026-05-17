@@ -2,7 +2,7 @@
 {
     public enum TipoTransacao { Receita, Despesa }
 
-    public class Transacao
+    public class Transaction
     {
         public Guid Id { get; set; } = Guid.NewGuid();
         public DateTime Data { get; set; }

@@ -52,7 +52,7 @@
                                     <td class="text-end">
                                         <div class="btn-group shadow-sm">
                                             <button type="button" class="btn btn-sm btn-outline-secondary" title="Editar Detalhes"
-                                                    onclick="abrirModalEdicao('@f.Id', '@f.Name', '@f.GetType().Name', '@(f is Director ? ((Director)f).HoursExemption.ToString().ToLower() : "")', '@(f is Director ? ((Director)f).MonthlyBonus : 0)', '@(f is Trainer ? ((Trainer)f).HourlyRate : 0)', '@(f is Trainer ? ((Trainer)f).TeachingArea : "")', '@(f is Secretaria ? ((Secretaria)f).Area : "")', '@(f is Secretaria ? ((Secretaria)f).DirectorName : "")')">
+                                                    onclick="abrirModalEdicao('@f.Id', '@f.Name', '@f.GetType().Name', '@(f is Director ? ((Director)f).HoursExemption.ToString().ToLower() : "")', '@(f is Director ? ((Director)f).MonthlyBonus : 0)', '@(f is Trainer ? ((Trainer)f).HourlyRate : 0)', '@(f is Trainer ? ((Trainer)f).TeachingArea : "")', '@(f is Secretary ? ((Secretary)f).Area : "")', '@(f is Secretary ? ((Secretary)f).DirectorName : "")')">
                                                 <i class="bi bi-pencil-square"></i>
                                             </button>
 

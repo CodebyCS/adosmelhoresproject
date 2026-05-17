@@ -1,6 +1,6 @@
 namespace adosmelhoresproject.src.Models
 {
-    public class Coordenador : Employee
+    public class Coordinator : Employee
     {
         public int FormadorId { get; set; }
 

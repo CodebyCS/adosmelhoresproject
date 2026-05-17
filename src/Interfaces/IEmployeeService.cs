@@ -6,11 +6,11 @@ namespace adosmelhoresproject.src.Interfaces
     {
         List<Employee> GetAll();
 
-        void Adicionar(Employee f);
+        void Add(Employee f);
 
         void ChangeCriminalRecord(int id, DateTime novaData);
 
-        void AlterarContrato(int id, DateTime novaData);
+        void ChangeContract(int id, DateTime novaData);
 
         List<Employee> GetValidContracts(DateTime dataAtual);
 

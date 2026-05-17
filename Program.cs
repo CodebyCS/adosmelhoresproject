@@ -10,7 +10,7 @@ builder.Services.AddControllersWithViews();
 // No ficheiro Program.cs
 builder.Services.AddSingleton<DateService>();
 builder.Services.AddScoped<IEmployeeService, EmployeeService>();
-builder.Services.AddScoped<ITransacaoService, TransacaoService>();
+builder.Services.AddScoped<ITransacaoService, TransactionService>();
 
 
 builder.Services.AddSingleton<DateService>();
