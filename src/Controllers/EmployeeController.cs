@@ -241,11 +241,12 @@ namespace adosmelhoresproject.src.Controllers
             var funcionarios = _service.GetAll();
             var csv = new StringBuilder();
 
-            csv.AppendLine("ID,Nome,Tipo,Salario,Ativo,FimContrato");
+            csv.AppendLine("SEP=;");
+            csv.AppendLine("ID;Nome;Tipo;Salario;Ativo;FimContrato");
 
             foreach (var f in funcionarios)
             {
-                csv.AppendLine($"{f.Id},{f.Name},{f.GetType().Name},{f.Salary},{f.Active},{f.ContractEndDate:yyyy-MM-dd}");
+                csv.AppendLine($"{f.Id};{f.Name};{f.GetType().Name};{f.Salary};{f.Active};{f.ContractEndDate:yyyy-MM-dd}");
             }
 
             var bytes = Encoding.UTF8.GetBytes(csv.ToString());
