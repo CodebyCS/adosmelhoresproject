@@ -20,12 +20,12 @@ namespace adosmelhoresproject.src.Services
 
         public List<Transaction> GetByPeriod(DateTime inicio, DateTime fim) =>
             ReadAll()
-                .Where(t => t.Data.Date >= inicio.Date && t.Data.Date <= fim.Date)
-                .OrderByDescending(t => t.Data)
+                .Where(t => t.Date.Date >= inicio.Date && t.Date.Date <= fim.Date)
+                .OrderByDescending(t => t.Date)
                 .ToList();
 
         public decimal GetBalancePeriod(DateTime inicio, DateTime fim) =>
             GetByPeriod(inicio, fim)
-                .Sum(t => t.Tipo == TipoTransacao.Receita ? t.Valor : -t.Valor);
+                .Sum(t => t.Type == TransactionType.Income ? t.Valor : -t.Valor);
     }
 }

@@ -1,51 +1,93 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using adosmelhoresproject.src.Models;
+using adosmelhoresproject.src.Interfaces;
+using adosmelhoresproject.src.Services;
 
 namespace adosmelhoresproject.src.Controllers
 {
     public class FinanceController : Controller
     {
+        private readonly ITransactionService _transactionService;
+        private readonly DateService _dateService;
+
+        public FinanceController(ITransactionService transactionService, DateService dateService)
+        {
+            _transactionService = transactionService;
+            _dateService = dateService;
+        }
         public IActionResult Index()
         {
-            // Dados simulados para a Visão Geral
-            ViewBag.SaldoAtual = 24750.50m;
-            ViewBag.ReceitasMes = 8200.00m;
-            ViewBag.DespesasMes = 5950.00m;
+            var hoje = _dateService.GetCurrentDate();
+            var primeiroDiaMes = new DateTime(hoje.Year, hoje.Month, 1);
 
-            decimal rentabilidade = ViewBag.ReceitasMes > 0
-                ? ((ViewBag.ReceitasMes - ViewBag.DespesasMes) / ViewBag.ReceitasMes) * 100
-                : 0;
+            var allTransactions = _transactionService.GetAll();
+
+            // Saldo geral
+            decimal balance = allTransactions.Sum(t =>
+                t.Type == TransactionType.Income ? t.Valor : -t.Valor);
+
+            // Transações do mês atual
+            var monthlyTransactions = _transactionService.GetByPeriod(primeiroDiaMes, hoje);
+            decimal monthlyIncome = monthlyTransactions
+                .Where(t => t.Type == TransactionType.Income).Sum(t => t.Valor);
+            decimal monthlyExpenses = monthlyTransactions
+                .Where(t => t.Type == TransactionType.Despesa).Sum(t => t.Valor);
+
+            decimal rentabilidade = monthlyIncome > 0
+                ? ((monthlyIncome - monthlyExpenses) / monthlyIncome) * 100 : 0;
+
+            ViewBag.SaldoAtual = balance;
+            ViewBag.ReceitaMes = monthlyIncome;
+            ViewBag.DespesaMes = monthlyExpenses;
             ViewBag.Rentabilidade = rentabilidade;
 
-            // Dados para o Gráfico (Fluxo Mensal)
-            ViewBag.FluxoMensal = new List<dynamic> {
-                new { Nome="Jan", ReceitaPerc=50, DespesaPerc=30, Receita=2100, Despesa=1400 },
-                new { Nome="Fev", ReceitaPerc=70, DespesaPerc=45, Receita=3200, Despesa=2100 },
-                new { Nome="Mar", ReceitaPerc=90, DespesaPerc=50, Receita=4500, Despesa=2300 },
-                new { Nome="Abr", ReceitaPerc=80, DespesaPerc=40, Receita=3800, Despesa=1900 }
-            };
+            // Gráfico dos últimos 4 meses
+            var flow = new List<dynamic>();
+            for (int i = 3; i >= 0; i--)
+            {
+                var mes = hoje.AddMonths(-i);
+                var inicio = new DateTime(mes.Year, mes.Month, 1);
+                var fim = inicio.AddMonths(1).AddDays(-1);
+                var t = _transactionService.GetByPeriod(inicio, fim);
+                decimal r = t.Where(x => x.Type == TransactionType.Income).Sum(x => x.Valor);
+                decimal d = t.Where(x => x.Type == TransactionType.Despesa).Sum(x => x.Valor);
+                decimal max = Math.Max(r, d);
+                flow.Add(new
+                {
+                    Nome = mes.ToString("MMM"),
+                    ReceitaPerc = max > 0 ? (int)(r / max * 90) : 0,
+                    DespesaPerc = max > 0 ? (int)(d / max * 90) : 0,
+                    Receita = r,
+                    Despesa = d
+                });
+            }
+            ViewBag.MonthlyCashFlow = flow;
 
-            // Lista de Transações (Normalmente viria de um serviço)
-            var transacoes = new List<TransacaoDTO> {
-                new TransacaoDTO { Id="F001", Descricao="Salários", Referencia="John Doe", Data=DateTime.Now, Valor=-1850m, Estado="Agendado" },
-                new TransacaoDTO { Id="F003", Descricao="Inscrição", Referencia="Cliente XPTO", Data=DateTime.Now, Valor=500m, Estado="Recebido" }
-            };
+            // Converte Transaction -> TransactionDTO para a view
 
-            return View(transacoes);
+            var dto = allTransactions.OrderByDescending(t => t.Date).Select(t => new TransactionDTO
+            {
+                Id = t.Id.ToString()[..8],
+                Description = t.Description,
+                Reference = t.Reference,
+                Date = t.Date,
+                Value = t.Type == TransactionType.Income ? t.Valor : -t.Valor,
+                Status = t.Status
+            }).ToList();
+
+            return View(dto);
+
         }
-
-        public IActionResult ExportarPDF() { /* Lógica futura */ return RedirectToAction("Index"); }
-        public IActionResult ExportarExcel() { /* Lógica futura */ return RedirectToAction("Index"); }
     }
 
     // DTO simples para a View
-    public class TransacaoDTO
+    public class TransactionDTO
     {
         public string Id { get; set; }
-        public string Descricao { get; set; }
-        public string Referencia { get; set; }
-        public DateTime Data { get; set; }
-        public decimal Valor { get; set; }
-        public string Estado { get; set; }
+        public string Description { get; set; }
+        public string Reference { get; set; }
+        public DateTime Date { get; set; }
+        public decimal Value { get; set; }
+        public string Status { get; set; }
     }
 }
