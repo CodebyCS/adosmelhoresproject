@@ -84,7 +84,7 @@ namespace adosmelhoresproject.src.Controllers
 
                 case "coordinator":
                 case "coordenador":
-                    newEmployee = new Coordenador
+                    newEmployee = new Coordinator
                     {
                         Name = name,
                         Salary = salary,
@@ -96,7 +96,7 @@ namespace adosmelhoresproject.src.Controllers
 
                 case "secretaria":
                 default:
-                    newEmployee = new Secretaria
+                    newEmployee = new Secretary
                     {
                         Name = name,
                         Salary = salary,
@@ -110,7 +110,7 @@ namespace adosmelhoresproject.src.Controllers
             }
 
             // O Service agora calcula e atribui o ID antes de guardar no JSON
-            _service.Adicionar(newEmployee);
+            _service.Add(newEmployee);
             return RedirectToAction("Index");
         }
 
@@ -145,7 +145,7 @@ namespace adosmelhoresproject.src.Controllers
                 t.TeachingArea = TeachingArea;
                 t.HourlyRate = HourlyRate;
             }
-            else if (funcionarioExistente is Secretaria s && tipoNormalizado == "secretaria")
+            else if (funcionarioExistente is Secretary s && tipoNormalizado == "secretaria")
             {
                 s.Area = Area;
                 s.DirectorName = DirectorName;
@@ -156,7 +156,7 @@ namespace adosmelhoresproject.src.Controllers
             // podes fazer o cast direto para o serviço, ou adicioná-lo à tua Interface.
             if (_service is EmployeeService serviceJson)
             {
-                serviceJson.Atualizar(funcionarioExistente);
+                serviceJson.Update(funcionarioExistente);
             }
 
             return RedirectToAction("Index");

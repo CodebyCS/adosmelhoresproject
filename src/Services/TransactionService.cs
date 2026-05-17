@@ -6,10 +6,10 @@ using Microsoft.AspNetCore.Hosting;
 
 namespace adosmelhoresproject.src.Services
 {
-    public class TransacaoService : ITransacaoService
+    public class TransactionService : ITransacaoService
     {
         private readonly string _filePath;
-        public TransacaoService(IWebHostEnvironment env)
+        public TransactionService(IWebHostEnvironment env)
         {
             _filePath = Path.Combine(env.ContentRootPath, "Data", "transacao.json");
 
@@ -17,38 +17,38 @@ namespace adosmelhoresproject.src.Services
             if (!Directory.Exists(directory)) Directory.CreateDirectory(directory!);
         }
 
-        public List<Transacao> GetAll()
+        public List<Transaction> GetAll()
         {        
-            if (!File.Exists(_filePath)) return new List<Transacao>();
+            if (!File.Exists(_filePath)) return new List<Transaction>();
 
             try
             {
                 string jsonString = File.ReadAllText(_filePath);
             var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
-                return JsonSerializer.Deserialize<List<Transacao>>(jsonString, options) ?? new List<Transacao>();
+                return JsonSerializer.Deserialize<List<Transaction>>(jsonString, options) ?? new List<Transaction>();
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Erro ao ler transações: {ex.Message}");
-                return new List<Transacao>();
+                return new List<Transaction>();
             }
         }
 
-        private void Salvar(List<Transacao> lista)
+        private void Save(List<Transaction> lista)
         {
             var options = new JsonSerializerOptions { WriteIndented = true };
             string jsonString = JsonSerializer.Serialize(lista, options);
             File.WriteAllText(_filePath, jsonString);
         }
 
-        public void Adicionar(Transacao t)
+        public void Add(Transaction t)
         {
             var transacoes = GetAll();
             transacoes.Add(t);
-            Salvar(transacoes);
+            Save(transacoes);
         }
 
-        public List<Transacao> GetPorPeriodo(DateTime inicio, DateTime fim)
+        public List<Transaction> GetByPeriod(DateTime inicio, DateTime fim)
         {
             // LINQ para filtrar antes de mandar para a UI
             return GetAll()
@@ -57,9 +57,9 @@ namespace adosmelhoresproject.src.Services
                 .ToList();
         }
 
-        public decimal GetSaldoPeriodo(DateTime inicio, DateTime fim)
+        public decimal GetBalancePeriod(DateTime inicio, DateTime fim)
         {
-            var transacoes = GetPorPeriodo(inicio, fim);
+            var transacoes = GetByPeriod(inicio, fim);
 
             // Soma tudo o que é Receita e subtrai o que é Despesa
             return transacoes.Sum(t => t.Tipo == TipoTransacao.Receita ? t.Valor : -t.Valor);

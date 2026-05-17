@@ -39,7 +39,7 @@ namespace adosmelhoresproject.src.Services
             }
         }
 
-        private void Salvar(List<Employee> lista)
+        private void Save(List<Employee> lista)
         {
             var options = new JsonSerializerOptions { WriteIndented = true };
             string jsonString = JsonSerializer.Serialize(lista, options);
@@ -47,7 +47,7 @@ namespace adosmelhoresproject.src.Services
         }
 
         // CORRIGIDO: Atribui o ID incremental correto no momento de guardar na lista real
-        public void Adicionar(Employee f)
+        public void Add(Employee f)
         {
             var funcionarios = GetAll();
 
@@ -55,11 +55,11 @@ namespace adosmelhoresproject.src.Services
             f.Id = funcionarios.Any() ? funcionarios.Max(e => e.Id) + 1 : 1;
 
             funcionarios.Add(f);
-            Salvar(funcionarios);
+            Save(funcionarios);
         }
 
         // NOVO MÉTODO CRUCIAL: Salva as edições feitas pelos Modais no ficheiro JSON
-        public void Atualizar(Employee fAtualizado)
+        public void Update(Employee fAtualizado)
         {
             var funcionarios = GetAll();
             var index = funcionarios.FindIndex(e => e.Id == fAtualizado.Id);
@@ -67,7 +67,7 @@ namespace adosmelhoresproject.src.Services
             if (index != -1)
             {
                 funcionarios[index] = fAtualizado; // Substitui o objeto antigo pelo editado
-                Salvar(funcionarios);
+                Save(funcionarios);
             }
         }
 
@@ -78,18 +78,18 @@ namespace adosmelhoresproject.src.Services
             if (employee != null)
             {
                 employee.CriminalRecordDate = newDate;
-                Salvar(employees);
+                Save(employees);
             }
         }
 
-        public void AlterarContrato(int id, DateTime newDate)
+        public void ChangeContract(int id, DateTime newDate)
         {
             var employees = GetAll();
             var employee = employees.FirstOrDefault(f => f.Id == id);
             if (employee != null)
             {
                 employee.ContractEndDate = newDate;
-                Salvar(employees);
+                Save(employees);
             }
         }
 

@@ -1,6 +1,6 @@
-﻿namespace adosmelhoresproject.Models // Confirma se o namespace bate com o teu projeto
+﻿namespace adosmelhoresproject.Models
 {
-    public class AtividadeViewModel
+    public class ActivityViewModel
     {
         public string Titulo { get; set; }
         public string Local { get; set; }

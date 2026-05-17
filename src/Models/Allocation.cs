@@ -1,6 +1,6 @@
 ﻿namespace adosmelhoresproject.src.Models
 {
-    public class Alocacao
+    public class Allocation
     {
         public string Id { get; set; } = Guid.NewGuid().ToString().Substring(0, 8); // Gera um ID curto automático
         public DateTime DataInicio { get; set; } = DateTime.Now;
@@ -12,8 +12,9 @@
         public decimal ValorReceita { get; set; }
         public string Notas { get; set; }
 
+
         // Relacionamento com o Funcionário
         public int EmployeeId { get; set; }
-        public string EmployeeName { get; set; } // Facilitador para mostrar na tabela
+        public string EmployeeName { get; set; }
     }
 }

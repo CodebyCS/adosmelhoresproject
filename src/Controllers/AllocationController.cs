@@ -17,11 +17,11 @@ namespace adosmelhoresproject.src.Controllers
             // Dados para o dropdown de funcionários
             ViewBag.Funcionarios = new List<Employee>();
 
-            return View(new List<Alocacao>()); // Passa a lista de alocações
+            return View(new List<Allocation>()); // Passa a lista de alocações
         }
 
         [HttpPost]
-        public IActionResult Criar(Alocacao allocation)
+        public IActionResult Criar(Allocation allocation)
         {
             // Lógica para salvar
             return RedirectToAction("Index");

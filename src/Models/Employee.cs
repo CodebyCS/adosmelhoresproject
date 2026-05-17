@@ -4,9 +4,9 @@ namespace adosmelhoresproject.src.Models
 
 {
     [JsonDerivedType(typeof(Director), "Diretor")]
-    [JsonDerivedType(typeof(Coordenador), "Coordenador")]
+    [JsonDerivedType(typeof(Coordinator), "Coordenador")]
     [JsonDerivedType(typeof(Trainer), "Formador")]
-    [JsonDerivedType(typeof(Secretaria), "Secretaria")]
+    [JsonDerivedType(typeof(Secretary), "Secretaria")]
 
     public abstract class Employee
     {
