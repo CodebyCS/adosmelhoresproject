@@ -1,6 +1,6 @@
 ﻿namespace adosmelhoresproject.src.Models
 {
-    public enum TransactionType { Income, Despesa }
+    public enum TransactionType { Income, Expense }
 
     public class Transaction
     {

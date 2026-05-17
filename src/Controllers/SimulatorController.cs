@@ -83,7 +83,7 @@ namespace adosmelhoresproject.src.Controllers
                     {
                         Date = ultimoDiaMesAnterior.AddDays(1), // Paga no 1º dia do novo mês
                         Valor = valorAPagar,
-                        Type = TransactionType.Despesa,
+                        Type = TransactionType.Expense,
                         Description = $"Salário: {func.Name}",
                         Reference = func.Name,
                         Status = "Pago"
