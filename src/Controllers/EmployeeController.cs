@@ -61,76 +61,35 @@ namespace adosmelhoresproject.src.Controllers
 
         // POST: /Employee/Criar
         [HttpPost]
-        public IActionResult Criar(string name, string type, decimal salary, bool HoursExemption, int MonthlyBonus, string TeachingArea, decimal HourlyRate, string Area, string DirectorName)
+        public IActionResult Criar(string name, string type, decimal salary, bool HoursExemption, int MonthlyBonus, string TeachingArea, decimal HourlyRate, string Area, string DirectorName, DateTime ContractEndDate)
         {
             Employee newEmployee;
+            string tipoNormalizado = type?.ToLower();
 
-            // Tratamento flexível de strings maiúsculas/minúsculas ou EN/PT
-            switch (type?.ToLower())
+            if (tipoNormalizado == "director" || tipoNormalizado == "diretor")
             {
-                case "director":
-                case "diretor":
-                    newEmployee = new Director
-                    {
-                        Name = name,
-                        Salary = salary,
-                        HoursExemption = HoursExemption,
-                        MonthlyBonus = MonthlyBonus,
-                        ContractEndDate = _dateService.GetCurrentDate().AddYears(1),
-                        CriminalRecordDate = _dateService.GetCurrentDate(),
-                        Active = true
-                    };
-                    break;
-
-                case "trainer":
-                case "formador":
-                    newEmployee = new Trainer
-                    {
-                        Name = name,
-                        Salary = salary,
-                        HourlyRate = HourlyRate,
-                        TeachingArea = TeachingArea,
-                        ContractEndDate = _dateService.GetCurrentDate().AddMonths(6),
-                        CriminalRecordDate = _dateService.GetCurrentDate(),
-                        Active = true
-                    };
-                    break;
-
-                case "coordinator":
-                case "coordenador":
-                    newEmployee = new Coordinator
-                    {
-                        Name = name,
-                        Salary = salary,
-                        ContractEndDate = _dateService.GetCurrentDate().AddYears(1),
-                        CriminalRecordDate = _dateService.GetCurrentDate(),
-                        Active = true
-                    };
-                    break;
-
-                case "secretaria":
-                default:
-                    newEmployee = new Secretary
-                    {
-                        Name = name,
-                        Salary = salary,
-                        Area = Area,
-                        DirectorName = DirectorName,
-                        ContractEndDate = _dateService.GetCurrentDate().AddYears(2),
-                        CriminalRecordDate = _dateService.GetCurrentDate(),
-                        Active = true
-                    };
-                    break;
+                newEmployee = new Director { Name = name, Salary = salary, HoursExemption = HoursExemption, MonthlyBonus = MonthlyBonus, ContractEndDate = ContractEndDate, CriminalRecordDate = _dateService.GetCurrentDate(), Active = true };
+            }
+            else if (tipoNormalizado == "trainer" || tipoNormalizado == "formador")
+            {
+                newEmployee = new Trainer { Name = name, Salary = salary, HourlyRate = HourlyRate, TeachingArea = TeachingArea, ContractEndDate = ContractEndDate, CriminalRecordDate = _dateService.GetCurrentDate(), Active = true };
+            }
+            else if (tipoNormalizado == "coordinator" || tipoNormalizado == "coordenador")
+            {
+                newEmployee = new Coordinator { Name = name, Salary = salary, ContractEndDate = ContractEndDate, CriminalRecordDate = _dateService.GetCurrentDate(), Active = true };
+            }
+            else
+            {
+                newEmployee = new Secretary { Name = name, Salary = salary, Area = Area, DirectorName = DirectorName, ContractEndDate = ContractEndDate, CriminalRecordDate = _dateService.GetCurrentDate(), Active = true };
             }
 
-            // O Service agora calcula e atribui o ID antes de guardar no JSON
             _service.Add(newEmployee);
             return RedirectToAction("Index");
         }
 
         // POST: /Employee/Editar
         [HttpPost]
-        public IActionResult Editar(int id, string name, string type, bool HoursExemption, int MonthlyBonus, string TeachingArea, decimal HourlyRate, string Area, string DirectorName, DateTime? CriminalRecordDate)
+        public IActionResult Editar(int id, string name, string type, bool HoursExemption, int MonthlyBonus, string TeachingArea, decimal HourlyRate, string Area, string DirectorName, DateTime? CriminalRecordDate, DateTime? ContractEndDate)
         {
             var funcionarios = _service.GetAll();
             var funcionarioExistente = funcionarios.FirstOrDefault(f => f.Id == id);
@@ -138,12 +97,11 @@ namespace adosmelhoresproject.src.Controllers
             if (funcionarioExistente == null) return NotFound();
 
             // Atualiza os dados universais
+
             funcionarioExistente.Name = name;
 
-            if (CriminalRecordDate.HasValue)
-            {
-                funcionarioExistente.CriminalRecordDate = CriminalRecordDate.Value;
-            }
+            if (CriminalRecordDate.HasValue) funcionarioExistente.CriminalRecordDate = CriminalRecordDate.Value;
+            if (ContractEndDate.HasValue) funcionarioExistente.ContractEndDate = ContractEndDate.Value; // NOVA LINHA AQUI
 
             // Normaliza a string do tipo para evitar erros com maiúsculas/traduções
             string tipoNormalizado = type?.ToLower();
@@ -165,9 +123,6 @@ namespace adosmelhoresproject.src.Controllers
                 s.DirectorName = DirectorName;
             }
 
-            // SOLUÇÃO DO ERRO DO MODAL: Grava as modificações de volta no ficheiro JSON!
-            // Nota: Se a tua interface IEmployeeService ainda não declarar o método "Atualizar",
-            // podes fazer o cast direto para o serviço, ou adicioná-lo à tua Interface.
             if (_service is EmployeeService serviceJson)
             {
                 serviceJson.Update(funcionarioExistente);
