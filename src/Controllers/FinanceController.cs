@@ -15,7 +15,7 @@ namespace adosmelhoresproject.src.Controllers
             _transactionService = transactionService;
             _dateService = dateService;
         }
-        public IActionResult Index()
+        public IActionResult Index(string pesquisa = null, string filtroTipo = "Todos")
         {
             var hoje = _dateService.GetCurrentDate();
             var primeiroDiaMes = new DateTime(hoje.Year, hoje.Month, 1);
@@ -31,14 +31,14 @@ namespace adosmelhoresproject.src.Controllers
             decimal monthlyIncome = monthlyTransactions
                 .Where(t => t.Type == TransactionType.Income).Sum(t => t.Valor);
             decimal monthlyExpenses = monthlyTransactions
-                .Where(t => t.Type == TransactionType.Despesa).Sum(t => t.Valor);
+                .Where(t => t.Type == TransactionType.Expense).Sum(t => t.Valor);
 
             decimal rentabilidade = monthlyIncome > 0
                 ? ((monthlyIncome - monthlyExpenses) / monthlyIncome) * 100 : 0;
 
             ViewBag.SaldoAtual = balance;
-            ViewBag.ReceitaMes = monthlyIncome;
-            ViewBag.DespesaMes = monthlyExpenses;
+            ViewBag.ReceitasMes = monthlyIncome;
+            ViewBag.DespesasMes = monthlyExpenses;
             ViewBag.Rentabilidade = rentabilidade;
 
             // Gráfico dos últimos 4 meses
@@ -50,7 +50,7 @@ namespace adosmelhoresproject.src.Controllers
                 var fim = inicio.AddMonths(1).AddDays(-1);
                 var t = _transactionService.GetByPeriod(inicio, fim);
                 decimal r = t.Where(x => x.Type == TransactionType.Income).Sum(x => x.Valor);
-                decimal d = t.Where(x => x.Type == TransactionType.Despesa).Sum(x => x.Valor);
+                decimal d = t.Where(x => x.Type == TransactionType.Expense).Sum(x => x.Valor);
                 decimal max = Math.Max(r, d);
                 flow.Add(new
                 {
@@ -61,7 +61,25 @@ namespace adosmelhoresproject.src.Controllers
                     Despesa = d
                 });
             }
-            ViewBag.MonthlyCashFlow = flow;
+            ViewBag.FluxoMensal = flow;
+
+            var transacoesFiltradas = allTransactions.AsEnumerable();
+
+            if (!string.IsNullOrEmpty(pesquisa))
+            {
+                transacoesFiltradas = transacoesFiltradas.Where(t =>
+                    (t.Description != null && t.Description.Contains(pesquisa, StringComparison.OrdinalIgnoreCase)) ||
+                    (t.Reference != null && t.Reference.Contains(pesquisa, StringComparison.OrdinalIgnoreCase)));
+            }
+
+            if (filtroTipo == "Receita")
+            {
+                transacoesFiltradas = transacoesFiltradas.Where(t => t.Type == TransactionType.Income);
+            }
+            else if (filtroTipo == "Despesa")
+            {
+                transacoesFiltradas = transacoesFiltradas.Where(t => t.Type == TransactionType.Expense);
+            }
 
             // Converte Transaction -> TransactionDTO para a view
 
