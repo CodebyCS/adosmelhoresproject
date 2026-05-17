@@ -59,30 +59,6 @@
                     </table>
                 </div>
             </div>
-
-            @* GRÁFICO DE FLUXO DE CAIXA (Simulado com CSS) *@
-            <div class="custom-card p-4 mt-4 shadow-sm">
-                <h6 class="fw-bold mb-4 small text-uppercase text-muted">Fluxo de Caixa (Receitas vs Despesas)</h6>
-                <div class="d-flex align-items-end justify-content-between px-2" style="height: 200px; border-bottom: 2px solid #e2e8f0;">
-                    @foreach (var mes in ViewBag.FluxoMensal)
-                    {
-                        <div class="d-flex gap-1 align-items-end h-100" style="width: 12%;">
-                            <div class="bg-primary shadow-sm"
-                                 style="height: @(mes.ReceitaPerc)%; width: 10px; border-radius: 3px 3px 0 0;"
-                                 title="Receita: €@mes.Receita"></div>
-                            <div class="bg-secondary opacity-50"
-                                 style="height: @(mes.DespesaPerc)%; width: 10px; border-radius: 3px 3px 0 0;"
-                                 title="Despesa: €@mes.Despesa"></div>
-                        </div>
-                    }
-                </div>
-                <div class="d-flex justify-content-between mt-2 px-2 text-muted small fw-bold">
-                    @foreach (var mes in ViewBag.FluxoMensal)
-                    {
-                        <span style="width: 12%; text-align: center;">@mes.Nome</span>
-                    }
-                </div>
-            </div>
         </div>
 
         @* COLUNA DIREITA: VISÃO GERAL E EXPORTAÇÃO *@
@@ -105,16 +81,6 @@
                     <span class="text-muted small">Rentabilidade</span>
                     <h4 class="fw-bold text-primary mb-0">@ViewBag.Rentabilidade.ToString("F1")%</h4>
                 </div>
-            </div>
-
-            <div class="custom-card p-4 mt-4 shadow-sm">
-                <h6 class="fw-bold mb-3 small text-uppercase text-muted">Ferramentas e Alertas</h6>
-                <a asp-action="ExportarPDF" class="btn btn-outline-primary w-100 py-2 mb-2 d-flex align-items-center justify-content-center">
-                    <i class="bi bi-file-earmark-pdf me-2 fs-5"></i> Exportar Auditoria (PDF)
-                </a>
-                <a asp-action="ExportarExcel" class="btn btn-outline-secondary w-100 py-2 d-flex align-items-center justify-content-center">
-                    <i class="bi bi-file-earmark-excel me-2 fs-5"></i> Exportar Contabilidade (Excel)
-                </a>
             </div>
         </div>
     </div>
