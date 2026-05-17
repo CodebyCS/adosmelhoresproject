@@ -1,263 +1,461 @@
 [
   {
     "Id": "da17069c-023e-4cb5-b93e-fa9109e21c1b",
-    "Data": "2026-06-01T21:46:18.4379382+01:00",
+    "Date": "0001-01-01T00:00:00",
     "Valor": 1033.3333333333333333333333333,
-    "Tipo": 1,
-    "Descricao": "Sal\u00E1rio: Teste",
-    "Referencia": "Teste",
-    "Estado": "Pago"
+    "Type": 0,
+    "Description": "",
+    "Reference": "N/A",
+    "Status": "Conclu\u00EDdo"
   },
   {
     "Id": "406565f3-cafc-4eff-a688-6dcd6f39fe95",
-    "Data": "2026-06-01T21:46:18.4379382+01:00",
+    "Date": "0001-01-01T00:00:00",
     "Valor": 3105.1666666666666666666666668,
-    "Tipo": 1,
-    "Descricao": "Sal\u00E1rio: Teste 1",
-    "Referencia": "Teste 1",
-    "Estado": "Pago"
+    "Type": 0,
+    "Description": "",
+    "Reference": "N/A",
+    "Status": "Conclu\u00EDdo"
   },
   {
     "Id": "1c2c9cc4-e3ad-4b3a-95d4-40af11e6f984",
-    "Data": "2026-06-01T21:46:18.4379382+01:00",
+    "Date": "0001-01-01T00:00:00",
     "Valor": 4650,
-    "Tipo": 1,
-    "Descricao": "Sal\u00E1rio: Teste 2",
-    "Referencia": "Teste 2",
-    "Estado": "Pago"
+    "Type": 0,
+    "Description": "",
+    "Reference": "N/A",
+    "Status": "Conclu\u00EDdo"
   },
   {
     "Id": "d22c0c3f-5c6d-4ef6-9dd5-be5db6cd2ce7",
-    "Data": "2026-06-01T21:46:18.4379382+01:00",
+    "Date": "0001-01-01T00:00:00",
     "Valor": 930,
-    "Tipo": 1,
-    "Descricao": "Sal\u00E1rio: Teste 3",
-    "Referencia": "Teste 3",
-    "Estado": "Pago"
+    "Type": 0,
+    "Description": "",
+    "Reference": "N/A",
+    "Status": "Conclu\u00EDdo"
   },
   {
     "Id": "c9f2e813-48f3-47ec-8a16-1e7e0210d40a",
-    "Data": "2026-06-01T21:46:18.4379382+01:00",
+    "Date": "0001-01-01T00:00:00",
     "Valor": 1240,
-    "Tipo": 1,
-    "Descricao": "Sal\u00E1rio: Teste 7",
-    "Referencia": "Teste 7",
-    "Estado": "Pago"
+    "Type": 0,
+    "Description": "",
+    "Reference": "N/A",
+    "Status": "Conclu\u00EDdo"
   },
   {
     "Id": "39d553fc-d0ce-4050-878f-0797b3fe3f39",
-    "Data": "2026-06-01T21:46:18.4379382+01:00",
+    "Date": "0001-01-01T00:00:00",
     "Valor": 3410,
-    "Tipo": 1,
-    "Descricao": "Sal\u00E1rio: Emerson Ribeiro",
-    "Referencia": "Emerson Ribeiro",
-    "Estado": "Pago"
+    "Type": 0,
+    "Description": "",
+    "Reference": "N/A",
+    "Status": "Conclu\u00EDdo"
   },
   {
     "Id": "a212a39c-a610-4188-96eb-e323771dfb89",
-    "Data": "2026-07-01T21:46:18.4379382+01:00",
+    "Date": "0001-01-01T00:00:00",
     "Valor": 1000.0000000000000000000000000,
-    "Tipo": 1,
-    "Descricao": "Sal\u00E1rio: Teste",
-    "Referencia": "Teste",
-    "Estado": "Pago"
+    "Type": 0,
+    "Description": "",
+    "Reference": "N/A",
+    "Status": "Conclu\u00EDdo"
   },
   {
     "Id": "d9be1ad9-3802-4578-b718-15de3993df4f",
-    "Data": "2026-07-01T21:46:18.4379382+01:00",
+    "Date": "0001-01-01T00:00:00",
     "Valor": 3005.0000000000000000000000001,
-    "Tipo": 1,
-    "Descricao": "Sal\u00E1rio: Teste 1",
-    "Referencia": "Teste 1",
-    "Estado": "Pago"
+    "Type": 0,
+    "Description": "",
+    "Reference": "N/A",
+    "Status": "Conclu\u00EDdo"
   },
   {
     "Id": "842e2def-5ab6-4ca8-9888-c74d006bbc00",
-    "Data": "2026-07-01T21:46:18.4379382+01:00",
+    "Date": "0001-01-01T00:00:00",
     "Valor": 4500,
-    "Tipo": 1,
-    "Descricao": "Sal\u00E1rio: Teste 2",
-    "Referencia": "Teste 2",
-    "Estado": "Pago"
+    "Type": 0,
+    "Description": "",
+    "Reference": "N/A",
+    "Status": "Conclu\u00EDdo"
   },
   {
     "Id": "be87ed0e-c8a8-4351-9bee-84e3579d2e4b",
-    "Data": "2026-07-01T21:46:18.4379382+01:00",
+    "Date": "0001-01-01T00:00:00",
     "Valor": 900,
-    "Tipo": 1,
-    "Descricao": "Sal\u00E1rio: Teste 3",
-    "Referencia": "Teste 3",
-    "Estado": "Pago"
+    "Type": 0,
+    "Description": "",
+    "Reference": "N/A",
+    "Status": "Conclu\u00EDdo"
   },
   {
     "Id": "24a47325-6efa-47fd-961f-745a335273a9",
-    "Data": "2026-07-01T21:46:18.4379382+01:00",
+    "Date": "0001-01-01T00:00:00",
     "Valor": 1200,
-    "Tipo": 1,
-    "Descricao": "Sal\u00E1rio: Teste 7",
-    "Referencia": "Teste 7",
-    "Estado": "Pago"
+    "Type": 0,
+    "Description": "",
+    "Reference": "N/A",
+    "Status": "Conclu\u00EDdo"
   },
   {
     "Id": "da94f009-9e25-4dfe-bc56-ad5f6d13a285",
-    "Data": "2026-07-01T21:46:18.4379382+01:00",
+    "Date": "0001-01-01T00:00:00",
     "Valor": 3300,
-    "Tipo": 1,
-    "Descricao": "Sal\u00E1rio: Emerson Ribeiro",
-    "Referencia": "Emerson Ribeiro",
-    "Estado": "Pago"
+    "Type": 0,
+    "Description": "",
+    "Reference": "N/A",
+    "Status": "Conclu\u00EDdo"
   },
   {
     "Id": "36f43066-6a30-4fab-90a4-3360ba5efcfa",
-    "Data": "2026-08-01T21:46:18.4379382+01:00",
+    "Date": "0001-01-01T00:00:00",
     "Valor": 1033.3333333333333333333333333,
-    "Tipo": 1,
-    "Descricao": "Sal\u00E1rio: Emerson Ribeiro",
-    "Referencia": "Emerson Ribeiro",
-    "Estado": "Pago"
+    "Type": 0,
+    "Description": "",
+    "Reference": "N/A",
+    "Status": "Conclu\u00EDdo"
   },
   {
     "Id": "f5f2a115-fbe3-4040-ba37-143754108a93",
-    "Data": "2026-08-01T21:46:18.4379382+01:00",
+    "Date": "0001-01-01T00:00:00",
     "Valor": 7336.6666666666666666666666668,
-    "Tipo": 1,
-    "Descricao": "Sal\u00E1rio: Claudinho",
-    "Referencia": "Claudinho",
-    "Estado": "Pago"
+    "Type": 0,
+    "Description": "",
+    "Reference": "N/A",
+    "Status": "Conclu\u00EDdo"
   },
   {
     "Id": "4f66d87d-ccb8-4dd1-bfd7-ae2aa8ba792c",
-    "Data": "2026-08-01T21:46:18.4379382+01:00",
+    "Date": "0001-01-01T00:00:00",
     "Valor": 1033.3333333333333333333333333,
-    "Tipo": 1,
-    "Descricao": "Sal\u00E1rio: Atualiza\u00E7\u00E3o de software\u0027s",
-    "Referencia": "Atualiza\u00E7\u00E3o de software\u0027s",
-    "Estado": "Pago"
+    "Type": 0,
+    "Description": "",
+    "Reference": "N/A",
+    "Status": "Conclu\u00EDdo"
   },
   {
     "Id": "332e717d-4596-4e88-8b91-3e17e1c7403d",
-    "Data": "2026-08-01T21:46:18.4379382+01:00",
+    "Date": "0001-01-01T00:00:00",
     "Valor": 1033.3333333333333333333333333,
-    "Tipo": 1,
-    "Descricao": "Sal\u00E1rio: Ondeus",
-    "Referencia": "Ondeus",
-    "Estado": "Pago"
+    "Type": 0,
+    "Description": "",
+    "Reference": "N/A",
+    "Status": "Conclu\u00EDdo"
   },
   {
     "Id": "3b68cb98-018f-48dd-a1c4-8ec49f275a43",
-    "Data": "2026-09-01T21:46:18.4379382+01:00",
+    "Date": "0001-01-01T00:00:00",
     "Valor": 1033.3333333333333333333333333,
-    "Tipo": 1,
-    "Descricao": "Sal\u00E1rio: Emerson Ribeiro",
-    "Referencia": "Emerson Ribeiro",
-    "Estado": "Pago"
+    "Type": 0,
+    "Description": "",
+    "Reference": "N/A",
+    "Status": "Conclu\u00EDdo"
   },
   {
     "Id": "fe154d86-0e3c-4c18-a028-072c2fd3d809",
-    "Data": "2026-09-01T21:46:18.4379382+01:00",
+    "Date": "0001-01-01T00:00:00",
     "Valor": 7336.6666666666666666666666668,
-    "Tipo": 1,
-    "Descricao": "Sal\u00E1rio: Claudinho",
-    "Referencia": "Claudinho",
-    "Estado": "Pago"
+    "Type": 0,
+    "Description": "",
+    "Reference": "N/A",
+    "Status": "Conclu\u00EDdo"
   },
   {
     "Id": "94cbd335-2343-42b1-94f8-0345ecf4ad66",
-    "Data": "2026-09-01T21:46:18.4379382+01:00",
+    "Date": "0001-01-01T00:00:00",
     "Valor": 1033.3333333333333333333333333,
-    "Tipo": 1,
-    "Descricao": "Sal\u00E1rio: Atualiza\u00E7\u00E3o de software\u0027s",
-    "Referencia": "Atualiza\u00E7\u00E3o de software\u0027s",
-    "Estado": "Pago"
+    "Type": 0,
+    "Description": "",
+    "Reference": "N/A",
+    "Status": "Conclu\u00EDdo"
   },
   {
     "Id": "623670c2-2e0d-4d9f-8f1a-795a4ac83750",
-    "Data": "2026-09-01T21:46:18.4379382+01:00",
+    "Date": "0001-01-01T00:00:00",
     "Valor": 1033.3333333333333333333333333,
-    "Tipo": 1,
-    "Descricao": "Sal\u00E1rio: Ondeus",
-    "Referencia": "Ondeus",
-    "Estado": "Pago"
+    "Type": 0,
+    "Description": "",
+    "Reference": "N/A",
+    "Status": "Conclu\u00EDdo"
   },
   {
     "Id": "9209bc94-19f8-4f69-8f14-1f65c0b0024c",
-    "Data": "2026-10-01T21:46:18.4379382+01:00",
+    "Date": "0001-01-01T00:00:00",
     "Valor": 1000.0000000000000000000000000,
-    "Tipo": 1,
-    "Descricao": "Sal\u00E1rio: Emerson Ribeiro",
-    "Referencia": "Emerson Ribeiro",
-    "Estado": "Pago"
+    "Type": 0,
+    "Description": "",
+    "Reference": "N/A",
+    "Status": "Conclu\u00EDdo"
   },
   {
     "Id": "e2f918b6-f3a4-4bdc-8b05-037ff5c1cacf",
-    "Data": "2026-10-01T21:46:18.4379382+01:00",
+    "Date": "0001-01-01T00:00:00",
     "Valor": 7100.0000000000000000000000001,
-    "Tipo": 1,
-    "Descricao": "Sal\u00E1rio: Claudinho",
-    "Referencia": "Claudinho",
-    "Estado": "Pago"
+    "Type": 0,
+    "Description": "",
+    "Reference": "N/A",
+    "Status": "Conclu\u00EDdo"
   },
   {
     "Id": "844d76f9-561f-49e5-999f-8275a943930a",
-    "Data": "2026-10-01T21:46:18.4379382+01:00",
+    "Date": "0001-01-01T00:00:00",
     "Valor": 1000.0000000000000000000000000,
-    "Tipo": 1,
-    "Descricao": "Sal\u00E1rio: Atualiza\u00E7\u00E3o de software\u0027s",
-    "Referencia": "Atualiza\u00E7\u00E3o de software\u0027s",
-    "Estado": "Pago"
+    "Type": 0,
+    "Description": "",
+    "Reference": "N/A",
+    "Status": "Conclu\u00EDdo"
   },
   {
     "Id": "d77d1821-75b5-4fe2-9288-02a834b58f2f",
-    "Data": "2026-10-01T21:46:18.4379382+01:00",
+    "Date": "0001-01-01T00:00:00",
     "Valor": 1000.0000000000000000000000000,
-    "Tipo": 1,
-    "Descricao": "Sal\u00E1rio: Ondeus",
-    "Referencia": "Ondeus",
-    "Estado": "Pago"
+    "Type": 0,
+    "Description": "",
+    "Reference": "N/A",
+    "Status": "Conclu\u00EDdo"
   },
   {
     "Id": "f51db65f-9be4-4f3d-86db-8560d7740494",
-    "Data": "2026-11-01T21:46:18.4379382+00:00",
+    "Date": "0001-01-01T00:00:00",
     "Valor": 1033.3333333333333333333333333,
-    "Tipo": 1,
-    "Descricao": "Sal\u00E1rio: Emerson Ribeiro",
-    "Referencia": "Emerson Ribeiro",
-    "Estado": "Pago"
+    "Type": 0,
+    "Description": "",
+    "Reference": "N/A",
+    "Status": "Conclu\u00EDdo"
   },
   {
     "Id": "d095aa57-e3e3-4257-8799-866b394f64f0",
-    "Data": "2026-11-01T21:46:18.4379382+00:00",
+    "Date": "0001-01-01T00:00:00",
     "Valor": 1550,
-    "Tipo": 1,
-    "Descricao": "Sal\u00E1rio: Ondeus",
-    "Referencia": "Ondeus",
-    "Estado": "Pago"
+    "Type": 0,
+    "Description": "",
+    "Reference": "N/A",
+    "Status": "Conclu\u00EDdo"
   },
   {
     "Id": "e51ca823-60e3-4cbb-b0e7-1f2a25138a27",
-    "Data": "2026-11-01T21:46:18.4379382+00:00",
+    "Date": "0001-01-01T00:00:00",
     "Valor": 4650,
-    "Tipo": 1,
-    "Descricao": "Sal\u00E1rio: Teste",
-    "Referencia": "Teste",
-    "Estado": "Pago"
+    "Type": 0,
+    "Description": "",
+    "Reference": "N/A",
+    "Status": "Conclu\u00EDdo"
   },
   {
     "Id": "d83f10b1-d55a-4c8a-9117-296ab699db87",
-    "Data": "2026-11-01T21:46:18.4379382+00:00",
+    "Date": "0001-01-01T00:00:00",
     "Valor": 186,
-    "Tipo": 1,
-    "Descricao": "Sal\u00E1rio: 12",
-    "Referencia": "12",
-    "Estado": "Pago"
+    "Type": 0,
+    "Description": "",
+    "Reference": "N/A",
+    "Status": "Conclu\u00EDdo"
   },
   {
     "Id": "7ce12e30-1973-4b4c-8a1a-86ba2b5fea1c",
-    "Data": "2026-11-01T21:46:18.4379382+00:00",
+    "Date": "0001-01-01T00:00:00",
     "Valor": 1033.3333333333333333333333333,
-    "Tipo": 1,
-    "Descricao": "Sal\u00E1rio: Cordadedadasdas",
-    "Referencia": "Cordadedadasdas",
-    "Estado": "Pago"
+    "Type": 0,
+    "Description": "",
+    "Reference": "N/A",
+    "Status": "Conclu\u00EDdo"
+  },
+  {
+    "Id": "87d6e00e-3325-441e-a80f-92e603acaea3",
+    "Date": "2026-12-01T21:46:18.4379382+00:00",
+    "Valor": 1000.0000000000000000000000000,
+    "Type": 1,
+    "Description": "Sal\u00E1rio: Emerson Ribeiro",
+    "Reference": "Emerson Ribeiro",
+    "Status": "Pago"
+  },
+  {
+    "Id": "94d0b06a-5ee5-420e-aa32-eb05788817da",
+    "Date": "2026-12-01T21:46:18.4379382+00:00",
+    "Valor": 1500,
+    "Type": 1,
+    "Description": "Sal\u00E1rio: Ondeus",
+    "Reference": "Ondeus",
+    "Status": "Pago"
+  },
+  {
+    "Id": "1363006e-c260-43a7-bc1b-d57b9f82efc0",
+    "Date": "2026-12-01T21:46:18.4379382+00:00",
+    "Valor": 4500,
+    "Type": 1,
+    "Description": "Sal\u00E1rio: Teste",
+    "Reference": "Teste",
+    "Status": "Pago"
+  },
+  {
+    "Id": "6b7251c1-8460-47b9-b423-2503dc9e2f74",
+    "Date": "2026-12-01T21:46:18.4379382+00:00",
+    "Valor": 180,
+    "Type": 1,
+    "Description": "Sal\u00E1rio: 12",
+    "Reference": "12",
+    "Status": "Pago"
+  },
+  {
+    "Id": "6b7b0c94-d3af-4cd4-b1c8-972192fb9929",
+    "Date": "2026-12-01T21:46:18.4379382+00:00",
+    "Valor": 1000.0000000000000000000000000,
+    "Type": 1,
+    "Description": "Sal\u00E1rio: Cordadedadasdas",
+    "Reference": "Cordadedadasdas",
+    "Status": "Pago"
+  },
+  {
+    "Id": "5b4897df-773d-41b0-a679-2bb8022285a3",
+    "Date": "2026-12-23T21:46:18.4379382+00:00",
+    "Valor": 1150,
+    "Type": 1,
+    "Description": "Acerto Fim de Contrato: Ondeus",
+    "Reference": "Ondeus",
+    "Status": "Pago"
+  },
+  {
+    "Id": "aa81b242-81ec-49e1-a8e5-f2aab3694e13",
+    "Date": "2027-01-01T21:46:18.4379382+00:00",
+    "Valor": 1033.3333333333333333333333333,
+    "Type": 1,
+    "Description": "Sal\u00E1rio: Emerson Ribeiro",
+    "Reference": "Emerson Ribeiro",
+    "Status": "Pago"
+  },
+  {
+    "Id": "1ca02fa3-7c89-401f-96d7-306247f2bce2",
+    "Date": "2027-01-01T21:46:18.4379382+00:00",
+    "Valor": 1033.3333333333333333333333333,
+    "Type": 1,
+    "Description": "Sal\u00E1rio: Cordadedadasdas",
+    "Reference": "Cordadedadasdas",
+    "Status": "Pago"
+  },
+  {
+    "Id": "391b5de0-998e-4a43-b24f-73e345b22ac3",
+    "Date": "2027-01-15T21:46:18.4379382+00:00",
+    "Valor": 750,
+    "Type": 1,
+    "Description": "Acerto Fim de Contrato: Ondeus",
+    "Reference": "Ondeus",
+    "Status": "Pago"
+  },
+  {
+    "Id": "434ce740-2163-4a43-9faf-d53eec58a20c",
+    "Date": "2027-02-01T21:46:18.4379382+00:00",
+    "Valor": 1033.3333333333333333333333333,
+    "Type": 1,
+    "Description": "Sal\u00E1rio: Emerson Ribeiro",
+    "Reference": "Emerson Ribeiro",
+    "Status": "Pago"
+  },
+  {
+    "Id": "22ed965e-64e6-4254-bb1b-46b39e812760",
+    "Date": "2027-02-01T21:46:18.4379382+00:00",
+    "Valor": 1033.3333333333333333333333333,
+    "Type": 1,
+    "Description": "Sal\u00E1rio: Cordadedadasdas",
+    "Reference": "Cordadedadasdas",
+    "Status": "Pago"
+  },
+  {
+    "Id": "7b2af461-7615-4a54-a2dd-a264733617cc",
+    "Date": "2027-03-01T21:46:18.4379382+00:00",
+    "Valor": 933.3333333333333333333333333,
+    "Type": 1,
+    "Description": "Sal\u00E1rio: Emerson Ribeiro",
+    "Reference": "Emerson Ribeiro",
+    "Status": "Pago"
+  },
+  {
+    "Id": "e9e16fe6-cbdb-4e25-8b1b-5c00d0f6bb19",
+    "Date": "2027-03-01T21:46:18.4379382+00:00",
+    "Valor": 933.3333333333333333333333333,
+    "Type": 1,
+    "Description": "Sal\u00E1rio: Cordadedadasdas",
+    "Reference": "Cordadedadasdas",
+    "Status": "Pago"
+  },
+  {
+    "Id": "098360fb-4fa1-481e-8374-0a96b43e28cf",
+    "Date": "2027-04-01T21:46:18.4379382+01:00",
+    "Valor": 1033.3333333333333333333333333,
+    "Type": 1,
+    "Description": "Sal\u00E1rio: Emerson Ribeiro",
+    "Reference": "Emerson Ribeiro",
+    "Status": "Pago"
+  },
+  {
+    "Id": "a23e0f8e-af0a-4d0e-88b4-f7d11dbcd3c4",
+    "Date": "2027-04-01T21:46:18.4379382+01:00",
+    "Valor": 1033.3333333333333333333333333,
+    "Type": 1,
+    "Description": "Sal\u00E1rio: Cordadedadasdas",
+    "Reference": "Cordadedadasdas",
+    "Status": "Pago"
+  },
+  {
+    "Id": "84b9c401-a97d-461b-9d42-fe97afee7cb4",
+    "Date": "2027-04-01T21:46:18.4379382+01:00",
+    "Valor": 70000,
+    "Type": 0,
+    "Description": "Fatura\u00E7\u00E3o Forma\u00E7\u00E3o: Tatata",
+    "Reference": "Aloca\u00E7\u00E3o #11822ac9",
+    "Status": "Recebido"
+  },
+  {
+    "Id": "20461848-dbbc-4592-8992-5adf97e45a3f",
+    "Date": "2027-05-01T21:46:18.4379382+01:00",
+    "Valor": 1000.0000000000000000000000000,
+    "Type": 1,
+    "Description": "Sal\u00E1rio: Emerson Ribeiro",
+    "Reference": "Emerson Ribeiro",
+    "Status": "Pago"
+  },
+  {
+    "Id": "7254715b-8731-4f31-af6e-ac3eb2423817",
+    "Date": "2027-05-01T21:46:18.4379382+01:00",
+    "Valor": 1000.0000000000000000000000000,
+    "Type": 1,
+    "Description": "Sal\u00E1rio: Cordadedadasdas",
+    "Reference": "Cordadedadasdas",
+    "Status": "Pago"
+  },
+  {
+    "Id": "ff4c9afb-802b-44af-8da6-b32378be38b5",
+    "Date": "2027-06-01T21:46:18.4379382+01:00",
+    "Valor": 1033.3333333333333333333333333,
+    "Type": 1,
+    "Description": "Sal\u00E1rio: Emerson Ribeiro",
+    "Reference": "Emerson Ribeiro",
+    "Status": "Pago"
+  },
+  {
+    "Id": "610396e9-28ea-4e11-8f53-a0b8f7d0bb66",
+    "Date": "2027-06-01T21:46:18.4379382+01:00",
+    "Valor": 4650,
+    "Type": 1,
+    "Description": "Sal\u00E1rio: Teste",
+    "Reference": "Teste",
+    "Status": "Pago"
+  },
+  {
+    "Id": "b901e683-5339-4598-9d7d-25ef93dd1131",
+    "Date": "2027-06-01T21:46:18.4379382+01:00",
+    "Valor": 186,
+    "Type": 1,
+    "Description": "Sal\u00E1rio: 12",
+    "Reference": "12",
+    "Status": "Pago"
+  },
+  {
+    "Id": "cbe814db-e1cb-40a9-a811-758a4f03ff56",
+    "Date": "2027-06-01T21:46:18.4379382+01:00",
+    "Valor": 1033.3333333333333333333333333,
+    "Type": 1,
+    "Description": "Sal\u00E1rio: Cordadedadasdas",
+    "Reference": "Cordadedadasdas",
+    "Status": "Pago"
   }
 ]
