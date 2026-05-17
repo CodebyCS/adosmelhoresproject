@@ -1,0 +1,110 @@
+[
+  {
+    "Id": "da17069c-023e-4cb5-b93e-fa9109e21c1b",
+    "Data": "2026-06-01T21:46:18.4379382+01:00",
+    "Valor": 1033.3333333333333333333333333,
+    "Tipo": 1,
+    "Descricao": "Sal\u00E1rio: Teste",
+    "Referencia": "Teste",
+    "Estado": "Pago"
+  },
+  {
+    "Id": "406565f3-cafc-4eff-a688-6dcd6f39fe95",
+    "Data": "2026-06-01T21:46:18.4379382+01:00",
+    "Valor": 3105.1666666666666666666666668,
+    "Tipo": 1,
+    "Descricao": "Sal\u00E1rio: Teste 1",
+    "Referencia": "Teste 1",
+    "Estado": "Pago"
+  },
+  {
+    "Id": "1c2c9cc4-e3ad-4b3a-95d4-40af11e6f984",
+    "Data": "2026-06-01T21:46:18.4379382+01:00",
+    "Valor": 4650,
+    "Tipo": 1,
+    "Descricao": "Sal\u00E1rio: Teste 2",
+    "Referencia": "Teste 2",
+    "Estado": "Pago"
+  },
+  {
+    "Id": "d22c0c3f-5c6d-4ef6-9dd5-be5db6cd2ce7",
+    "Data": "2026-06-01T21:46:18.4379382+01:00",
+    "Valor": 930,
+    "Tipo": 1,
+    "Descricao": "Sal\u00E1rio: Teste 3",
+    "Referencia": "Teste 3",
+    "Estado": "Pago"
+  },
+  {
+    "Id": "c9f2e813-48f3-47ec-8a16-1e7e0210d40a",
+    "Data": "2026-06-01T21:46:18.4379382+01:00",
+    "Valor": 1240,
+    "Tipo": 1,
+    "Descricao": "Sal\u00E1rio: Teste 7",
+    "Referencia": "Teste 7",
+    "Estado": "Pago"
+  },
+  {
+    "Id": "39d553fc-d0ce-4050-878f-0797b3fe3f39",
+    "Data": "2026-06-01T21:46:18.4379382+01:00",
+    "Valor": 3410,
+    "Tipo": 1,
+    "Descricao": "Sal\u00E1rio: Emerson Ribeiro",
+    "Referencia": "Emerson Ribeiro",
+    "Estado": "Pago"
+  },
+  {
+    "Id": "a212a39c-a610-4188-96eb-e323771dfb89",
+    "Data": "2026-07-01T21:46:18.4379382+01:00",
+    "Valor": 1000.0000000000000000000000000,
+    "Tipo": 1,
+    "Descricao": "Sal\u00E1rio: Teste",
+    "Referencia": "Teste",
+    "Estado": "Pago"
+  },
+  {
+    "Id": "d9be1ad9-3802-4578-b718-15de3993df4f",
+    "Data": "2026-07-01T21:46:18.4379382+01:00",
+    "Valor": 3005.0000000000000000000000001,
+    "Tipo": 1,
+    "Descricao": "Sal\u00E1rio: Teste 1",
+    "Referencia": "Teste 1",
+    "Estado": "Pago"
+  },
+  {
+    "Id": "842e2def-5ab6-4ca8-9888-c74d006bbc00",
+    "Data": "2026-07-01T21:46:18.4379382+01:00",
+    "Valor": 4500,
+    "Tipo": 1,
+    "Descricao": "Sal\u00E1rio: Teste 2",
+    "Referencia": "Teste 2",
+    "Estado": "Pago"
+  },
+  {
+    "Id": "be87ed0e-c8a8-4351-9bee-84e3579d2e4b",
+    "Data": "2026-07-01T21:46:18.4379382+01:00",
+    "Valor": 900,
+    "Tipo": 1,
+    "Descricao": "Sal\u00E1rio: Teste 3",
+    "Referencia": "Teste 3",
+    "Estado": "Pago"
+  },
+  {
+    "Id": "24a47325-6efa-47fd-961f-745a335273a9",
+    "Data": "2026-07-01T21:46:18.4379382+01:00",
+    "Valor": 1200,
+    "Tipo": 1,
+    "Descricao": "Sal\u00E1rio: Teste 7",
+    "Referencia": "Teste 7",
+    "Estado": "Pago"
+  },
+  {
+    "Id": "da94f009-9e25-4dfe-bc56-ad5f6d13a285",
+    "Data": "2026-07-01T21:46:18.4379382+01:00",
+    "Valor": 3300,
+    "Tipo": 1,
+    "Descricao": "Sal\u00E1rio: Emerson Ribeiro",
+    "Referencia": "Emerson Ribeiro",
+    "Estado": "Pago"
+  }
+]

@@ -31,7 +31,7 @@
   {
     "$type": "Formador",
     "TeachingArea": "C#",
-    "Availability": null,
+    "AvailabilityTrainer": 0,
     "HourlyRate": 25,
     "Id": 3,
     "Name": "Teste 2",
@@ -69,6 +69,21 @@
     "ContractEndDate": "2028-05-25T21:46:18.4379382+01:00",
     "ContractStartDate": "0001-01-01T00:00:00",
     "Salary": 1200,
+    "Active": true
+  },
+  {
+    "$type": "Diretor",
+    "HoursExemption": true,
+    "MonthlyBonus": 300,
+    "CompanyCar": false,
+    "Id": 6,
+    "Name": "Emerson Ribeiro",
+    "Adress": null,
+    "Contact": null,
+    "CriminalRecordDate": "2026-05-15T00:00:00",
+    "ContractEndDate": "2027-05-25T21:46:18.4379382+01:00",
+    "ContractStartDate": "0001-01-01T00:00:00",
+    "Salary": 5000,
     "Active": true
   }
 ]

@@ -25,7 +25,6 @@ namespace adosmelhoresproject.src.Controllers
             var dataAtual = _dateService.GetCurrentDate();
 
             var funcionariosAtivos = _service.GetAll().Where(f => f.Active).ToList();
-s
             if (virouMes)
             {
                 ProcessPayroll(dataAtual.AddDays(-1), funcionariosAtivos);
