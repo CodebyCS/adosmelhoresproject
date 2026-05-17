@@ -2,9 +2,6 @@
 using System.Text.Json;
 using Microsoft.AspNetCore.Hosting;
 using adosmelhoresproject.src.Models;
-using adosmelhoresproject.src.Interfaces;
-using adosmelhoresproject.src.Services;
-
 
 namespace adosmelhoresproject.src.Services;
 
@@ -12,8 +9,8 @@ public class DateService
 {
     private readonly string _filePath;
     private DateTime _currentDate;
-    // Carrega a data simulada do arquivo JSON
     public event Action? OnDateChanged;
+
     public DateService(IWebHostEnvironment env)
     {
         _filePath = Path.Combine(env.ContentRootPath, "src", "Data", "appstate.json");
@@ -37,11 +34,9 @@ public class DateService
             var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
             var appState = JsonSerializer.Deserialize<AppState>(jsonData, options);
 
-            // Se o arquivo existir mas a data for inválida (ano 0001), resetamos para HOJE
             if (appState == null || appState.CurrentDate.Year < 2000)
             {
                 _currentDate = DateTime.Now;
-                SaveDate();
             }
             else
             {
@@ -52,6 +47,7 @@ public class DateService
         {
             _currentDate = DateTime.Now;
         }
+        SaveDate();
     }
 
     private void SaveDate()
@@ -61,54 +57,19 @@ public class DateService
         File.WriteAllText(_filePath, jsonData);
     }
 
-    //Funcoes publicas para uso no codigo
     public DateTime GetCurrentDate()
     {
         return _currentDate;
     }
 
-    public void ForwardDay(IEmployeeService employeeService, ITransactionService transacaoService)
+    // migrando a gestão de data para o SimulatorController, para que ele possa processar os pagamentos e alertas
+    public bool ForwardDay()
     {
         DateTime dataAnterior = _currentDate;
         _currentDate = _currentDate.AddDays(1);
-
-        //se mudou o mes, pagamos
-        if(_currentDate.Month != dataAnterior.Month)
-        {
-            ProcessPayroll(dataAnterior, employeeService, transacaoService);
-        }
-
         SaveDate();
         OnDateChanged?.Invoke();
-    }
-    
-    private void ProcessPayroll(DateTime dataReferencia, IEmployeeService employeeService, ITransactionService transacaoService)
-    {
-        var employees = employeeService.GetAll().Where(f => f.Active).ToList();
 
-        var primeiroDiaMesAnterior = new DateTime(dataReferencia.Year, dataReferencia.Month, 1);
-        var ultimoDiaMesAnterior = dataReferencia.Date;
-
-        foreach (var func in employees) 
-        {
-            
-            decimal valorAPagar = func.CalculatePayment(primeiroDiaMesAnterior, ultimoDiaMesAnterior);
-
-            if (valorAPagar > 0)
-            {
-                var pagamento = new Transaction
-                {
-                    Data = _currentDate,
-                    Valor = valorAPagar,
-                    Tipo = TipoTransacao.Despesa, 
-                    Descricao = $"Salário: {func.Name}",
-                    Referencia = func.Name,
-                    Estado = "Pago"
-                };
-
-                transacaoService.Add(pagamento);
-            }
-        }
+        return _currentDate.Month != dataAnterior.Month;
     }
 }
-

@@ -21,24 +21,32 @@ namespace adosmelhoresproject.src.Controllers
 
         public IActionResult Index()
         {
-            // 1. Preencher a Data (para o topo e para as boas-vindas)
+            //data boas vindas
             var data = _dateService.GetCurrentDate();
             ViewBag.DataSistema = data;
 
-            // 2. Preencher os números do gráfico
-            ViewBag.InscritosPorSemana = new int[] { 8, 5, 11, 4 };
+            // alarme
+            var funcionariosAtivos = _service.GetAll().Where(f => f.Active).ToList();
 
-            // 3. Preencher Alertas (Simulado por agora)
-            ViewBag.ContratosExpirar = 2;
-            ViewBag.InscricoesPendentes = 4;
+            // Conta contratos que já venceram ou vencem na data atual
+            int qtdContratosExpirados = funcionariosAtivos.Count(f => f.ContractEndDate.Date <= data.Date);
+
+            // Conta registos criminais que já venceram ou vencem na data atual
+            int qtdRegistosExpirados = funcionariosAtivos.Count(f => f.CriminalRecordDate.Date <= data.Date);
+
+            ViewBag.ContratosExpirar = qtdContratosExpirados;
+            ViewBag.RegistosExpirar = qtdRegistosExpirados;
+
+            // Deixando zerado já que as Inscrições Semanais vão ser removidas na Fase 1
+            ViewBag.InscricoesPendentes = 0;
             ViewBag.NomeUtilizador = "Administrador";
 
             // 4. Criar a lista para o Model
             var listaAtividades = new List<ActivityViewModel>
-    {
-            new ActivityViewModel { Titulo = "Formação C#", Local = "Sala 1", Hora = "14:00", CorClasse = "border-primary" },
-            new ActivityViewModel { Titulo = "Reunião Geral", Local = "Auditório", Hora = "16:30", CorClasse = "border-success" }
-    };
+            {
+                new ActivityViewModel { Titulo = "Formação C#", Local = "Sala 1", Hora = "14:00", CorClasse = "border-primary" },
+                new ActivityViewModel { Titulo = "Reunião Geral", Local = "Auditório", Hora = "16:30", CorClasse = "border-success" }
+            };
 
             return View(listaAtividades);
         }
