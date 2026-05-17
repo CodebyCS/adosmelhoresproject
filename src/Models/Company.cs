@@ -4,9 +4,9 @@ namespace adosmelhoresproject.src.Models;
 
 public class Company
 {
-    public List<Employee> Funcionarios { get; set; }= new List<Employee>();
+    public List<Employee> Funcionarios { get; set; } = new List<Employee>();
 
-    public List<Transaction> Transacoes { get; set;}
+    public List<Transaction> Transacoes { get; set;} = new List<Transaction>();
 
     public decimal CalcularDespesaMensal()
     {

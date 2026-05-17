@@ -2,7 +2,7 @@
 {
     public class Allocation
     {
-        public string Id { get; set; } = Guid.NewGuid().ToString().Substring(0, 8); // Gera um ID curto automático
+        public string Id { get; set; } = Guid.NewGuid().ToString()[..8]; // Gera um ID curto para facilitar a leitura
         public DateTime DataInicio { get; set; } = DateTime.Now;
         public DateTime DataFim { get; set; } = DateTime.Now.AddHours(4);
         public string NomeFormacao { get; set; }
