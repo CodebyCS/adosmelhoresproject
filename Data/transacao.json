@@ -106,5 +106,158 @@
     "Descricao": "Sal\u00E1rio: Emerson Ribeiro",
     "Referencia": "Emerson Ribeiro",
     "Estado": "Pago"
+  },
+  {
+    "Id": "36f43066-6a30-4fab-90a4-3360ba5efcfa",
+    "Data": "2026-08-01T21:46:18.4379382+01:00",
+    "Valor": 1033.3333333333333333333333333,
+    "Tipo": 1,
+    "Descricao": "Sal\u00E1rio: Emerson Ribeiro",
+    "Referencia": "Emerson Ribeiro",
+    "Estado": "Pago"
+  },
+  {
+    "Id": "f5f2a115-fbe3-4040-ba37-143754108a93",
+    "Data": "2026-08-01T21:46:18.4379382+01:00",
+    "Valor": 7336.6666666666666666666666668,
+    "Tipo": 1,
+    "Descricao": "Sal\u00E1rio: Claudinho",
+    "Referencia": "Claudinho",
+    "Estado": "Pago"
+  },
+  {
+    "Id": "4f66d87d-ccb8-4dd1-bfd7-ae2aa8ba792c",
+    "Data": "2026-08-01T21:46:18.4379382+01:00",
+    "Valor": 1033.3333333333333333333333333,
+    "Tipo": 1,
+    "Descricao": "Sal\u00E1rio: Atualiza\u00E7\u00E3o de software\u0027s",
+    "Referencia": "Atualiza\u00E7\u00E3o de software\u0027s",
+    "Estado": "Pago"
+  },
+  {
+    "Id": "332e717d-4596-4e88-8b91-3e17e1c7403d",
+    "Data": "2026-08-01T21:46:18.4379382+01:00",
+    "Valor": 1033.3333333333333333333333333,
+    "Tipo": 1,
+    "Descricao": "Sal\u00E1rio: Ondeus",
+    "Referencia": "Ondeus",
+    "Estado": "Pago"
+  },
+  {
+    "Id": "3b68cb98-018f-48dd-a1c4-8ec49f275a43",
+    "Data": "2026-09-01T21:46:18.4379382+01:00",
+    "Valor": 1033.3333333333333333333333333,
+    "Tipo": 1,
+    "Descricao": "Sal\u00E1rio: Emerson Ribeiro",
+    "Referencia": "Emerson Ribeiro",
+    "Estado": "Pago"
+  },
+  {
+    "Id": "fe154d86-0e3c-4c18-a028-072c2fd3d809",
+    "Data": "2026-09-01T21:46:18.4379382+01:00",
+    "Valor": 7336.6666666666666666666666668,
+    "Tipo": 1,
+    "Descricao": "Sal\u00E1rio: Claudinho",
+    "Referencia": "Claudinho",
+    "Estado": "Pago"
+  },
+  {
+    "Id": "94cbd335-2343-42b1-94f8-0345ecf4ad66",
+    "Data": "2026-09-01T21:46:18.4379382+01:00",
+    "Valor": 1033.3333333333333333333333333,
+    "Tipo": 1,
+    "Descricao": "Sal\u00E1rio: Atualiza\u00E7\u00E3o de software\u0027s",
+    "Referencia": "Atualiza\u00E7\u00E3o de software\u0027s",
+    "Estado": "Pago"
+  },
+  {
+    "Id": "623670c2-2e0d-4d9f-8f1a-795a4ac83750",
+    "Data": "2026-09-01T21:46:18.4379382+01:00",
+    "Valor": 1033.3333333333333333333333333,
+    "Tipo": 1,
+    "Descricao": "Sal\u00E1rio: Ondeus",
+    "Referencia": "Ondeus",
+    "Estado": "Pago"
+  },
+  {
+    "Id": "9209bc94-19f8-4f69-8f14-1f65c0b0024c",
+    "Data": "2026-10-01T21:46:18.4379382+01:00",
+    "Valor": 1000.0000000000000000000000000,
+    "Tipo": 1,
+    "Descricao": "Sal\u00E1rio: Emerson Ribeiro",
+    "Referencia": "Emerson Ribeiro",
+    "Estado": "Pago"
+  },
+  {
+    "Id": "e2f918b6-f3a4-4bdc-8b05-037ff5c1cacf",
+    "Data": "2026-10-01T21:46:18.4379382+01:00",
+    "Valor": 7100.0000000000000000000000001,
+    "Tipo": 1,
+    "Descricao": "Sal\u00E1rio: Claudinho",
+    "Referencia": "Claudinho",
+    "Estado": "Pago"
+  },
+  {
+    "Id": "844d76f9-561f-49e5-999f-8275a943930a",
+    "Data": "2026-10-01T21:46:18.4379382+01:00",
+    "Valor": 1000.0000000000000000000000000,
+    "Tipo": 1,
+    "Descricao": "Sal\u00E1rio: Atualiza\u00E7\u00E3o de software\u0027s",
+    "Referencia": "Atualiza\u00E7\u00E3o de software\u0027s",
+    "Estado": "Pago"
+  },
+  {
+    "Id": "d77d1821-75b5-4fe2-9288-02a834b58f2f",
+    "Data": "2026-10-01T21:46:18.4379382+01:00",
+    "Valor": 1000.0000000000000000000000000,
+    "Tipo": 1,
+    "Descricao": "Sal\u00E1rio: Ondeus",
+    "Referencia": "Ondeus",
+    "Estado": "Pago"
+  },
+  {
+    "Id": "f51db65f-9be4-4f3d-86db-8560d7740494",
+    "Data": "2026-11-01T21:46:18.4379382+00:00",
+    "Valor": 1033.3333333333333333333333333,
+    "Tipo": 1,
+    "Descricao": "Sal\u00E1rio: Emerson Ribeiro",
+    "Referencia": "Emerson Ribeiro",
+    "Estado": "Pago"
+  },
+  {
+    "Id": "d095aa57-e3e3-4257-8799-866b394f64f0",
+    "Data": "2026-11-01T21:46:18.4379382+00:00",
+    "Valor": 1550,
+    "Tipo": 1,
+    "Descricao": "Sal\u00E1rio: Ondeus",
+    "Referencia": "Ondeus",
+    "Estado": "Pago"
+  },
+  {
+    "Id": "e51ca823-60e3-4cbb-b0e7-1f2a25138a27",
+    "Data": "2026-11-01T21:46:18.4379382+00:00",
+    "Valor": 4650,
+    "Tipo": 1,
+    "Descricao": "Sal\u00E1rio: Teste",
+    "Referencia": "Teste",
+    "Estado": "Pago"
+  },
+  {
+    "Id": "d83f10b1-d55a-4c8a-9117-296ab699db87",
+    "Data": "2026-11-01T21:46:18.4379382+00:00",
+    "Valor": 186,
+    "Tipo": 1,
+    "Descricao": "Sal\u00E1rio: 12",
+    "Referencia": "12",
+    "Estado": "Pago"
+  },
+  {
+    "Id": "7ce12e30-1973-4b4c-8a1a-86ba2b5fea1c",
+    "Data": "2026-11-01T21:46:18.4379382+00:00",
+    "Valor": 1033.3333333333333333333333333,
+    "Tipo": 1,
+    "Descricao": "Sal\u00E1rio: Cordadedadasdas",
+    "Referencia": "Cordadedadasdas",
+    "Estado": "Pago"
   }
 ]

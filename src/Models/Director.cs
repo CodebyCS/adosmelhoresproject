@@ -8,7 +8,7 @@ namespace adosmelhoresproject.src.Models
 
         public override decimal CalculatePayment(DateTime startDate, DateTime endDate)
         {
-            decimal baseValue = Salary;
+            decimal baseValue = this.Salary; // Adicionado 'm' para ser decimal
             decimal bonus = CompanyCar ? MonthlyBonus + 500m : MonthlyBonus; // Bônus adicional se tiver carro da empresa
             int daysWorked = (endDate - startDate).Days + 1;
             decimal dailyRate = (baseValue + bonus) / 30; 
