@@ -8,11 +8,9 @@ namespace adosmelhoresproject.src.Models
 
         public override decimal CalculatePayment(DateTime startDate, DateTime endDate)
         {
-            int Days = (endDate - startDate).Days + 1;
-
-            this.Salary = Days * 6 * HourlyRate;
-
-            return this.Salary;
+            int days = (endDate - startDate).Days + 1;
+            if (days <= 0) return 0;
+            return days * 6 * HourlyRate; // Considerando 6 horas por dia
         }
     }
 }
