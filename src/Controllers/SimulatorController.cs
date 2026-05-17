@@ -25,23 +25,43 @@ namespace adosmelhoresproject.src.Controllers
             var dataAtual = _dateService.GetCurrentDate();
 
             var funcionariosAtivos = _service.GetAll().Where(f => f.Active).ToList();
+
             if (virouMes)
             {
                 ProcessPayroll(dataAtual.AddDays(-1), funcionariosAtivos);
             }
 
-            var contratosExpirados = funcionariosAtivos
-                .Where(f => f.ContractEndDate.Date == dataAtual.Date)
-                .Select(f => f.Name).ToList();
+            var contratosExpirados = new List<string>();
+            var registosExpirados = new List<string>();
 
-            var registosExpirados = funcionariosAtivos
-                .Where(f => f.CriminalRecordDate.Date == dataAtual.Date)
-                .Select(f => f.Name).ToList();
+            foreach (var func in funcionariosAtivos)
+            {
+
+                if (func.CriminalRecordDate.Date == dataAtual.Date)
+                {
+                    registosExpirados.Add(func.Name);
+                }
+
+                if (func.ContractEndDate.Date <= dataAtual.Date)
+                {
+                    if (func.ContractEndDate.Date == dataAtual.Date)
+                    {
+                        contratosExpirados.Add(func.Name);
+                    }
+
+                    func.Active = false;
+
+                    if (_service is EmployeeService serviceJson)
+                    {
+                        serviceJson.Update(func);
+                    }
+                }
+            }
 
             return Json(new
             {
                 sucesso = true,
-                novaData = dataAtual.ToString("yyyy-MM-dd"), 
+                novaData = dataAtual.ToString("yyyy-MM-dd"),
                 temAlertas = contratosExpirados.Any() || registosExpirados.Any(),
                 contratos = contratosExpirados,
                 registos = registosExpirados

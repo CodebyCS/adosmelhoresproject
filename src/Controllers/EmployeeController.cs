@@ -38,49 +38,119 @@ namespace adosmelhoresproject.src.Controllers
             }
 
             ViewBag.CurrentDate = today;
-            ViewBag.FiltroAtual = filtro; 
-
+            ViewBag.FiltroAtual = filtro;
 
             var allEmployees = _service.GetAll();
             ViewBag.ExpiredContracts = allEmployees.Count(e => e.ContractEndDate.Date < today.Date);
             ViewBag.ExpiredCriminalRecords = allEmployees.Count(e => e.CriminalRecordDate.Date < today.Date);
 
+            // --- CÁLCULO DA FOLHA SALARIAL MENSAL POLIMÓRFICA SEGURO ---
             decimal totalSalarial = 0;
+
+            // Define os limites do mês simulado atual
+            var inicioMes = new DateTime(today.Year, today.Month, 1);
+            var fimMes = inicioMes.AddMonths(1).AddDays(-1);
+
             foreach (var e in allEmployees.Where(emp => emp.Active))
             {
-                totalSalarial += e.Salary;
-                if (e is Director diretor)
+                // Proteção 1: Se o contrato expirou antes do início deste mês, o custo é zero
+                if (e.ContractEndDate.Date < inicioMes.Date)
                 {
-                    totalSalarial += diretor.MonthlyBonus;
+                    continue;
+                }
+
+                // Ancoragem da janela de trabalho real dentro deste mês específico
+                DateTime dataInicioCalculo = inicioMes;
+                DateTime dataFimCalculo = e.ContractEndDate.Date < fimMes.Date ? e.ContractEndDate.Date : fimMes.Date;
+
+                // Proteção 2: Salvaguarda absoluta contra qualquer inversão de datas
+                if (dataInicioCalculo <= dataFimCalculo)
+                {
+                    totalSalarial += e.CalculatePayment(dataInicioCalculo, dataFimCalculo);
                 }
             }
+
             ViewBag.TotalMonthlyExpense = totalSalarial;
 
-            return View(employees); 
+            return View(employees);
         }
 
         // POST: /Employee/Criar
         [HttpPost]
-        public IActionResult Criar(string name, string type, decimal salary, bool HoursExemption, int MonthlyBonus, string TeachingArea, decimal HourlyRate, string Area, string DirectorName, DateTime ContractEndDate)
+        public IActionResult Criar(
+            string name, string type, decimal salary, DateTime ContractEndDate,
+            bool HoursExemption, int MonthlyBonus, bool CompanyCar,
+            string TeachingArea, decimal HourlyRate, string Availability,
+            string Area, string DirectorName,
+            List<int> SelectedTrainerIds)
         {
             Employee newEmployee;
             string tipoNormalizado = type?.ToLower();
 
             if (tipoNormalizado == "director" || tipoNormalizado == "diretor")
             {
-                newEmployee = new Director { Name = name, Salary = salary, HoursExemption = HoursExemption, MonthlyBonus = MonthlyBonus, ContractEndDate = ContractEndDate, CriminalRecordDate = _dateService.GetCurrentDate(), Active = true };
+                newEmployee = new Director
+                {
+                    Name = name,
+                    Salary = salary,
+                    ContractEndDate = ContractEndDate,
+                    CriminalRecordDate = _dateService.GetCurrentDate(),
+                    Active = true,
+                    HoursExemption = HoursExemption,
+                    MonthlyBonus = MonthlyBonus,
+                    CompanyCar = CompanyCar
+                };
             }
             else if (tipoNormalizado == "trainer" || tipoNormalizado == "formador")
             {
-                newEmployee = new Trainer { Name = name, Salary = salary, HourlyRate = HourlyRate, TeachingArea = TeachingArea, ContractEndDate = ContractEndDate, CriminalRecordDate = _dateService.GetCurrentDate(), Active = true };
+                // Tratamento seguro do Enum
+                Trainer.AvailabilityEnum disponibilidade = Trainer.AvailabilityEnum.Ambas;
+                if (Availability == "Laboral") disponibilidade = Trainer.AvailabilityEnum.Laboral;
+                else if (Availability == "Pós-Laboral") disponibilidade = Trainer.AvailabilityEnum.PosLaboral;
+
+                newEmployee = new Trainer
+                {
+                    Name = name,
+                    Salary = salary,
+                    ContractEndDate = ContractEndDate,
+                    CriminalRecordDate = _dateService.GetCurrentDate(),
+                    Active = true,
+                    TeachingArea = TeachingArea,
+                    HourlyRate = HourlyRate,
+                    AvailabilityTrainer = disponibilidade
+                };
             }
             else if (tipoNormalizado == "coordinator" || tipoNormalizado == "coordenador")
             {
-                newEmployee = new Coordinator { Name = name, Salary = salary, ContractEndDate = ContractEndDate, CriminalRecordDate = _dateService.GetCurrentDate(), Active = true };
+                var coordenador = new Coordinator
+                {
+                    Name = name,
+                    Salary = salary,
+                    ContractEndDate = ContractEndDate,
+                    CriminalRecordDate = _dateService.GetCurrentDate(),
+                    Active = true
+                };
+
+                // Conversão de Lista de IDs para Lista de Objetos Trainer
+                if (SelectedTrainerIds != null && SelectedTrainerIds.Any())
+                {
+                    var todosFormadores = _service.GetAll().OfType<Trainer>().ToList();
+                    coordenador.FormadoresAssociados = todosFormadores.Where(t => SelectedTrainerIds.Contains(t.Id)).ToList();
+                }
+                newEmployee = coordenador;
             }
             else
             {
-                newEmployee = new Secretary { Name = name, Salary = salary, Area = Area, DirectorName = DirectorName, ContractEndDate = ContractEndDate, CriminalRecordDate = _dateService.GetCurrentDate(), Active = true };
+                newEmployee = new Secretary
+                {
+                    Name = name,
+                    Salary = salary,
+                    ContractEndDate = ContractEndDate,
+                    CriminalRecordDate = _dateService.GetCurrentDate(),
+                    Active = true,
+                    Area = Area,
+                    DirectorName = DirectorName
+                };
             }
 
             _service.Add(newEmployee);
@@ -89,40 +159,66 @@ namespace adosmelhoresproject.src.Controllers
 
         // POST: /Employee/Editar
         [HttpPost]
-        public IActionResult Editar(int id, string name, string type, bool HoursExemption, int MonthlyBonus, string TeachingArea, decimal HourlyRate, string Area, string DirectorName, DateTime? CriminalRecordDate, DateTime? ContractEndDate)
+        public IActionResult Editar(
+            int id, string name, string type, decimal? salary, DateTime? ContractEndDate, DateTime? CriminalRecordDate,
+            bool? HoursExemption, int? MonthlyBonus, bool? CompanyCar,
+            string TeachingArea, decimal? HourlyRate, string Availability,
+            string Area, string DirectorName,
+            List<int> SelectedTrainerIds)
         {
             var funcionarios = _service.GetAll();
             var funcionarioExistente = funcionarios.FirstOrDefault(f => f.Id == id);
 
             if (funcionarioExistente == null) return NotFound();
 
-            // Atualiza os dados universais
-
-            funcionarioExistente.Name = name;
-
+            // 1. Atualização Segura de Dados Universais (Com proteção contra nulls)
+            if (!string.IsNullOrEmpty(name)) funcionarioExistente.Name = name;
+            if (salary.HasValue) funcionarioExistente.Salary = salary.Value;
             if (CriminalRecordDate.HasValue) funcionarioExistente.CriminalRecordDate = CriminalRecordDate.Value;
-            if (ContractEndDate.HasValue) funcionarioExistente.ContractEndDate = ContractEndDate.Value; // NOVA LINHA AQUI
 
-            // Normaliza a string do tipo para evitar erros com maiúsculas/traduções
+            // Se o utilizador estender a data do contrato, o funcionário volta a ficar "Ativo" automaticamente.
+            if (ContractEndDate.HasValue)
+            {
+                funcionarioExistente.ContractEndDate = ContractEndDate.Value;
+                if (funcionarioExistente.ContractEndDate.Date >= _dateService.GetCurrentDate().Date)
+                {
+                    funcionarioExistente.Active = true;
+                }
+            }
+
             string tipoNormalizado = type?.ToLower();
 
-            // Atualiza propriedades via herança polimórfica
+            // 2. Atualização Polimórfica Segura
             if (funcionarioExistente is Director d && (tipoNormalizado == "director" || tipoNormalizado == "diretor"))
             {
-                d.HoursExemption = HoursExemption;
-                d.MonthlyBonus = MonthlyBonus;
+                if (HoursExemption.HasValue) d.HoursExemption = HoursExemption.Value;
+                if (MonthlyBonus.HasValue) d.MonthlyBonus = MonthlyBonus.Value;
+                if (CompanyCar.HasValue) d.CompanyCar = CompanyCar.Value;
             }
             else if (funcionarioExistente is Trainer t && (tipoNormalizado == "trainer" || tipoNormalizado == "formador"))
             {
-                t.TeachingArea = TeachingArea;
-                t.HourlyRate = HourlyRate;
+                if (!string.IsNullOrEmpty(TeachingArea)) t.TeachingArea = TeachingArea;
+                if (HourlyRate.HasValue) t.HourlyRate = HourlyRate.Value;
+
+                if (Availability == "Laboral") t.AvailabilityTrainer = Trainer.AvailabilityEnum.Laboral;
+                else if (Availability == "Pós-Laboral") t.AvailabilityTrainer = Trainer.AvailabilityEnum.PosLaboral;
+                else if (Availability == "Ambas") t.AvailabilityTrainer = Trainer.AvailabilityEnum.Ambas;
             }
             else if (funcionarioExistente is Secretary s && tipoNormalizado == "secretaria")
             {
-                s.Area = Area;
-                s.DirectorName = DirectorName;
+                if (!string.IsNullOrEmpty(Area)) s.Area = Area;
+                if (!string.IsNullOrEmpty(DirectorName)) s.DirectorName = DirectorName;
+            }
+            else if (funcionarioExistente is Coordinator c && (tipoNormalizado == "coordinator" || tipoNormalizado == "coordenador"))
+            {
+                if (SelectedTrainerIds != null)
+                {
+                    var todosFormadores = _service.GetAll().OfType<Trainer>().ToList();
+                    c.FormadoresAssociados = todosFormadores.Where(f => SelectedTrainerIds.Contains(f.Id)).ToList();
+                }
             }
 
+            // 3. Persistência
             if (_service is EmployeeService serviceJson)
             {
                 serviceJson.Update(funcionarioExistente);
