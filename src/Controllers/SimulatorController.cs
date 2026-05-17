@@ -81,12 +81,12 @@ namespace adosmelhoresproject.src.Controllers
                 {
                     var pagamento = new Transaction
                     {
-                        Data = ultimoDiaMesAnterior.AddDays(1), // Paga no 1º dia do novo mês
+                        Date = ultimoDiaMesAnterior.AddDays(1), // Paga no 1º dia do novo mês
                         Valor = valorAPagar,
-                        Tipo = TipoTransacao.Despesa,
-                        Descricao = $"Salário: {func.Name}",
-                        Referencia = func.Name,
-                        Estado = "Pago"
+                        Type = TransactionType.Despesa,
+                        Description = $"Salário: {func.Name}",
+                        Reference = func.Name,
+                        Status = "Pago"
                     };
 
                     _transacaoService.Add(pagamento);

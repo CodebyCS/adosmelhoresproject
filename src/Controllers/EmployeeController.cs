@@ -135,7 +135,7 @@ namespace adosmelhoresproject.src.Controllers
                 if (SelectedTrainerIds != null && SelectedTrainerIds.Any())
                 {
                     var todosFormadores = _service.GetAll().OfType<Trainer>().ToList();
-                    coordenador.FormadoresAssociados = todosFormadores.Where(t => SelectedTrainerIds.Contains(t.Id)).ToList();
+                    coordenador.AffiliatedTrainers = todosFormadores.Where(t => SelectedTrainerIds.Contains(t.Id)).ToList();
                 }
                 newEmployee = coordenador;
             }
@@ -214,7 +214,7 @@ namespace adosmelhoresproject.src.Controllers
                 if (SelectedTrainerIds != null)
                 {
                     var todosFormadores = _service.GetAll().OfType<Trainer>().ToList();
-                    c.FormadoresAssociados = todosFormadores.Where(f => SelectedTrainerIds.Contains(f.Id)).ToList();
+                    c.AffiliatedTrainers = todosFormadores.Where(f => SelectedTrainerIds.Contains(f.Id)).ToList();
                 }
             }
 
