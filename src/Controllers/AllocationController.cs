@@ -1,29 +1,33 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using adosmelhoresproject.src.Models;
+using adosmelhoresproject.src.Interfaces;
 
 namespace adosmelhoresproject.src.Controllers
 {
     public class AllocationController : Controller
     {
+        private readonly IAllocationService _service;
+        private readonly IEmployeeService _employeeService;
+
+        public AllocationController(IAllocationService service, IEmployeeService employeeService)
+        {
+            _service = service;
+            _employeeService = employeeService;
+        }
         public IActionResult Index()
         {
-            // Simulação de dados (Substituir pelos teus Services futuramente)
+            var alocacoes = _service.GetAll();
+            
+            ViewBag.Funcionarios = _employeeService.GetAll().OfType<Trainer>().ToList();
             ViewBag.PercentagemLivre = 85;
-            ViewBag.LogsAtividade = new List<string> {
-                "Novo curso 'C# Avançado' registado hoje às 09:00",
-                "Pagamento de receita A001 confirmado"
-            };
 
-            // Dados para o dropdown de funcionários
-            ViewBag.Funcionarios = new List<Employee>();
-
-            return View(new List<Allocation>()); // Passa a lista de alocações
+            return View(alocacoes);
         }
 
         [HttpPost]
         public IActionResult Criar(Allocation allocation)
         {
-            // Lógica para salvar
+            _service.Add(allocation);
             return RedirectToAction("Index");
         }
     }
