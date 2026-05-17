@@ -12,9 +12,6 @@ builder.Services.AddSingleton<DateService>();
 builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 builder.Services.AddScoped<ITransacaoService, TransactionService>();
 
-
-builder.Services.AddSingleton<DateService>();
-
 var app = builder.Build();
 
 if (!app.Environment.IsDevelopment())

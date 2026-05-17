@@ -1,5 +1,7 @@
 using adosmelhoresproject.src.Models;
 
+namespace adosmelhoresproject.src.Models;
+
 public class Company
 {
     public List<Employee> Funcionarios { get; set; }= new List<Employee>();
