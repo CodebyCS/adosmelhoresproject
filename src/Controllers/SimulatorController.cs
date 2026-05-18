@@ -82,7 +82,7 @@ namespace adosmelhoresproject.src.Controllers
                     var formador = _service.GetAll().OfType<Trainer>().FirstOrDefault(t => t.Id == alocacao.EmployeeId);
                     if (formador != null)
                     {
-                        decimal salarioFormadorCurso = formador.CalculatePayment(alocacao.DataInicio, alocacao.DataFim);
+                        decimal salarioFormadorCurso = formador.CalculatePayment(alocacao.DataInicio, alocacao.DataFim, alocacao.HorasPorDia);
 
                         if (salarioFormadorCurso > 0)
                         {
@@ -116,6 +116,8 @@ namespace adosmelhoresproject.src.Controllers
 
             foreach (var func in funcionarios)
             {
+                if (func is Trainer) continue;
+
                 decimal valorAPagar = func.CalculatePayment(primeiroDiaMesAnterior, ultimoDiaMesAnterior);
 
                 if (valorAPagar > 0)

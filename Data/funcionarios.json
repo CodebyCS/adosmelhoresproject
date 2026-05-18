@@ -67,7 +67,7 @@
     "Adress": null,
     "Contact": null,
     "CriminalRecordDate": "2026-10-01T21:46:18.4379382+01:00",
-    "ContractEndDate": "2027-10-01T00:00:00",
+    "ContractEndDate": "2028-10-17T00:00:00",
     "ContractStartDate": "0001-01-01T00:00:00",
     "Salary": 1000,
     "Active": true
@@ -76,13 +76,13 @@
     "$type": "Formador",
     "TeachingArea": null,
     "AvailabilityTrainer": 2,
-    "HourlyRate": 1,
+    "HourlyRate": 5,
     "Id": 6,
     "Name": "12",
     "Adress": null,
     "Contact": null,
     "CriminalRecordDate": "2026-10-01T21:46:18.4379382+01:00",
-    "ContractEndDate": "2027-10-01T00:00:00",
+    "ContractEndDate": "2030-10-08T00:00:00",
     "ContractStartDate": "0001-01-01T00:00:00",
     "Salary": 500,
     "Active": true
@@ -99,6 +99,6 @@
     "ContractEndDate": "2027-10-01T00:00:00",
     "ContractStartDate": "0001-01-01T00:00:00",
     "Salary": 1000,
-    "Active": true
+    "Active": false
   }
 ]
