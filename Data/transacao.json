@@ -457,5 +457,311 @@
     "Description": "Sal\u00E1rio: Cordadedadasdas",
     "Reference": "Cordadedadasdas",
     "Status": "Pago"
+  },
+  {
+    "Id": "ce940916-c2de-4299-9e2b-f2e8040b1eb6",
+    "Date": "2027-07-01T21:46:18.4379382+01:00",
+    "Valor": 1000.0000000000000000000000000,
+    "Type": 1,
+    "Description": "Sal\u00E1rio: Emerson Ribeiro",
+    "Reference": "Emerson Ribeiro",
+    "Status": "Pago"
+  },
+  {
+    "Id": "10a2a9ca-17b6-4b7b-935d-722c8fe8a77e",
+    "Date": "2027-07-01T21:46:18.4379382+01:00",
+    "Valor": 4500,
+    "Type": 1,
+    "Description": "Sal\u00E1rio: Teste",
+    "Reference": "Teste",
+    "Status": "Pago"
+  },
+  {
+    "Id": "b1c289eb-fb15-4e8e-87f0-621bd7a67fb1",
+    "Date": "2027-07-01T21:46:18.4379382+01:00",
+    "Valor": 180,
+    "Type": 1,
+    "Description": "Sal\u00E1rio: 12",
+    "Reference": "12",
+    "Status": "Pago"
+  },
+  {
+    "Id": "7cbc345a-2d31-4737-abdf-85536b8b71c9",
+    "Date": "2027-07-01T21:46:18.4379382+01:00",
+    "Valor": 1000.0000000000000000000000000,
+    "Type": 1,
+    "Description": "Sal\u00E1rio: Cordadedadasdas",
+    "Reference": "Cordadedadasdas",
+    "Status": "Pago"
+  },
+  {
+    "Id": "604145be-c7d5-4184-8a4b-fc99c464391d",
+    "Date": "2027-07-01T21:46:18.4379382+01:00",
+    "Valor": 40000,
+    "Type": 0,
+    "Description": "Fatura\u00E7\u00E3o Forma\u00E7\u00E3o: Curso Github",
+    "Reference": "Aloca\u00E7\u00E3o #1f070d4c",
+    "Status": "Recebido"
+  },
+  {
+    "Id": "38fc60da-bebf-41cd-9ed7-9ec8e27e8902",
+    "Date": "2027-07-31T21:46:18.4379382+01:00",
+    "Valor": 27150,
+    "Type": 1,
+    "Description": "Pagamento Formador (Curso: C#)",
+    "Reference": "Teste",
+    "Status": "Pago"
+  },
+  {
+    "Id": "8ae8b14d-70e6-43f5-92f0-b7da2f7073a8",
+    "Date": "2027-08-01T21:46:18.4379382+01:00",
+    "Valor": 1033.3333333333333333333333333,
+    "Type": 1,
+    "Description": "Sal\u00E1rio: Emerson Ribeiro",
+    "Reference": "Emerson Ribeiro",
+    "Status": "Pago"
+  },
+  {
+    "Id": "d888b481-024b-4654-a235-b54319258f54",
+    "Date": "2027-08-01T21:46:18.4379382+01:00",
+    "Valor": 4650,
+    "Type": 1,
+    "Description": "Sal\u00E1rio: Teste",
+    "Reference": "Teste",
+    "Status": "Pago"
+  },
+  {
+    "Id": "33876236-7184-4667-8210-f7542497d47c",
+    "Date": "2027-08-01T21:46:18.4379382+01:00",
+    "Valor": 186,
+    "Type": 1,
+    "Description": "Sal\u00E1rio: 12",
+    "Reference": "12",
+    "Status": "Pago"
+  },
+  {
+    "Id": "cef0fea9-fb6a-497e-ac09-26f2835866cf",
+    "Date": "2027-08-01T21:46:18.4379382+01:00",
+    "Valor": 1033.3333333333333333333333333,
+    "Type": 1,
+    "Description": "Sal\u00E1rio: Cordadedadasdas",
+    "Reference": "Cordadedadasdas",
+    "Status": "Pago"
+  },
+  {
+    "Id": "324de1a2-c9b4-4363-ac15-5d502cc88262",
+    "Date": "2027-08-31T21:46:18.4379382+01:00",
+    "Valor": 372,
+    "Type": 1,
+    "Description": "Pagamento Formador (Curso: Curso Github)",
+    "Reference": "12",
+    "Status": "Pago"
+  },
+  {
+    "Id": "d11a93fb-825d-4261-b257-b0576dadc41f",
+    "Date": "2027-09-01T21:46:18.4379382+01:00",
+    "Valor": 1033.3333333333333333333333333,
+    "Type": 1,
+    "Description": "Sal\u00E1rio: Emerson Ribeiro",
+    "Reference": "Emerson Ribeiro",
+    "Status": "Pago"
+  },
+  {
+    "Id": "31725724-a724-4c14-9dd5-c32153700987",
+    "Date": "2027-09-01T21:46:18.4379382+01:00",
+    "Valor": 4650,
+    "Type": 1,
+    "Description": "Sal\u00E1rio: Teste",
+    "Reference": "Teste",
+    "Status": "Pago"
+  },
+  {
+    "Id": "9f02cd8a-d40e-4481-89dd-ff1e5774141b",
+    "Date": "2027-09-01T21:46:18.4379382+01:00",
+    "Valor": 186,
+    "Type": 1,
+    "Description": "Sal\u00E1rio: 12",
+    "Reference": "12",
+    "Status": "Pago"
+  },
+  {
+    "Id": "06dcf63c-d4af-4b84-81cf-898ea055fd75",
+    "Date": "2027-09-01T21:46:18.4379382+01:00",
+    "Valor": 1033.3333333333333333333333333,
+    "Type": 1,
+    "Description": "Sal\u00E1rio: Cordadedadasdas",
+    "Reference": "Cordadedadasdas",
+    "Status": "Pago"
+  },
+  {
+    "Id": "f58081f2-bc40-49e1-888d-e4ff00b51e0e",
+    "Date": "2027-10-01T21:46:18.4379382+01:00",
+    "Valor": 1000.0000000000000000000000000,
+    "Type": 1,
+    "Description": "Sal\u00E1rio: Emerson Ribeiro",
+    "Reference": "Emerson Ribeiro",
+    "Status": "Pago"
+  },
+  {
+    "Id": "5444c0f2-9b6f-45af-95d6-e1c529588d87",
+    "Date": "2027-10-01T21:46:18.4379382+01:00",
+    "Valor": 4500,
+    "Type": 1,
+    "Description": "Sal\u00E1rio: Teste",
+    "Reference": "Teste",
+    "Status": "Pago"
+  },
+  {
+    "Id": "0f7581e7-193d-4323-b23a-5d0913fbda21",
+    "Date": "2027-10-01T21:46:18.4379382+01:00",
+    "Valor": 180,
+    "Type": 1,
+    "Description": "Sal\u00E1rio: 12",
+    "Reference": "12",
+    "Status": "Pago"
+  },
+  {
+    "Id": "713e3173-d464-469d-931c-997bf346602a",
+    "Date": "2027-10-01T21:46:18.4379382+01:00",
+    "Valor": 1000.0000000000000000000000000,
+    "Type": 1,
+    "Description": "Sal\u00E1rio: Cordadedadasdas",
+    "Reference": "Cordadedadasdas",
+    "Status": "Pago"
+  },
+  {
+    "Id": "93c7b709-54e9-4700-a847-15da0f7423da",
+    "Date": "2027-10-01T21:46:18.4379382+01:00",
+    "Valor": 150,
+    "Type": 1,
+    "Description": "Acerto Fim de Contrato: Teste",
+    "Reference": "Teste",
+    "Status": "Pago"
+  },
+  {
+    "Id": "0ce7ca0f-1e37-4af1-83ab-e9528391072f",
+    "Date": "2027-10-01T21:46:18.4379382+01:00",
+    "Valor": 6,
+    "Type": 1,
+    "Description": "Acerto Fim de Contrato: 12",
+    "Reference": "12",
+    "Status": "Pago"
+  },
+  {
+    "Id": "1d9fd264-3de1-419b-a29e-cbed8dad220f",
+    "Date": "2027-10-01T21:46:18.4379382+01:00",
+    "Valor": 33.333333333333333333333333333,
+    "Type": 1,
+    "Description": "Acerto Fim de Contrato: Cordadedadasdas",
+    "Reference": "Cordadedadasdas",
+    "Status": "Pago"
+  },
+  {
+    "Id": "2f9b5d2e-578b-4dd4-af07-08010ff5f2c7",
+    "Date": "2027-10-19T21:46:18.4379382+01:00",
+    "Valor": 16800,
+    "Type": 1,
+    "Description": "Pagamento Formador (Curso: Tatata)",
+    "Reference": "Teste",
+    "Status": "Pago"
+  },
+  {
+    "Id": "e8ef5061-ec3f-4b3c-a586-daf8be9c458b",
+    "Date": "2027-11-01T21:46:18.4379382+00:00",
+    "Valor": 1033.3333333333333333333333333,
+    "Type": 1,
+    "Description": "Sal\u00E1rio: Emerson Ribeiro",
+    "Reference": "Emerson Ribeiro",
+    "Status": "Pago"
+  },
+  {
+    "Id": "64cf8934-e347-48ee-bc00-7b0c44c6e432",
+    "Date": "2027-12-01T21:46:18.4379382+00:00",
+    "Valor": 1000.0000000000000000000000000,
+    "Type": 1,
+    "Description": "Sal\u00E1rio: Emerson Ribeiro",
+    "Reference": "Emerson Ribeiro",
+    "Status": "Pago"
+  },
+  {
+    "Id": "73c02c6a-9f9c-4e91-84b8-54bb53b5bf38",
+    "Date": "2027-12-01T21:46:18.4379382+00:00",
+    "Valor": 5000,
+    "Type": 0,
+    "Description": "Fatura\u00E7\u00E3o Forma\u00E7\u00E3o: Curso Github",
+    "Reference": "Aloca\u00E7\u00E3o #4ff82983",
+    "Status": "Recebido"
+  },
+  {
+    "Id": "ba999118-d5bd-47ca-8c82-a2f576638166",
+    "Date": "2028-01-01T21:46:18.4379382+00:00",
+    "Valor": 1033.3333333333333333333333333,
+    "Type": 1,
+    "Description": "Sal\u00E1rio: Emerson Ribeiro",
+    "Reference": "Emerson Ribeiro",
+    "Status": "Pago"
+  },
+  {
+    "Id": "c224d503-2b2a-4593-b60d-363887327dc8",
+    "Date": "2028-02-01T21:46:18.4379382+00:00",
+    "Valor": 1033.3333333333333333333333333,
+    "Type": 1,
+    "Description": "Sal\u00E1rio: Emerson Ribeiro",
+    "Reference": "Emerson Ribeiro",
+    "Status": "Pago"
+  },
+  {
+    "Id": "34d62799-edae-45e1-a218-bc8268acb264",
+    "Date": "2028-02-16T21:46:18.4379382+00:00",
+    "Valor": 8400,
+    "Type": 1,
+    "Description": "Pagamento Formador (Curso: Curso Github)",
+    "Reference": "Teste",
+    "Status": "Pago"
+  },
+  {
+    "Id": "5d7b5476-9b20-4638-83f6-4cd9a23435d8",
+    "Date": "2028-03-01T21:46:18.4379382+00:00",
+    "Valor": 966.6666666666666666666666667,
+    "Type": 1,
+    "Description": "Sal\u00E1rio: Emerson Ribeiro",
+    "Reference": "Emerson Ribeiro",
+    "Status": "Pago"
+  },
+  {
+    "Id": "fa04c733-f708-4fa5-975f-da744770aae4",
+    "Date": "2028-04-01T21:46:18.4379382+01:00",
+    "Valor": 1033.3333333333333333333333333,
+    "Type": 1,
+    "Description": "Sal\u00E1rio: Emerson Ribeiro",
+    "Reference": "Emerson Ribeiro",
+    "Status": "Pago"
+  },
+  {
+    "Id": "7697031c-3bc7-45a6-8368-1b9d00f9bc07",
+    "Date": "2028-05-01T21:46:18.4379382+01:00",
+    "Valor": 1000.0000000000000000000000000,
+    "Type": 1,
+    "Description": "Sal\u00E1rio: Emerson Ribeiro",
+    "Reference": "Emerson Ribeiro",
+    "Status": "Pago"
+  },
+  {
+    "Id": "e95e4407-67b3-4920-9c9e-34dbecc7ae8d",
+    "Date": "2028-05-01T21:46:18.4379382+01:00",
+    "Valor": 1000.0000000000000000000000000,
+    "Type": 1,
+    "Description": "Sal\u00E1rio: Teste",
+    "Reference": "Teste",
+    "Status": "Pago"
+  },
+  {
+    "Id": "521b6c4f-3357-4e58-82e2-ed90963e0edb",
+    "Date": "2028-05-01T21:46:18.4379382+01:00",
+    "Valor": 500.00000000000000000000000001,
+    "Type": 1,
+    "Description": "Sal\u00E1rio: 12",
+    "Reference": "12",
+    "Status": "Pago"
   }
 ]
