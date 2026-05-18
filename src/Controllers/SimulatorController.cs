@@ -116,7 +116,6 @@ namespace adosmelhoresproject.src.Controllers
 
             foreach (var func in funcionarios)
             {
-                if (func is Trainer) continue;
 
                 decimal valorAPagar = func.CalculatePayment(primeiroDiaMesAnterior, ultimoDiaMesAnterior);
 
