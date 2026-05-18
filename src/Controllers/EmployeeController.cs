@@ -44,26 +44,22 @@ namespace adosmelhoresproject.src.Controllers
             ViewBag.ExpiredContracts = allEmployees.Count(e => e.ContractEndDate.Date < today.Date);
             ViewBag.ExpiredCriminalRecords = allEmployees.Count(e => e.CriminalRecordDate.Date < today.Date);
 
-            // --- CÁLCULO DA FOLHA SALARIAL MENSAL POLIMÓRFICA SEGURO ---
+
             decimal totalSalarial = 0;
 
-            // Define os limites do mês simulado atual
             var inicioMes = new DateTime(today.Year, today.Month, 1);
             var fimMes = inicioMes.AddMonths(1).AddDays(-1);
 
             foreach (var e in allEmployees.Where(emp => emp.Active))
             {
-                // Proteção 1: Se o contrato expirou antes do início deste mês, o custo é zero
                 if (e.ContractEndDate.Date < inicioMes.Date)
                 {
                     continue;
                 }
 
-                // Ancoragem da janela de trabalho real dentro deste mês específico
                 DateTime dataInicioCalculo = inicioMes;
                 DateTime dataFimCalculo = e.ContractEndDate.Date < fimMes.Date ? e.ContractEndDate.Date : fimMes.Date;
 
-                // Proteção 2: Salvaguarda absoluta contra qualquer inversão de datas
                 if (dataInicioCalculo <= dataFimCalculo)
                 {
                     totalSalarial += e.CalculatePayment(dataInicioCalculo, dataFimCalculo);
@@ -103,7 +99,6 @@ namespace adosmelhoresproject.src.Controllers
             }
             else if (tipoNormalizado == "trainer" || tipoNormalizado == "formador")
             {
-                // Tratamento seguro do Enum
                 Trainer.AvailabilityEnum disponibilidade = Trainer.AvailabilityEnum.Ambas;
                 if (Availability == "Laboral") disponibilidade = Trainer.AvailabilityEnum.Laboral;
                 else if (Availability == "Pós-Laboral") disponibilidade = Trainer.AvailabilityEnum.PosLaboral;
@@ -131,7 +126,6 @@ namespace adosmelhoresproject.src.Controllers
                     Active = true
                 };
 
-                // Conversão de Lista de IDs para Lista de Objetos Trainer
                 if (SelectedTrainerIds != null && SelectedTrainerIds.Any())
                 {
                     var todosFormadores = _service.GetAll().OfType<Trainer>().ToList();
@@ -171,12 +165,10 @@ namespace adosmelhoresproject.src.Controllers
 
             if (funcionarioExistente == null) return NotFound();
 
-            // 1. Atualização Segura de Dados Universais (Com proteção contra nulls)
             if (!string.IsNullOrEmpty(name)) funcionarioExistente.Name = name;
             if (salary.HasValue) funcionarioExistente.Salary = salary.Value;
             if (CriminalRecordDate.HasValue) funcionarioExistente.CriminalRecordDate = CriminalRecordDate.Value;
 
-            // Se o utilizador estender a data do contrato, o funcionário volta a ficar "Ativo" automaticamente.
             if (ContractEndDate.HasValue)
             {
                 funcionarioExistente.ContractEndDate = ContractEndDate.Value;
@@ -188,7 +180,6 @@ namespace adosmelhoresproject.src.Controllers
 
             string tipoNormalizado = type?.ToLower();
 
-            // 2. Atualização Polimórfica Segura
             if (funcionarioExistente is Director d && (tipoNormalizado == "director" || tipoNormalizado == "diretor"))
             {
                 if (HoursExemption.HasValue) d.HoursExemption = HoursExemption.Value;
@@ -218,7 +209,6 @@ namespace adosmelhoresproject.src.Controllers
                 }
             }
 
-            // 3. Persistência
             if (_service is EmployeeService serviceJson)
             {
                 serviceJson.Update(funcionarioExistente);

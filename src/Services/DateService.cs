@@ -62,7 +62,6 @@ public class DateService
         return _currentDate;
     }
 
-    // migrando a gestão de data para o SimulatorController, para que ele possa processar os pagamentos e alertas
     public bool ForwardDay()
     {
         DateTime dataAnterior = _currentDate;
