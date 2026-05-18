@@ -10,7 +10,6 @@
         public TransactionType Type { get; set; }
         public string Description { get; set; } = string.Empty;
 
-        // Adiciona estas para compatibilidade com a interface que criámos
         public string Reference { get; set; } = "N/A";
         public string Status { get; set; } = "Concluído";
     }

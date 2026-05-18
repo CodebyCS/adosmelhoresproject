@@ -45,7 +45,6 @@ namespace adosmelhoresproject.src.Controllers
 
             _service.Add(allocation);
 
-            // --- LANÇA A RECEITA IMEDIATAMENTE NO ATO DA CRIAÇÃO ---
             if (allocation.ValorReceita > 0)
             {
                 var dataAtual = _dateService.GetCurrentDate();
@@ -54,7 +53,7 @@ namespace adosmelhoresproject.src.Controllers
                 {
                     Date = dataAtual,
                     Valor = allocation.ValorReceita,
-                    Type = TransactionType.Income, // Dinheiro entrando na conta
+                    Type = TransactionType.Income,
                     Description = $"Faturação Formação: {allocation.NomeFormacao}",
                     Reference = $"Alocação #{allocation.Id}",
                     Status = "Recebido"
