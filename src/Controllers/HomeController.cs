@@ -8,7 +8,7 @@ namespace adosmelhoresproject.src.Controllers
     public class HomeController : Controller
     {
         private readonly IEmployeeService _employeeService;
-        private readonly IAllocationService _allocationService; // Interface do Carlos
+        private readonly IAllocationService _allocationService;
         private readonly DateService _dateService;
 
         public HomeController(IEmployeeService employeeService, IAllocationService allocationService, DateService dateService)
